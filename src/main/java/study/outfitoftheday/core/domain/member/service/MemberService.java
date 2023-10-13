@@ -7,3 +7,4 @@ public interface MemberService {
 	 * */
 	void signUp(String loginId, String nickname, String plainPassword);
 }
+

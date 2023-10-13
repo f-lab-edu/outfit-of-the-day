@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import study.outfitoftheday.common.exception.DuplicateMemberException;
 import study.outfitoftheday.core.domain.member.entity.Member;
 import study.outfitoftheday.core.domain.member.repository.MemberRepository;
 
@@ -23,24 +24,18 @@ public class MemberServiceImpl implements MemberService {
 		String nickname,
 		String plainPassword
 	) {
+		boolean isExistMember = memberRepository.findByMemberByLoginIdOrNickname(loginId, nickname).isPresent();
 
-		System.out.println("loginId!!= " + loginId);
-		Member foundMember = memberRepository.findByMemberByLoginIdOrNickname(loginId, nickname).orElse(null);
-
-		if (foundMember != null) {
-			throw new IllegalStateException("is exsist member");
+		if (isExistMember) {
+			throw new DuplicateMemberException();
 		}
 
 		String encryptedPassword = passwordEncoder.encode(plainPassword);
-
-		log.info("encryptedPassword: {}", encryptedPassword);
 		Member createdMember = Member.builder()
 			.loginId(loginId)
 			.nickname(nickname)
 			.password(encryptedPassword)
 			.build();
-
-		log.info("encryptedPassword = {} / length = {}", encryptedPassword, encryptedPassword.length());
 
 		memberRepository.save(createdMember);
 
