@@ -30,8 +30,9 @@ public class MemberController {
 	@PostMapping("/api/sign-up")
 	public ResponseEntity<ApiResponseWrapper<String>> memberSignUp(
 		@RequestBody @Valid MemberSignUpRequestDto requestDto) {
-		log.info("what?!! {}", requestDto);
-		memberService.signUp(requestDto.getLoginId(), requestDto.getNickname(), requestDto.getPassword());
+		
+		memberService.signUp(requestDto.getLoginId(), requestDto.getNickname(), requestDto.getPassword(),
+			requestDto.getPasswordConfirm());
 
 		return new ResponseEntity<>(ApiResponseWrapper.of(SuccessCode.SUCCESS_POST), HttpStatus.OK);
 	}

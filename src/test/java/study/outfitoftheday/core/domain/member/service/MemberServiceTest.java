@@ -26,9 +26,10 @@ class MemberServiceTest {
 		final String loginId = "test1234";
 		final String password = "test1234";
 		final String nickname = "hello";
+		final String passwordConfirm = "test1234";
 
 		// when
-		memberService.signUp(loginId, nickname, password);
+		memberService.signUp(loginId, nickname, password, passwordConfirm);
 		Member foundMember = memberRepository.findByLoginId(loginId).orElseThrow();
 
 		// then

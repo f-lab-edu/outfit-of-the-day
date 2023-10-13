@@ -5,6 +5,6 @@ public interface MemberService {
 	/*
 	 * sign-up
 	 * */
-	void signUp(String loginId, String nickname, String plainPassword);
+	void signUp(String loginId, String nickname, String plainPassword, String passwordConfirm);
 }
 

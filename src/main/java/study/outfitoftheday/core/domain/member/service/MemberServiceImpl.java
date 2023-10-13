@@ -6,8 +6,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import study.outfitoftheday.common.exception.DuplicateMemberException;
 import study.outfitoftheday.core.domain.member.entity.Member;
+import study.outfitoftheday.core.domain.member.exception.DuplicateMemberException;
+import study.outfitoftheday.core.domain.member.exception.MismatchPasswordInSignUpException;
 import study.outfitoftheday.core.domain.member.repository.MemberRepository;
 
 @RequiredArgsConstructor
@@ -22,11 +23,15 @@ public class MemberServiceImpl implements MemberService {
 	public void signUp(
 		String loginId,
 		String nickname,
-		String plainPassword
+		String plainPassword,
+		String passwordConfirm
 	) {
-		boolean isExistMember = memberRepository.findByMemberByLoginIdOrNickname(loginId, nickname).isPresent();
 
-		if (isExistMember) {
+		if (!plainPassword.equals(passwordConfirm)) {
+			throw new MismatchPasswordInSignUpException();
+		}
+		
+		if (memberRepository.findByMemberByLoginIdOrNickname(loginId, nickname).isPresent()) {
 			throw new DuplicateMemberException();
 		}
 

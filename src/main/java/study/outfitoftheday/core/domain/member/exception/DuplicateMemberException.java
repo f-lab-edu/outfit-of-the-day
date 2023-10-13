@@ -1,4 +1,4 @@
-package study.outfitoftheday.common.exception;
+package study.outfitoftheday.core.domain.member.exception;
 
 public class DuplicateMemberException extends RuntimeException {
 	public DuplicateMemberException() {
