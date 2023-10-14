@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import lombok.extern.slf4j.Slf4j;
-import study.outfitoftheday.core.domain.member.exception.DuplicateMemberException;
+import study.outfitoftheday.core.domain.member.exception.DuplicatedMemberException;
 import study.outfitoftheday.core.domain.member.exception.MismatchPasswordInSignUpException;
 import study.outfitoftheday.core.web.common.response.ApiErrorResponse;
 import study.outfitoftheday.core.web.common.response.ErrorCode;
@@ -26,9 +26,9 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
 
-	@ExceptionHandler(DuplicateMemberException.class)
+	@ExceptionHandler({DuplicatedMemberException.class})
 	protected ResponseEntity<ApiErrorResponse> handleDuplicateMemberException() {
-		ApiErrorResponse response = ApiErrorResponse.of(ErrorCode.DUPLICATE_MEMBER);
+		ApiErrorResponse response = ApiErrorResponse.of(ErrorCode.DUPLICATED_MEMBER);
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
 
