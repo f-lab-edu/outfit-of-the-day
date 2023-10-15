@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import study.outfitoftheday.core.domain.auth.service.AuthService;
 import study.outfitoftheday.core.domain.member.entity.Member;
 import study.outfitoftheday.core.domain.member.exception.DuplicatedMemberException;
 import study.outfitoftheday.core.domain.member.exception.MismatchPasswordInSignUpException;
@@ -13,13 +14,14 @@ import study.outfitoftheday.core.domain.member.repository.MemberRepository;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 @Slf4j
 public class MemberServiceImpl implements MemberService {
 	private final PasswordEncoder passwordEncoder;
 	private final MemberRepository memberRepository;
+	private final AuthService authService;
 
 	@Override
-	@Transactional
 	public void signUp(
 		String loginId,
 		String nickname,
@@ -57,6 +59,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public void withdrawMember(Member member) {
-		member.deleteMember();
+		member.withdrawMember();
+		authService.logout();
 	}
 }

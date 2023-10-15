@@ -2,6 +2,7 @@ package study.outfitoftheday.core.domain.auth.service;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import study.outfitoftheday.core.domain.member.exception.NotFoundMemberException
 import study.outfitoftheday.core.domain.member.repository.MemberRepository;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 	private static final String MEMBER_ID = "MEMBER_ID";
@@ -31,10 +33,7 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	public void logout() {
-		Long memberId = (Long)httpSession.getAttribute(MEMBER_ID);
-		memberRepository.findById(memberId).orElseThrow(NotFoundMemberException::new);
 		httpSession.removeAttribute(MEMBER_ID);
-
 	}
 
 	@Override
