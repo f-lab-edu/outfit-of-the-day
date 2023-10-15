@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import lombok.extern.slf4j.Slf4j;
+import study.outfitoftheday.core.domain.auth.exception.NoAccessAuthorizationException;
 import study.outfitoftheday.core.domain.member.exception.DuplicatedMemberException;
 import study.outfitoftheday.core.domain.member.exception.MismatchPasswordInSignUpException;
 import study.outfitoftheday.core.web.common.response.ApiErrorResponse;
@@ -35,6 +36,12 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(MismatchPasswordInSignUpException.class)
 	protected ResponseEntity<ApiErrorResponse> handleMismatchPasswordInSignUpException() {
 		ApiErrorResponse response = ApiErrorResponse.of(ErrorCode.MISMATCH_PASSWORD_IN_SIGN_UP);
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(NoAccessAuthorizationException.class)
+	protected ResponseEntity<ApiErrorResponse> handleNoAccessAuthorizationException() {
+		ApiErrorResponse response = ApiErrorResponse.of(ErrorCode.NO_ACCESS_AUTHORIZATION);
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
 

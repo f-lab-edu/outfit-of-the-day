@@ -1,10 +1,6 @@
-package study.outfitoftheday.core.web.member.dto;
-
-import org.hibernate.validator.constraints.Range;
+package study.outfitoftheday.core.web.member.dto.request;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -40,12 +36,11 @@ public class MemberSignUpRequestDto {
 	 * ~이상 ~이하 기준이다.
 	 * */
 	@NotNull(message = "비밀번호는 필수 입력값입니다.")
-	@Range(min = 8, max = 16, message = "비밀번호는 8자리 이상 16자리 이하로 작성해주세요.")
+	@Size(min = 8, max = 16, message = "비밀번호 확인은 8자리 이상 16자리 이하로 작성해주세요.")
 	// @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{8,16}$", message = "비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.")
 	private String password;
 
 	@NotBlank(message = "비밀번호 확인은 필수 입력값입니다.")
-	@Min(message = "비밀번호 확인은 8자리 이상 16자리 이하로 작성해주세요.", value = 8)
-	@Max(message = "비밀번호 확인은 8자리 이상 16자리 이하로 작성해주세요.", value = 16)
+	@Size(min = 8, max = 16, message = "비밀번호 확인은 8자리 이상 16자리 이하로 작성해주세요.")
 	private String passwordConfirm;
 }

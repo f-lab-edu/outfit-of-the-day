@@ -44,4 +44,8 @@ public class Member extends BaseEntity {
 		this.nickname = nickname;
 		this.isDeleted = false;
 	}
+
+	public void withdrawMember() {
+		this.isDeleted = false;
+	}
 }

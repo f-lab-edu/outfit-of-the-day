@@ -54,4 +54,9 @@ public class MemberServiceImpl implements MemberService {
 	public boolean isDuplicatedMemberByNickname(String nickname) {
 		return memberRepository.findByNickname(nickname).isPresent();
 	}
+
+	@Override
+	public void withdrawMember(Member member) {
+		member.deleteMember();
+	}
 }

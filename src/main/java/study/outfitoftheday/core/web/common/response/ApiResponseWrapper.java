@@ -21,6 +21,10 @@ public final class ApiResponseWrapper<T> {
 		return new ApiResponseWrapper<>(data, status, message);
 	}
 
+	public static <T> ApiResponseWrapper of(T data) {
+		return new ApiResponseWrapper<>(data, 200, "success");
+	}
+
 	public static <T> ApiResponseWrapper of(SuccessCode successCode) {
 		return new ApiResponseWrapper<>(null, successCode.getStatus(), successCode.getMessage());
 	}
