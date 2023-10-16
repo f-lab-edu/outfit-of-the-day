@@ -47,10 +47,9 @@ class MemberServiceTest {
 
 		// when
 		boolean isDuplicated = memberService.isDuplicatedMemberByLoginId(LOGIN_ID);
+
 		// then
-
 		assertThat(isDuplicated).isTrue();
-
 	}
 
 	@Test
