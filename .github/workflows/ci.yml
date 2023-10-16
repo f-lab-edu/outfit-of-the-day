@@ -35,6 +35,13 @@ jobs:
       - run: cat ./src/main/resources/application.yml
 
 
+      - uses: mirromutth/mysql-action@v1.1
+        with:
+          host port: 3306
+          container port: 3306
+          mysql database: ${{ secrets.DB_NAME }}
+          mysql root password: ${{ secrets.DB_PASSWORD }}
+
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
         shell: bash
