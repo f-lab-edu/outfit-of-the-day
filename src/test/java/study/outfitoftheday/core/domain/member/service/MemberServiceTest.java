@@ -78,7 +78,6 @@ class MemberServiceTest {
 		// then
 
 		assertThat(isDuplicated).isTrue();
-
 	}
 
 	@Test

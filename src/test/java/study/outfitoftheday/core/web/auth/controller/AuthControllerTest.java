@@ -3,6 +3,7 @@ package study.outfitoftheday.core.web.auth.controller;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static study.outfitoftheday.common.enumerate.UriPrefix.*;
 
 import java.util.HashMap;
 
@@ -58,7 +59,7 @@ class AuthControllerTest {
 		doLogin();
 
 		// when & then
-		mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/logout")
+		mockMvc.perform(MockMvcRequestBuilders.post(AUTH_URI_PREFIX.getPrefix() + "/logout")
 				.contentType(MediaType.APPLICATION_JSON)
 				.session(httpSession)
 			)
@@ -77,7 +78,7 @@ class AuthControllerTest {
 		input.put("password", PASSWORD);
 
 		// when & then
-		mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/login")
+		mockMvc.perform(MockMvcRequestBuilders.post(AUTH_URI_PREFIX.getPrefix() + "/login")
 				.contentType(MediaType.APPLICATION_JSON)
 				.session(httpSession)
 				.content(objectMapper.writeValueAsString(input))
@@ -96,7 +97,7 @@ class AuthControllerTest {
 		input.put("loginId", LOGIN_ID);
 		input.put("password", PASSWORD);
 
-		mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/login")
+		mockMvc.perform(MockMvcRequestBuilders.post(AUTH_URI_PREFIX.getPrefix() + "/login")
 				.contentType(MediaType.APPLICATION_JSON)
 				.session(httpSession)
 				.content(objectMapper.writeValueAsString(input))
