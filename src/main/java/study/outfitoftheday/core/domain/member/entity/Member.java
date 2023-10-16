@@ -24,15 +24,12 @@ public class Member extends BaseEntity {
 
 	private String loginId;
 
-	@Column(length = 64)
 	private String password;
 
 	private String nickname;
 
-	@Column(nullable = true)
 	private String profileMessage;
-
-	@Column(nullable = true)
+	
 	private String profileImageUrl;
 
 	private Boolean isDeleted;
