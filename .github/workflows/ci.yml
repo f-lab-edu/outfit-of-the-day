@@ -29,16 +29,27 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Build
+      - uses: actions/checkout@v3
+      - run: touch ./src/main/resources/application.yml
+      - run: echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.yml
+      - run: cat ./src/main/resources/application.yml
+
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+        shell: bash
+
+      - name: Build with Gradle
         run: |
           echo ======= execute build =======
           ./gradlew build
+        shell: bash
 
-
-      - name: Test
+      - name: Test with Gradle
         run: |
           echo ======= execute Test =======
           ./gradlew test
+        shell: bash
         
 
 
