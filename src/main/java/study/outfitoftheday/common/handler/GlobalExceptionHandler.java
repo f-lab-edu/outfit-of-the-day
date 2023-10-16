@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import study.outfitoftheday.core.domain.auth.exception.NoAccessAuthorizationException;
 import study.outfitoftheday.core.domain.member.exception.DuplicatedMemberException;
 import study.outfitoftheday.core.domain.member.exception.MismatchPasswordInSignUpException;
+import study.outfitoftheday.core.domain.member.exception.NotFoundMemberException;
 import study.outfitoftheday.core.web.common.response.ApiErrorResponse;
 import study.outfitoftheday.core.web.common.response.ErrorCode;
 
@@ -42,6 +43,12 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(NoAccessAuthorizationException.class)
 	protected ResponseEntity<ApiErrorResponse> handleNoAccessAuthorizationException() {
 		ApiErrorResponse response = ApiErrorResponse.of(ErrorCode.NO_ACCESS_AUTHORIZATION);
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(NotFoundMemberException.class)
+	protected ResponseEntity<ApiErrorResponse> handleNotFoundMemberException() {
+		ApiErrorResponse response = ApiErrorResponse.of(ErrorCode.NOT_FOUND_MEMBER_EXCEPTION);
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
 

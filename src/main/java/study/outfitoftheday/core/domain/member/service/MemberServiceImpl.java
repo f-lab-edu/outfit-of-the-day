@@ -62,4 +62,9 @@ public class MemberServiceImpl implements MemberService {
 		member.withdrawMember();
 		authService.logout();
 	}
+
+	@Override
+	public boolean isDeletedMemberByLoginId(String loginId) {
+		return memberRepository.findDeletedMemberByLoginId(loginId).isPresent();
+	}
 }

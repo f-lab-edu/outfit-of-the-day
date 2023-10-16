@@ -13,9 +13,13 @@ import study.outfitoftheday.core.domain.member.entity.Member;
 import study.outfitoftheday.core.domain.member.repository.MemberRepository;
 
 @SpringBootTest
+@Transactional
 @Rollback
 class MemberServiceTest {
 
+	private static final String LOGIN_ID = "test1234";
+	private static final String PASSWORD = "password1234";
+	private static final String NICKNAME = "test-nickname";
 	@Autowired
 	private MemberService memberService;
 
@@ -23,38 +27,26 @@ class MemberServiceTest {
 	private MemberRepository memberRepository;
 
 	@Test
-	@Transactional
 	void signUpTest() throws Exception {
-		// given
-		final String loginId = "test1234";
-		final String password = "test1234";
-		final String nickname = "hello";
-		final String passwordConfirm = "test1234";
 
 		// when
-		memberService.signUp(loginId, nickname, password, passwordConfirm);
-		Member foundMember = memberRepository.findByLoginId(loginId).orElseThrow();
+		memberService.signUp(LOGIN_ID, NICKNAME, PASSWORD, PASSWORD);
+		Member foundMember = memberRepository.findByLoginId(LOGIN_ID).orElseThrow();
 
 		// then
-		assertThat(foundMember.getLoginId()).isEqualTo(loginId);
-		assertThat(foundMember.getPassword()).isNotEqualTo(password);
-		assertThat(foundMember.getNickname()).isEqualTo(nickname);
+		assertThat(foundMember.getLoginId()).isEqualTo(LOGIN_ID);
+		assertThat(foundMember.getPassword()).isNotEqualTo(PASSWORD);
+		assertThat(foundMember.getNickname()).isEqualTo(NICKNAME);
 	}
 
 	@Test
-	@Transactional
 	@DisplayName("로그인 아이디로 중복된 회원인지 체크 테스트 - 중복된 loginId인 경우")
 	void isDuplicatedMemberByLoginIdTest1() throws Exception {
 		// given
-		final String loginId = "test1234";
-		final String password = "test1234";
-		final String nickname = "hello";
-		final String passwordConfirm = "test1234";
-
-		memberService.signUp(loginId, nickname, password, passwordConfirm);
+		memberService.signUp(LOGIN_ID, NICKNAME, PASSWORD, PASSWORD);
 
 		// when
-		boolean isDuplicated = memberService.isDuplicatedMemberByLoginId(loginId);
+		boolean isDuplicated = memberService.isDuplicatedMemberByLoginId(LOGIN_ID);
 		// then
 
 		assertThat(isDuplicated).isTrue();
@@ -62,16 +54,10 @@ class MemberServiceTest {
 	}
 
 	@Test
-	@Transactional
 	@DisplayName("로그인 아이디로 중복된 회원인지 체크 테스트 - 중복된 loginId가 아닌 경우")
 	void isDuplicatedMemberByLoginIdTest2() throws Exception {
 		// given
-		final String loginId = "test1234";
-		final String password = "test1234";
-		final String nickname = "hello";
-		final String passwordConfirm = "test1234";
-
-		memberService.signUp(loginId, nickname, password, passwordConfirm);
+		memberService.signUp(LOGIN_ID, NICKNAME, PASSWORD, PASSWORD);
 
 		// when
 		boolean isDuplicated = memberService.isDuplicatedMemberByLoginId("test12345");
@@ -82,19 +68,13 @@ class MemberServiceTest {
 	}
 
 	@Test
-	@Transactional
 	@DisplayName("닉네임 중복 체크 테스트 - 중복된 nickname인 경우")
 	void isDuplicatedMemberByNicknameTest1() throws Exception {
 		// given
-		final String loginId = "test1234";
-		final String password = "test1234";
-		final String nickname = "hello";
-		final String passwordConfirm = "test1234";
-
-		memberService.signUp(loginId, nickname, password, passwordConfirm);
+		memberService.signUp(LOGIN_ID, NICKNAME, PASSWORD, PASSWORD);
 
 		// when
-		boolean isDuplicated = memberService.isDuplicatedMemberByNickname(nickname);
+		boolean isDuplicated = memberService.isDuplicatedMemberByNickname(NICKNAME);
 		// then
 
 		assertThat(isDuplicated).isTrue();
@@ -102,19 +82,13 @@ class MemberServiceTest {
 	}
 
 	@Test
-	@Transactional
 	@DisplayName("닉네임 중복 체크 테스트 - 중복된 nickname이 아닌 경우")
 	void isDuplicatedMemberByNicknameTest2() throws Exception {
 		// given
-		final String loginId = "test1234";
-		final String password = "test1234";
-		final String nickname = "hello";
-		final String passwordConfirm = "test1234";
-
-		memberService.signUp(loginId, nickname, password, passwordConfirm);
+		memberService.signUp(LOGIN_ID, NICKNAME, PASSWORD, PASSWORD);
 
 		// when
-		boolean isDuplicated = memberService.isDuplicatedMemberByNickname("hello2");
+		boolean isDuplicated = memberService.isDuplicatedMemberByNickname("hello");
 		// then
 
 		assertThat(isDuplicated).isFalse();

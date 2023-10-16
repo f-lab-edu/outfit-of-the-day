@@ -46,10 +46,10 @@ public class MemberController {
 		memberService.signUp(requestDto.getLoginId(), requestDto.getNickname(), requestDto.getPassword(),
 			requestDto.getPasswordConfirm());
 
-		return new ResponseEntity<>(ApiResponseWrapper.of(SuccessCode.SUCCESS_POST), HttpStatus.OK);
+		return new ResponseEntity<>(ApiResponseWrapper.of(SuccessCode.SUCCESS_POST), HttpStatus.CREATED);
 	}
 
-	@DeleteMapping("/")
+	@DeleteMapping
 	@RequiredAuth
 	public ResponseEntity<ApiResponseWrapper<String>> memberWithdraw(
 		@LoginMember Member member

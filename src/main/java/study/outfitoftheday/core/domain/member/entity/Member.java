@@ -46,6 +46,6 @@ public class Member extends BaseEntity {
 	}
 
 	public void withdrawMember() {
-		this.isDeleted = false;
+		this.isDeleted = true;
 	}
 }

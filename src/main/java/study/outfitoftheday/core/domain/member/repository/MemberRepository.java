@@ -30,4 +30,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 	@Override
 	@Query("SELECT m FROM Member m WHERE m.id = :memberId AND m.isDeleted = false")
 	Optional<Member> findById(@Param("memberId") Long memberId);
+
+	@Query("SELECT m FROM Member m WHERE m.loginId = :loginId AND m.isDeleted = true")
+	Optional<Member> findDeletedMemberByLoginId(@Param("loginId") String loginId);
 }
