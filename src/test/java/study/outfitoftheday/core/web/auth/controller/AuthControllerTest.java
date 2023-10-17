@@ -25,6 +25,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import study.outfitoftheday.core.domain.member.service.MemberService;
 
+/*
+ * @AutoConfigureMockMvc
+ * MockMvc를 사용할 때 자동으로 구성을 활성화 하는 annotation이다.
+ *
+ * @AutoConfigureRestDocs
+ * Spring REST Docs를 사용하여 API 문서를 자동으로 생성하도록  Spring Boot 테스트를 구성하는데 사용하는 annotation이다.
+ *
+ * */
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
@@ -47,6 +55,10 @@ class AuthControllerTest {
 
 	private MockHttpSession httpSession;
 
+	/*
+	 * @BeforeEach
+	 * 각각의 테스트 메서드가 실행되기 전에 실행되어야 하는 메서드를 지정할 때 사용한다.
+	 * */
 	@BeforeEach
 	void beforeEach() throws Exception {
 		httpSession = new MockHttpSession();
