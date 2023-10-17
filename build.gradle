@@ -5,13 +5,28 @@ plugins {
     id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
 
+java {
+    sourceCompatibility = '17'
+}
+
 group = 'study'
 version = '0.0.1-SNAPSHOT'
 
 
-java {
-    sourceCompatibility = '17'
+ext {
+    snippetsDir = file('build/generated-snippets')
 }
+
+
+// bootJar은 실행가능한 jar을 빌드하는 테스크이다.
+bootJar {
+    dependsOn asciidoctor
+    copy {
+        from "${asciidoctor.outputDir}"
+        into 'BOOT-INF/classes/static/docs'
+    }
+}
+
 
 configurations {
     compileOnly {
@@ -38,9 +53,6 @@ dependencies {
 
 }
 
-ext {
-    snippetsDir = file('build/generated-snippets')
-}
 
 test {
     outputs.dir snippetsDir
@@ -61,14 +73,14 @@ task copyDocument(type: Copy) {
     into file("src/main/resources/static/docs")
 }
 
+test {
+    useJUnitPlatform()
+}
 
 build {
-    // build시 copDocument task 실행
     dependsOn copyDocument
 }
 
 
-tasks.named('test') {
-    useJUnitPlatform()
-}
+
 
