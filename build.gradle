@@ -14,7 +14,6 @@ java {
 }
 
 configurations {
-    asciidoctorExt
     compileOnly {
         extendsFrom annotationProcessor
     }
@@ -34,7 +33,6 @@ dependencies {
     runtimeOnly 'com.h2database:h2'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     implementation 'mysql:mysql-connector-java:8.0.23'
 
@@ -49,10 +47,26 @@ test {
 }
 
 asciidoctor {
-    inputs.dir snippetsDir
-    configurations 'asciidoctorExt'
     dependsOn test
+    inputs.dir snippetsDir
 }
+
+asciidoctor.doFirst {
+    delete file('src/main/resources/static/docs')
+}
+
+task copyDocument(type: Copy) {
+    dependsOn asciidoctor
+    from file("build/docs/asciidoc")
+    into file("src/main/resources/static/docs")
+}
+
+
+build {
+    // build시 copDocument task 실행
+    dependsOn copyDocument
+}
+
 
 tasks.named('test') {
     useJUnitPlatform()
