@@ -15,24 +15,50 @@ import lombok.Getter;
 
 /*
  * @MappedSuperclass
- * 자식 클래스에게 매핑 정보만 제공해줄 경우 사용.
+ * 공통 맵핑 정보가 필요할 때 사용하며 자식 클래스는 부모 클래스(BaseEntity)의 속성만 상속받아서 사용하게 된다.
+ *
+ * @EntityListeners
+ * JPA에서 Entity의 생명주기 이벤트를 수신하는 리스너 클래스를 지정하는데 사용된다.
  * */
 @MappedSuperclass
 @EntityListeners(value = AuditingEntityListener.class)
 @Getter
 public abstract class BaseEntity {
 
+	/*
+	 * @CreatedDate
+	 * Spring Data JPA에서 제공하는 어노테이션 중 하나
+	 * 엔터티 객체가 생성될 때 해당 필드에 현재 일시를 자동으로 할당하도록 지정한다.
+	 *
+	 * @Column
+	 * JPA에서 Entity 클래스의 필드와 DB Column을 매핑하는데 사용된다.
+	 * */
 	@CreatedDate
 	@Column(nullable = false)
 	private LocalDateTime createdAt;
 
+	/*
+	 * @LastModifiedDate
+	 * Spring Data JPA에서 제공하는 어노테이션 중 하나
+	 * 엔터티 객체가 수정될 때 해당 필드에 현재 일시를 자동으로 할당하도록 지정한다.
+	 * */
 	@LastModifiedDate
 	@Column(nullable = false)
 	private LocalDateTime updatedAt;
 
+	/*
+	 * @CreatedBy
+	 * Spring Data JPA에서 제공하는 어노테이션 중 하나
+	 * 엔터티 객체가 생성될 때 해당 필드에 객체를 생성한 사용자의 정보를 자동으로 할당하도록 지정한다.
+	 * */
 	@CreatedBy
 	private Long createdBy;
 
+	/*
+	 * @LastModifiedBy
+	 * Spring Data JPA에서 제공하는 어노테이션 중 하나
+	 * 엔터티 객체가 수정될 때 해당 필드에 객체를 수정한 사용자의 정보를 자동으로 할당하도록 지정한다.
+	 * */
 	@LastModifiedBy
 	private Long updatedBy;
 }

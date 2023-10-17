@@ -6,34 +6,35 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
-/*
- *
- * https://velog.io/@lovi0714/%ED%95%B4%EA%B2%B0%ED%95%98%EA%B8%B0-Validated-%EC%82%AC%EC%9A%A9%ED%95%98%EC%97%AC-%EC%88%9C%EC%84%9C-%EC%A0%95%ED%95%98%EA%B8%B0
- * */
 @Getter
 public class MemberSignUpRequestDto {
 
-	/*
-	 * @NotNull: null만 허용X, "", " " 가능
-	 * @NotEmpty: null, "" 허용X, " " 가능
-	 * @NotBlank: null, "", " " 허용X
-	 * 따라서 @NotBlank 적용
-	 * */
 	@NotBlank
+
 	/*
-	 * Email 형식이 아닌 경우 허용X
+	 * @Email
+	 * Jakarta Bean Validation에서 제공하는 annotation이다.
+	 * 문자열 유효성 검사를 위해 사용한다.
+	 * 해당 값이 Email형식인지 여부를 검사한다.
 	 * */
 	@Email(message = "이메일 형식에 맞지 않습니다.")
 	private String loginId;
 
+	/*
+	 * @NotNull
+	 * Jakarta Bean Validation에서 제공하는 annotation이다.
+	 * 문자열 유효성 검사를 위해 사용한다.
+	 * 해당 문자열이 null인지 여부를 검사하다.(빈 공백으로 이루어져 있는 문자열은 무시)
+	 * */
 	@NotNull
 	@Size(min = 2, max = 16, message = "닉네임은 2자리 이상 16자리 이하로 작성해주세요.")
 	private String nickname;
 
 	/*
 	 * @Size
-	 * length 길이 제한을 둔다.
-	 * ~이상 ~이하 기준이다.
+	 * Jakarta Bean Validation에서 제공하는 annotation이다.
+	 * 문자열 유효성 검사를 위해 사용한다.
+	 * min field와 max field를 이용해 해당 길이 안에 있는 문자열인지 여부를 검사한다.
 	 * */
 	@NotNull(message = "비밀번호는 필수 입력값입니다.")
 	@Size(min = 8, max = 16, message = "비밀번호 확인은 8자리 이상 16자리 이하로 작성해주세요.")

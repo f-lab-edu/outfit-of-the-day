@@ -30,7 +30,7 @@ import study.outfitoftheday.core.web.common.response.ErrorCode;
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
-@Rollback
+@Rollback(value = false)
 @Transactional
 class MemberControllerTest {
 
