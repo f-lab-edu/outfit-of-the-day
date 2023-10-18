@@ -1,10 +1,13 @@
 package study.outfitoftheday.common.config;
 
+import java.util.Optional;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 /*
@@ -30,8 +33,14 @@ import lombok.RequiredArgsConstructor;
 @EnableJpaAuditing
 @RequiredArgsConstructor
 public class JpaAuditingConfig {
+	private final HttpSession httpSession;
+
 	@Bean
 	public AuditorAware<Long> auditorProvider() {
-		return new AuditorAwareImpl();
+		System.out.println("httpSession = " + httpSession);
+		if (httpSession == null) {
+			return () -> Optional.empty();
+		}
+		return () -> Optional.ofNullable((Long)httpSession.getAttribute("MEMBER_ID"));
 	}
 }

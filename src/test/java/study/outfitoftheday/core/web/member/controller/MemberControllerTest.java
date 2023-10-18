@@ -33,7 +33,6 @@ import study.outfitoftheday.core.web.common.response.ErrorCode;
 @Rollback
 @Transactional
 class MemberControllerTest {
-
 	private static final String LOGIN_ID = "test@naver.com";
 	private static final String PASSWORD = "test12345";
 	private static final String NICKNAME = "test-nickname";

@@ -34,7 +34,7 @@ public abstract class BaseEntity {
 	 * JPA에서 Entity 클래스의 필드와 DB Column을 매핑하는데 사용된다.
 	 * */
 	@CreatedDate
-	@Column(nullable = false)
+	@Column(updatable = false)
 	private LocalDateTime createdAt;
 
 	/*
@@ -43,7 +43,6 @@ public abstract class BaseEntity {
 	 * 엔터티 객체가 수정될 때 해당 필드에 현재 일시를 자동으로 할당하도록 지정한다.
 	 * */
 	@LastModifiedDate
-	@Column(nullable = false)
 	private LocalDateTime updatedAt;
 
 	/*
@@ -52,6 +51,7 @@ public abstract class BaseEntity {
 	 * 엔터티 객체가 생성될 때 해당 필드에 객체를 생성한 사용자의 정보를 자동으로 할당하도록 지정한다.
 	 * */
 	@CreatedBy
+	@Column(updatable = false)
 	private Long createdBy;
 
 	/*
