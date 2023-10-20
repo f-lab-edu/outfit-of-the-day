@@ -53,7 +53,7 @@ class MemberServiceTest {
 
 		// when
 		memberService.signUp(LOGIN_ID, NICKNAME, PASSWORD, PASSWORD);
-		Member foundMember = memberRepository.findByLoginId(LOGIN_ID).orElseThrow();
+		Member foundMember = memberRepository.findByLoginIdAndIsDeletedIsFalse(LOGIN_ID).orElseThrow();
 
 		// then
 		assertThat(foundMember.getLoginId()).isEqualTo(LOGIN_ID);

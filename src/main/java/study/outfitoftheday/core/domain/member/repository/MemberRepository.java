@@ -3,7 +3,6 @@ package study.outfitoftheday.core.domain.member.repository;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -28,20 +27,14 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 	 * 메서드의 파라미터를 쿼리 매개변수와 매핑하기 위해 사용한다.
 	 * Query annotation을 사용하여 직접 JPQL 쿼리를 정의할 때 매개변수를 지정하는 용도로 주로 사용한다.
 	 * */
-	@Query("SELECT m FROM Member m WHERE m.loginId = :loginId AND m.isDeleted = false")
-	Optional<Member> findByLoginId(@Param("loginId") String loginId);
+	Optional<Member> findByLoginIdAndIsDeletedIsFalse(@Param("loginId") String loginId);
 
-	@Query("SELECT m FROM Member m WHERE m.nickname = :nickname AND m.isDeleted = false")
-	Optional<Member> findByNickname(@Param("nickname") String nickname);
+	Optional<Member> findByNicknameAndIsDeletedIsFalse(@Param("nickname") String nickname);
 
-	@Query("SELECT m FROM Member m WHERE  m.loginId = :loginId AND m.nickname = :nickname AND m.isDeleted = false")
-	Optional<Member> findByMemberByLoginIdOrNickname(@Param("loginId") String loginId,
+	Optional<Member> findByLoginIdOrNicknameAndIsDeletedIsFalse(@Param("loginId") String loginId,
 		@Param("nickname") String nickname);
 
-	@Override
-	@Query("SELECT m FROM Member m WHERE m.id = :memberId AND m.isDeleted = false")
-	Optional<Member> findById(@Param("memberId") Long memberId);
+	Optional<Member> findByIdAndIsDeletedIsFalse(@Param("id") Long id);
 
-	@Query("SELECT m FROM Member m WHERE m.loginId = :loginId AND m.isDeleted = true")
-	Optional<Member> findDeletedMemberByLoginId(@Param("loginId") String loginId);
+	Optional<Member> findByLoginIdAndIsDeletedIsTrue(@Param("loginId") String loginId);
 }

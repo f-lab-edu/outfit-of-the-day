@@ -34,7 +34,8 @@ public class AuthServiceImpl implements AuthService {
 	private final MemberRepository memberRepository;
 
 	public void login(String loginId, String plainPassword) {
-		Member foundMember = memberRepository.findByLoginId(loginId).orElseThrow(NotFoundMemberException::new);
+		Member foundMember = memberRepository.findByLoginIdAndIsDeletedIsFalse(loginId)
+			.orElseThrow(NotFoundMemberException::new);
 
 		if (!passwordEncoder.matches(plainPassword, foundMember.getPassword())) {
 			throw new MismatchPasswordInLoginException();

@@ -36,7 +36,7 @@ public class MemberServiceImpl implements MemberService {
 			throw new MismatchPasswordInSignUpException();
 		}
 
-		if (memberRepository.findByMemberByLoginIdOrNickname(loginId, nickname).isPresent()) {
+		if (memberRepository.findByLoginIdOrNicknameAndIsDeletedIsFalse(loginId, nickname).isPresent()) {
 			throw new DuplicatedMemberException();
 		}
 
@@ -52,12 +52,12 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public boolean isDuplicatedMemberByLoginId(String loginId) {
-		return memberRepository.findByLoginId(loginId).isPresent();
+		return memberRepository.findByLoginIdAndIsDeletedIsFalse(loginId).isPresent();
 	}
 
 	@Override
 	public boolean isDuplicatedMemberByNickname(String nickname) {
-		return memberRepository.findByNickname(nickname).isPresent();
+		return memberRepository.findByNicknameAndIsDeletedIsFalse(nickname).isPresent();
 	}
 
 	@Override
@@ -72,11 +72,11 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public boolean isDeletedMemberByLoginId(String loginId) {
-		return memberRepository.findDeletedMemberByLoginId(loginId).isPresent();
+		return memberRepository.findByLoginIdAndIsDeletedIsTrue(loginId).isPresent();
 	}
 
 	@Override
 	public Member findMemberByLoginId(String loginId) {
-		return memberRepository.findByLoginId(loginId).orElseThrow(NotFoundMemberException::new);
+		return memberRepository.findByLoginIdAndIsDeletedIsFalse(loginId).orElseThrow(NotFoundMemberException::new);
 	}
 }
