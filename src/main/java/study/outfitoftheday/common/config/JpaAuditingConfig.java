@@ -38,9 +38,6 @@ public class JpaAuditingConfig {
 
 	@Bean
 	public AuditorAware<Long> auditorProvider() {
-		if (httpSession == null) {
-			return () -> Optional.empty();
-		}
 		return () -> Optional.ofNullable((Long)httpSession.getAttribute(SESSION_AUTH_KEY));
 	}
 }
