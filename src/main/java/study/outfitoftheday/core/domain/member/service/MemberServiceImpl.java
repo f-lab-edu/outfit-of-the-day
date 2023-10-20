@@ -11,6 +11,7 @@ import study.outfitoftheday.core.domain.auth.service.AuthService;
 import study.outfitoftheday.core.domain.member.entity.Member;
 import study.outfitoftheday.core.domain.member.exception.DuplicatedMemberException;
 import study.outfitoftheday.core.domain.member.exception.MismatchPasswordInSignUpException;
+import study.outfitoftheday.core.domain.member.exception.NotFoundMemberException;
 import study.outfitoftheday.core.domain.member.repository.MemberRepository;
 
 @RequiredArgsConstructor
@@ -72,5 +73,10 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public boolean isDeletedMemberByLoginId(String loginId) {
 		return memberRepository.findDeletedMemberByLoginId(loginId).isPresent();
+	}
+
+	@Override
+	public Member findMemberByLoginId(String loginId) {
+		return memberRepository.findByLoginId(loginId).orElseThrow(NotFoundMemberException::new);
 	}
 }

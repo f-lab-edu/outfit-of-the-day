@@ -13,5 +13,7 @@ public interface MemberService {
 	boolean isDuplicatedMemberByNickname(String nickname);
 
 	boolean isDeletedMemberByLoginId(String loginId);
+
+	Member findMemberByLoginId(String loginId);
 }
 

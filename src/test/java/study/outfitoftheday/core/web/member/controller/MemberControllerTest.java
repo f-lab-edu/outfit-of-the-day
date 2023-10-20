@@ -57,7 +57,7 @@ class MemberControllerTest {
 		input.put("passwordConfirm", PASSWORD);
 		input.put("nickname", NICKNAME);
 
-		mockMvc.perform(MockMvcRequestBuilders.post(MEMBER_URI_PREFIX.getPrefix() + "/sign-up")
+		mockMvc.perform(MockMvcRequestBuilders.post(MEMBER_URI_PREFIX.getPrefix())
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(input))
 			)
@@ -68,19 +68,18 @@ class MemberControllerTest {
 			.andExpect(status().isCreated());
 	}
 
-	@DisplayName("로그인한 자신 조회")
+	@DisplayName("로그인 ID로 유저 가져오기")
 	@Test
-	void memberGetMySelfTest() throws Exception {
+	void memberGetByLoginIdTest() throws Exception {
 		// given
 		memberService.signUp(LOGIN_ID, NICKNAME, PASSWORD, PASSWORD);
 		doLogin();
 
 		// when & then
-		mockMvc.perform(MockMvcRequestBuilders.get(MEMBER_URI_PREFIX.getPrefix() + "/myself")
+		mockMvc.perform(MockMvcRequestBuilders.get(MEMBER_URI_PREFIX.getPrefix() + "/" + LOGIN_ID)
 				.contentType(MediaType.APPLICATION_JSON)
-				.session(httpSession)
 			)
-			.andDo(MockMvcRestDocumentation.document("api/members/myself",
+			.andDo(MockMvcRestDocumentation.document("api/members/loginId",
 				preprocessRequest(prettyPrint()),
 				preprocessResponse(prettyPrint())))
 			.andDo(print())
@@ -103,7 +102,7 @@ class MemberControllerTest {
 		output.put("status", 400);
 		output.put("message", ErrorCode.MISMATCH_PASSWORD_IN_SIGN_UP.getMessage());
 
-		mockMvc.perform(MockMvcRequestBuilders.post(MEMBER_URI_PREFIX.getPrefix() + "/sign-up")
+		mockMvc.perform(MockMvcRequestBuilders.post(MEMBER_URI_PREFIX.getPrefix())
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(input))
 			)

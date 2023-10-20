@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +22,7 @@ import study.outfitoftheday.core.domain.member.service.MemberService;
 import study.outfitoftheday.core.web.common.response.ApiResponseWrapper;
 import study.outfitoftheday.core.web.common.response.SuccessCode;
 import study.outfitoftheday.core.web.member.dto.request.MemberSignUpRequestDto;
-import study.outfitoftheday.core.web.member.dto.response.MemberGetMySelfResponseDto;
+import study.outfitoftheday.core.web.member.dto.response.MemberGetByLoginIdResponseDto;
 
 @Controller
 @Slf4j
@@ -36,15 +37,17 @@ public class MemberController {
 	 * 해당 annotation 내부에는 @RequestMapping(method = RequestMethod.GET)이 지정되어 있다.
 	 * Spring MVC에서 특정 GET 요청 URL을 처리하도록 매핑할 때 사용한다.
 	 * */
-	@GetMapping("/myself")
-	@RequiredAuth
-	public ResponseEntity<ApiResponseWrapper<MemberGetMySelfResponseDto>> memberGetMySelf(
-		@LoginMember Member member
+	@GetMapping("/{loginId}")
+	public ResponseEntity<ApiResponseWrapper<MemberGetByLoginIdResponseDto>> memberGetByLoginId(
+		@PathVariable String loginId
 	) {
-		return new ResponseEntity<>(ApiResponseWrapper.of(MemberGetMySelfResponseDto.from(member)), HttpStatus.OK);
+
+		Member foundMember = memberService.findMemberByLoginId(loginId);
+		return new ResponseEntity<>(ApiResponseWrapper.of(MemberGetByLoginIdResponseDto.from(foundMember)),
+			HttpStatus.OK);
 	}
 
-	@PostMapping("/sign-up")
+	@PostMapping
 	public ResponseEntity<ApiResponseWrapper<String>> memberSignUp(
 		@RequestBody @Valid MemberSignUpRequestDto requestDto) {
 
