@@ -37,7 +37,6 @@ public class JpaAuditingConfig {
 
 	@Bean
 	public AuditorAware<Long> auditorProvider() {
-		System.out.println("httpSession = " + httpSession);
 		if (httpSession == null) {
 			return () -> Optional.empty();
 		}
