@@ -33,6 +33,7 @@ import lombok.RequiredArgsConstructor;
 @EnableJpaAuditing
 @RequiredArgsConstructor
 public class JpaAuditingConfig {
+	private static final String SESSION_AUTH_KEY = "MEMBER_ID";
 	private final HttpSession httpSession;
 
 	@Bean
@@ -40,6 +41,6 @@ public class JpaAuditingConfig {
 		if (httpSession == null) {
 			return () -> Optional.empty();
 		}
-		return () -> Optional.ofNullable((Long)httpSession.getAttribute("MEMBER_ID"));
+		return () -> Optional.ofNullable((Long)httpSession.getAttribute(SESSION_AUTH_KEY));
 	}
 }

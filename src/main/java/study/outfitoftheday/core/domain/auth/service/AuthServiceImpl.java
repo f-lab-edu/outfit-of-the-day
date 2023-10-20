@@ -28,7 +28,7 @@ import study.outfitoftheday.core.domain.member.repository.MemberRepository;
 @Transactional
 @Slf4j
 public class AuthServiceImpl implements AuthService {
-	private static final String MEMBER_ID = "MEMBER_ID";
+	private static final String SESSION_AUTH_KEY = "MEMBER_ID";
 	private final HttpSession httpSession;
 	private final PasswordEncoder passwordEncoder;
 	private final MemberRepository memberRepository;
@@ -39,7 +39,7 @@ public class AuthServiceImpl implements AuthService {
 		if (!passwordEncoder.matches(plainPassword, foundMember.getPassword())) {
 			throw new MismatchPasswordInLoginException();
 		}
-		httpSession.setAttribute(MEMBER_ID, foundMember.getId());
+		httpSession.setAttribute(SESSION_AUTH_KEY, foundMember.getId());
 
 	}
 
@@ -50,13 +50,13 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	public Member findLoginMemberInSession() {
-		Long memberId = (Long)httpSession.getAttribute(MEMBER_ID);
+		Long memberId = (Long)httpSession.getAttribute(SESSION_AUTH_KEY);
 		return memberRepository.findById(memberId).orElseThrow(NotFoundLoginMemberException::new);
 	}
 
 	@Override
 	public Long findMemberIdInSession() {
-		return (Long)httpSession.getAttribute(MEMBER_ID);
+		return (Long)httpSession.getAttribute(SESSION_AUTH_KEY);
 	}
 }
 
