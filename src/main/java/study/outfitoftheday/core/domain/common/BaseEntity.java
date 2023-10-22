@@ -52,7 +52,7 @@ public abstract class BaseEntity {
 	 * */
 	@CreatedBy
 	@Column(updatable = false)
-	private Long createdBy;
+	private Long createdBy = 0L;
 
 	/*
 	 * @LastModifiedBy
@@ -60,5 +60,5 @@ public abstract class BaseEntity {
 	 * 엔터티 객체가 수정될 때 해당 필드에 객체를 수정한 사용자의 정보를 자동으로 할당하도록 지정한다.
 	 * */
 	@LastModifiedBy
-	private Long updatedBy;
+	private Long updatedBy = 0L;
 }
