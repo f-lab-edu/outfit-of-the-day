@@ -1,12 +1,12 @@
 package study.outfitoftheday.core.domain.auth.service;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import study.outfitoftheday.common.config.PasswordEncoder;
 import study.outfitoftheday.core.domain.auth.exception.NotFoundLoginMemberException;
 import study.outfitoftheday.core.domain.member.entity.Member;
 import study.outfitoftheday.core.domain.member.exception.MismatchPasswordInLoginException;
