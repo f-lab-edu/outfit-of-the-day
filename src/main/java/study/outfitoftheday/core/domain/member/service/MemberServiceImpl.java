@@ -3,11 +3,9 @@ package study.outfitoftheday.core.domain.member.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import study.outfitoftheday.common.config.PasswordEncoder;
-import study.outfitoftheday.core.domain.auth.service.AuthService;
 import study.outfitoftheday.core.domain.member.entity.Member;
 import study.outfitoftheday.core.domain.member.exception.DuplicatedMemberException;
 import study.outfitoftheday.core.domain.member.exception.MismatchPasswordInSignUpException;
@@ -21,8 +19,6 @@ import study.outfitoftheday.core.domain.member.repository.MemberRepository;
 public class MemberServiceImpl implements MemberService {
 	private final PasswordEncoder passwordEncoder;
 	private final MemberRepository memberRepository;
-	private final AuthService authService;
-	private final EntityManager em;
 
 	@Override
 	public void signUp(
@@ -63,11 +59,6 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void withdrawMember(Member member) {
 		member.withdrawMember();
-
-		em.flush();
-		em.clear();
-
-		authService.logout();
 	}
 
 	@Override
