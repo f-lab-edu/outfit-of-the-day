@@ -98,7 +98,7 @@ class MemberControllerTest {
 		input.put("nickname", NICKNAME);
 
 		HashMap<String, Object> output = new HashMap<>();
-		output.put("isSuccess", false);
+		output.put("success", false);
 		output.put("status", 400);
 		output.put("message", ErrorCode.MISMATCH_PASSWORD_IN_SIGN_UP.getMessage());
 
