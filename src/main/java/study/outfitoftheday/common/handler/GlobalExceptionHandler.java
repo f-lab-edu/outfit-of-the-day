@@ -55,6 +55,7 @@ public class GlobalExceptionHandler {
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	protected ResponseEntity<ApiErrorResponse> handleMismatchPasswordInSignUpException() {
 		ApiErrorResponse response = ApiErrorResponse.of(ErrorCode.MISMATCH_PASSWORD_IN_SIGN_UP);
+		System.out.println("resposne::" + response);
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
 
