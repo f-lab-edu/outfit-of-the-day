@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/outfit-of-the-day
+    username: sa
+    driver-class-name: org.h2.Driver
+    password:
+
+  jpa:
+    generate-ddl: false
+    hibernate:
+      # hibernate에서 entity기반으로 테이블을 생성하지 않게 하기 위한 옵션
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        show_sql: true
+        format_sql: true
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:data/schema-local.sql
+      platform: local
+
+logging.level:
+  org.hibernate.sql: debug
+  org.apache.coyote.http11: debug
+
+security:
+  encryption:
+    salt: 6
+    algorithm: SHA-256
+
+
