@@ -1,6 +1,7 @@
 spring:
   datasource:
-    url: jdbc:h2:tcp://localhost/~/outfit-of-the-day
+    # 애플리케이션의 데이터를 메모리에 저장한다.
+    url: jdbc:h2:mem:outfit-of-the-day
     username: sa
     driver-class-name: org.h2.Driver
     password:
