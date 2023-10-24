@@ -13,7 +13,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import study.outfitoftheday.common.annotation.RequiredAuth;
 import study.outfitoftheday.core.domain.auth.service.AuthService;
-import study.outfitoftheday.core.web.auth.dto.AuthLogInRequestDto;
+import study.outfitoftheday.core.web.auth.dto.AuthLoginRequestDto;
 import study.outfitoftheday.core.web.common.response.ApiResponseWrapper;
 import study.outfitoftheday.core.web.common.response.SuccessCode;
 
@@ -42,7 +42,7 @@ public class AuthController {
 
 	@PostMapping("/login")
 	public ResponseEntity<ApiResponseWrapper<String>> memberLogin(
-		@RequestBody @Valid AuthLogInRequestDto requestDto
+		@RequestBody @Valid AuthLoginRequestDto requestDto
 	) {
 		authService.login(requestDto.getLoginId(), requestDto.getPassword());
 		return new ResponseEntity<>(ApiResponseWrapper.of(SuccessCode.SUCCESS_POST), HttpStatus.OK);
