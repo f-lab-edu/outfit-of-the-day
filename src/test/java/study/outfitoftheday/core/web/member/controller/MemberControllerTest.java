@@ -17,7 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +29,6 @@ import study.outfitoftheday.core.web.common.response.ErrorCode;
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
-@Rollback
 @Transactional
 class MemberControllerTest {
 	private static final String LOGIN_ID = "test@naver.com";
