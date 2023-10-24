@@ -49,7 +49,7 @@ class MemberServiceTest {
 	 * */
 	@Test
 	@DisplayName("회원가입 - 정상")
-	void signUpTest() throws Exception {
+	void signUpTest() {
 
 		// when
 		memberService.signUp(LOGIN_ID, NICKNAME, PASSWORD, PASSWORD);
@@ -67,7 +67,7 @@ class MemberServiceTest {
 	 * */
 	@Test
 	@DisplayName("로그인 아이디로 중복된 회원인지 체크 테스트 - 중복된 loginId인 경우")
-	void isDuplicatedMemberByLoginIdTest1() throws Exception {
+	void isDuplicatedMemberByLoginIdTest1() {
 		// given
 		memberService.signUp(LOGIN_ID, NICKNAME, PASSWORD, PASSWORD);
 
@@ -80,7 +80,7 @@ class MemberServiceTest {
 
 	@Test
 	@DisplayName("로그인 아이디로 중복된 회원인지 체크 테스트 - 중복된 loginId가 아닌 경우")
-	void isDuplicatedMemberByLoginIdTest2() throws Exception {
+	void isDuplicatedMemberByLoginIdTest2() {
 		// given
 		memberService.signUp(LOGIN_ID, NICKNAME, PASSWORD, PASSWORD);
 
@@ -94,7 +94,7 @@ class MemberServiceTest {
 
 	@Test
 	@DisplayName("닉네임 중복 체크 테스트 - 중복된 nickname인 경우")
-	void isDuplicatedMemberByNicknameTest1() throws Exception {
+	void isDuplicatedMemberByNicknameTest1() {
 		// given
 		memberService.signUp(LOGIN_ID, NICKNAME, PASSWORD, PASSWORD);
 
@@ -107,7 +107,7 @@ class MemberServiceTest {
 
 	@Test
 	@DisplayName("닉네임 중복 체크 테스트 - 중복된 nickname이 아닌 경우")
-	void isDuplicatedMemberByNicknameTest2() throws Exception {
+	void isDuplicatedMemberByNicknameTest2() {
 		// given
 		memberService.signUp(LOGIN_ID, NICKNAME, PASSWORD, PASSWORD);
 
