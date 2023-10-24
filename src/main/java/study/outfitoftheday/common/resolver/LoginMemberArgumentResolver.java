@@ -10,6 +10,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import lombok.RequiredArgsConstructor;
 import study.outfitoftheday.common.annotation.LoginMember;
 import study.outfitoftheday.core.domain.auth.service.AuthService;
+import study.outfitoftheday.core.domain.member.entity.Member;
 
 @RequiredArgsConstructor
 @Component
@@ -22,7 +23,7 @@ public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolve
 	}
 
 	@Override
-	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
+	public Member resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
 		NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
 		return authService.findLoginMemberInSession();
 	}
