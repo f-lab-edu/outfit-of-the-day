@@ -1,19 +1,59 @@
 package study.outfitoftheday.core.domain.member.service;
 
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import lombok.RequiredArgsConstructor;
+import study.outfitoftheday.common.config.PasswordEncoder;
 import study.outfitoftheday.core.domain.member.entity.Member;
+import study.outfitoftheday.core.domain.member.exception.DuplicatedMemberException;
+import study.outfitoftheday.core.domain.member.exception.MismatchPasswordInSignUpException;
+import study.outfitoftheday.core.domain.member.exception.NotFoundMemberException;
+import study.outfitoftheday.core.domain.member.repository.MemberRepository;
 
-public interface MemberService {
+@RequiredArgsConstructor
+@Service
+@Transactional
+public class MemberService {
+	private final PasswordEncoder passwordEncoder;
+	private final MemberRepository memberRepository;
 
-	void signUp(String loginId, String nickname, String plainPassword, String passwordConfirm);
+	public void signUp(String loginId, String nickname, String plainPassword, String passwordConfirm) {
+		if (!plainPassword.equals(passwordConfirm)) {
+			throw new MismatchPasswordInSignUpException();
+		}
 
-	void withdrawMember(Member member);
+		if (memberRepository.findByLoginIdOrNicknameAndIsDeletedIsFalse(loginId, nickname).isPresent()) {
+			throw new DuplicatedMemberException();
+		}
 
-	boolean isDuplicatedMemberByLoginId(String loginId);
+		String encryptedPassword = passwordEncoder.encode(plainPassword);
+		Member createdMember = Member.builder()
+			.loginId(loginId)
+			.nickname(nickname)
+			.password(encryptedPassword)
+			.build();
 
-	boolean isDuplicatedMemberByNickname(String nickname);
+		memberRepository.save(createdMember);
+	}
 
-	boolean isDeletedMemberByLoginId(String loginId);
+	public boolean isDuplicatedMemberByLoginId(String loginId) {
+		return memberRepository.findByLoginIdAndIsDeletedIsFalse(loginId).isPresent();
+	}
 
-	Member findMemberByLoginId(String loginId);
+	public boolean isDuplicatedMemberByNickname(String nickname) {
+		return memberRepository.findByNicknameAndIsDeletedIsFalse(nickname).isPresent();
+	}
+
+	public void withdrawMember(Member member) {
+		member.withdrawMember();
+	}
+
+	public boolean isDeletedMemberByLoginId(String loginId) {
+		return memberRepository.findByLoginIdAndIsDeletedIsTrue(loginId).isPresent();
+	}
+
+	public Member findMemberByLoginId(String loginId) {
+		return memberRepository.findByLoginIdAndIsDeletedIsFalse(loginId).orElseThrow(NotFoundMemberException::new);
+	}
 }
-
