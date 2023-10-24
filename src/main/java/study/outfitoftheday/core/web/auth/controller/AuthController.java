@@ -2,15 +2,16 @@ package study.outfitoftheday.core.web.auth.controller;
 
 import static study.outfitoftheday.core.web.auth.controller.AuthController.*;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import study.outfitoftheday.common.annotation.RequiredAuth;
-import study.outfitoftheday.common.response.ApiResponse;
 import study.outfitoftheday.core.domain.auth.service.AuthService;
 import study.outfitoftheday.core.web.auth.dto.AuthLoginRequestDto;
 
@@ -38,11 +39,11 @@ public class AuthController {
 	 * */
 
 	@PostMapping("/login")
-	public ApiResponse<Object> memberLogin(
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void memberLogin(
 		@RequestBody @Valid AuthLoginRequestDto requestDto
 	) {
 		authService.login(requestDto.getLoginId(), requestDto.getPassword());
-		return ApiResponse.ok();
 	}
 
 	/*
@@ -53,9 +54,9 @@ public class AuthController {
 
 	@RequiredAuth
 	@PostMapping("/logout")
-	public ApiResponse<Object> memberLogout() {
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void memberLogout() {
 		authService.logout();
-		return ApiResponse.ok();
 	}
 
 }

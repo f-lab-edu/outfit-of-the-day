@@ -99,8 +99,7 @@ class AuthControllerTest {
 			.andDo(MockMvcRestDocumentation.document("api/auth/login",
 				preprocessRequest(prettyPrint()),
 				preprocessResponse(prettyPrint())))
-			.andExpect(status().isOk())
-			.andExpect(content().contentType(MediaType.APPLICATION_JSON));
+			.andExpect(status().isNoContent());
 
 	}
 
