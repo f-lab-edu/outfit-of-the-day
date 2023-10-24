@@ -2,20 +2,17 @@ package study.outfitoftheday.core.web.auth.controller;
 
 import static study.outfitoftheday.core.web.auth.controller.AuthController.*;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import study.outfitoftheday.common.annotation.RequiredAuth;
+import study.outfitoftheday.common.response.ApiResponse;
 import study.outfitoftheday.core.domain.auth.service.AuthService;
 import study.outfitoftheday.core.web.auth.dto.AuthLoginRequestDto;
-import study.outfitoftheday.core.web.common.response.ApiResponseWrapper;
-import study.outfitoftheday.core.web.common.response.SuccessCode;
 
 /*
  * @Controller
@@ -27,7 +24,7 @@ import study.outfitoftheday.core.web.common.response.SuccessCode;
  * 메서드 레벨에서 @RequestMapping(value = "/hello", method = RequestMethod.GET)
  * 와 같이 Spring MVC에서 특정 요청 URL을 처리하도록 매핑할 때 사용한다.
  * */
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping(AUTH_URI_PREFIX)
 public class AuthController {
@@ -41,11 +38,11 @@ public class AuthController {
 	 * */
 
 	@PostMapping("/login")
-	public ResponseEntity<ApiResponseWrapper<String>> memberLogin(
+	public ApiResponse<Object> memberLogin(
 		@RequestBody @Valid AuthLoginRequestDto requestDto
 	) {
 		authService.login(requestDto.getLoginId(), requestDto.getPassword());
-		return new ResponseEntity<>(ApiResponseWrapper.of(SuccessCode.SUCCESS_POST), HttpStatus.OK);
+		return ApiResponse.ok();
 	}
 
 	/*
@@ -56,9 +53,9 @@ public class AuthController {
 
 	@RequiredAuth
 	@PostMapping("/logout")
-	public ResponseEntity<ApiResponseWrapper<String>> memberLogout() {
+	public ApiResponse<Object> memberLogout() {
 		authService.logout();
-		return new ResponseEntity<>(ApiResponseWrapper.of(SuccessCode.SUCCESS_POST), HttpStatus.OK);
+		return ApiResponse.ok();
 	}
 
 }

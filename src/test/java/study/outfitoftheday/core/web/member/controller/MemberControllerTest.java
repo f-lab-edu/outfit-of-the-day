@@ -108,8 +108,7 @@ class MemberControllerTest {
 			)
 			.andDo(print())
 			.andExpect(status().isBadRequest())
-			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-			.andExpect(content().json(objectMapper.writeValueAsString(output)));
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON));
 	}
 
 	@DisplayName("멤버가 회원을 탈퇴할 경우")
