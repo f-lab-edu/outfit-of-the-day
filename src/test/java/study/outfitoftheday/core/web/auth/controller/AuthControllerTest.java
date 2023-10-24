@@ -1,5 +1,7 @@
 package study.outfitoftheday.core.web.auth.controller;
 
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.BDDMockito.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -7,23 +9,21 @@ import static study.outfitoftheday.common.enumerate.UriPrefix.*;
 
 import java.util.HashMap;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import study.outfitoftheday.core.domain.member.service.MemberService;
+import study.outfitoftheday.core.domain.auth.service.AuthService;
 
 /*
  * @AutoConfigureMockMvc
@@ -33,11 +33,9 @@ import study.outfitoftheday.core.domain.member.service.MemberService;
  * Spring REST Docs를 사용하여 API 문서를 자동으로 생성하도록  Spring Boot 테스트를 구성하는데 사용하는 annotation이다.
  *
  * */
-@SpringBootTest
-@AutoConfigureMockMvc
+
+@WebMvcTest(controllers = AuthController.class)
 @AutoConfigureRestDocs
-@Rollback
-@Transactional
 class AuthControllerTest {
 
 	private static final String LOGIN_ID = "test@naver.com";
@@ -50,49 +48,45 @@ class AuthControllerTest {
 	@Autowired
 	private ObjectMapper objectMapper;
 
-	@Autowired
-	private MemberService memberService;
+	@MockBean
+	private AuthService authService;
 
-	private MockHttpSession httpSession;
-
-	/*
-	 * @BeforeEach
-	 * 각각의 테스트 메서드가 실행되기 전에 실행되어야 하는 메서드를 지정할 때 사용한다.
-	 * */
-	@BeforeEach
-	void beforeEach() throws Exception {
-		httpSession = new MockHttpSession();
-		memberService.signUp(LOGIN_ID, NICKNAME, PASSWORD, PASSWORD);
-	}
-
+	@DisplayName("로그아웃에 성공하여 HTTP 상태 코드 204를 반환한다.")
 	@Test
-	void logoutTest() throws Exception {
+	void logout() throws Exception {
+
 		// given
-		doLogin();
+		doNothing().when(authService).logout();
 
 		// when & then
 		mockMvc.perform(MockMvcRequestBuilders.post(AUTH_URI_PREFIX.getPrefix() + "/logout")
 				.contentType(MediaType.APPLICATION_JSON)
-				.session(httpSession)
+				.session(new MockHttpSession())
 			)
 			.andDo(print())
 			.andDo(MockMvcRestDocumentation.document("api/auth/logout",
 				preprocessRequest(prettyPrint()),
-				preprocessResponse(prettyPrint())));
+				preprocessResponse(prettyPrint())))
+			.andExpect(status().isNoContent());
 	}
 
+	@DisplayName("로그인에 성공하여 HTTP 상태 코드 204를 반환한다.")
 	@Test
-	void loginTest() throws Exception {
+	void login() throws Exception {
 
 		// given
 		HashMap<String, String> input = new HashMap<>();
 		input.put("loginId", LOGIN_ID);
 		input.put("password", PASSWORD);
 
+		doNothing()
+			.when(authService)
+			.login(anyString(), anyString());
+
 		// when & then
 		mockMvc.perform(MockMvcRequestBuilders.post(AUTH_URI_PREFIX.getPrefix() + "/login")
 				.contentType(MediaType.APPLICATION_JSON)
-				.session(httpSession)
+				.session(new MockHttpSession())
 				.content(objectMapper.writeValueAsString(input))
 			)
 			.andDo(print())
@@ -101,18 +95,5 @@ class AuthControllerTest {
 				preprocessResponse(prettyPrint())))
 			.andExpect(status().isNoContent());
 
-	}
-
-	private void doLogin() throws Exception {
-		HashMap<String, String> input = new HashMap<>();
-		input.put("loginId", LOGIN_ID);
-		input.put("password", PASSWORD);
-
-		mockMvc.perform(MockMvcRequestBuilders.post(AUTH_URI_PREFIX.getPrefix() + "/login")
-				.contentType(MediaType.APPLICATION_JSON)
-				.session(httpSession)
-				.content(objectMapper.writeValueAsString(input))
-			)
-			.andDo(print());
 	}
 }
