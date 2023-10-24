@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import study.outfitoftheday.common.annotation.LoginMember;
 import study.outfitoftheday.common.annotation.RequiredAuth;
 import study.outfitoftheday.core.domain.member.entity.Member;
@@ -25,7 +24,6 @@ import study.outfitoftheday.core.web.member.dto.request.MemberSignUpRequestDto;
 import study.outfitoftheday.core.web.member.dto.response.MemberGetByLoginIdResponseDto;
 
 @Controller
-@Slf4j
 @RequiredArgsConstructor
 @RequestMapping(MEMBER_URI_PREFIX)
 public class MemberController {

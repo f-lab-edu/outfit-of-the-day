@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import study.outfitoftheday.common.annotation.RequiredAuth;
 import study.outfitoftheday.core.domain.auth.service.AuthService;
 import study.outfitoftheday.core.web.auth.dto.AuthLogInRequestDto;
@@ -30,7 +29,6 @@ import study.outfitoftheday.core.web.common.response.SuccessCode;
  * */
 @Controller
 @RequiredArgsConstructor
-@Slf4j
 @RequestMapping(AUTH_URI_PREFIX)
 public class AuthController {
 	static final String AUTH_URI_PREFIX = "/api/auth";

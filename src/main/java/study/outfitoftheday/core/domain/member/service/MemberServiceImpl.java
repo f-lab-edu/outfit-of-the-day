@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import study.outfitoftheday.common.config.PasswordEncoder;
 import study.outfitoftheday.core.domain.member.entity.Member;
 import study.outfitoftheday.core.domain.member.exception.DuplicatedMemberException;
@@ -15,7 +14,6 @@ import study.outfitoftheday.core.domain.member.repository.MemberRepository;
 @RequiredArgsConstructor
 @Service
 @Transactional
-@Slf4j
 public class MemberServiceImpl implements MemberService {
 	private final PasswordEncoder passwordEncoder;
 	private final MemberRepository memberRepository;

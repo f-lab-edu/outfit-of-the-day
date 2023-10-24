@@ -3,8 +3,6 @@ package study.outfitoftheday.common.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import lombok.extern.slf4j.Slf4j;
-
 /*
  * @Slf4j
  * lombok에서 제공하는 어노테이션으로, 개발자로 하여금 Slf4j를 사용하기 위해 작성해야 하는 코드를 생략할 수 있게끔 해준다.
@@ -14,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
  *
  * */
 @Configuration
-@Slf4j
 public class SecurityConfig {
 	/*
 	 * @Bean

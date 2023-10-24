@@ -5,7 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import study.outfitoftheday.common.config.PasswordEncoder;
 import study.outfitoftheday.core.domain.auth.exception.NotFoundLoginMemberException;
 import study.outfitoftheday.core.domain.member.entity.Member;
@@ -26,7 +25,6 @@ import study.outfitoftheday.core.domain.member.repository.MemberRepository;
 @Service
 @RequiredArgsConstructor
 @Transactional
-@Slf4j
 public class AuthServiceImpl implements AuthService {
 	private static final String SESSION_AUTH_KEY = "MEMBER_ID";
 	private final HttpSession httpSession;

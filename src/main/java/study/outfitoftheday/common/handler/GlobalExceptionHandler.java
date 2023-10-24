@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import lombok.extern.slf4j.Slf4j;
 import study.outfitoftheday.core.domain.auth.exception.NoAccessAuthorizationException;
 import study.outfitoftheday.core.domain.member.exception.DuplicatedMemberException;
 import study.outfitoftheday.core.domain.member.exception.MismatchPasswordInSignUpException;
@@ -22,7 +21,6 @@ import study.outfitoftheday.core.web.common.response.ErrorCode;
  * '@ControllerAdvice와 유사하지만 Rest Api에서 발생한 예외에 대한 처리에 더 특화되어 있다.
  *
  * */
-@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -55,7 +53,6 @@ public class GlobalExceptionHandler {
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	protected ResponseEntity<ApiErrorResponse> handleMismatchPasswordInSignUpException() {
 		ApiErrorResponse response = ApiErrorResponse.of(ErrorCode.MISMATCH_PASSWORD_IN_SIGN_UP);
-		System.out.println("resposne::" + response);
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
 
