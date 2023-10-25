@@ -1,6 +1,6 @@
 package study.outfitoftheday.web.member.controller;
 
-import static study.outfitoftheday.web.member.controller.MemberController.*;
+import static study.outfitoftheday.global.util.UriPrefix.*;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,7 +26,6 @@ import study.outfitoftheday.web.member.controller.response.MemberGetByLoginIdRes
 @RequiredArgsConstructor
 @RequestMapping(MEMBER_URI_PREFIX)
 public class MemberController {
-	static final String MEMBER_URI_PREFIX = "/api/members";
 	private final MemberService memberService;
 
 	/*

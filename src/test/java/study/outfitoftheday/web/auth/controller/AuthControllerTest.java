@@ -5,7 +5,7 @@ import static org.mockito.BDDMockito.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static study.outfitoftheday.global.enumerate.UriPrefix.*;
+import static study.outfitoftheday.global.util.UriPrefix.*;
 
 import java.util.HashMap;
 
@@ -59,7 +59,7 @@ class AuthControllerTest {
 		doNothing().when(authService).logout();
 
 		// when & then
-		mockMvc.perform(MockMvcRequestBuilders.post(AUTH_URI_PREFIX.getPrefix() + "/logout")
+		mockMvc.perform(MockMvcRequestBuilders.post(AUTH_URI_PREFIX + "/logout")
 				.contentType(MediaType.APPLICATION_JSON)
 				.session(new MockHttpSession())
 			)
@@ -84,7 +84,7 @@ class AuthControllerTest {
 			.login(anyString(), anyString());
 
 		// when & then
-		mockMvc.perform(MockMvcRequestBuilders.post(AUTH_URI_PREFIX.getPrefix() + "/login")
+		mockMvc.perform(MockMvcRequestBuilders.post(AUTH_URI_PREFIX + "/login")
 				.contentType(MediaType.APPLICATION_JSON)
 				.session(new MockHttpSession())
 				.content(objectMapper.writeValueAsString(input))

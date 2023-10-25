@@ -1,6 +1,6 @@
 package study.outfitoftheday.web.auth.controller;
 
-import static study.outfitoftheday.web.auth.controller.AuthController.*;
+import static study.outfitoftheday.global.util.UriPrefix.*;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +29,6 @@ import study.outfitoftheday.web.auth.controller.request.AuthLoginRequest;
 @RequiredArgsConstructor
 @RequestMapping(AUTH_URI_PREFIX)
 public class AuthController {
-	static final String AUTH_URI_PREFIX = "/api/auth";
 	private final AuthService authService;
 
 	/*

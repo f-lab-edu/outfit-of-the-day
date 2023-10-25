@@ -3,7 +3,7 @@ package study.outfitoftheday.web.member.controller;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static study.outfitoftheday.global.enumerate.UriPrefix.*;
+import static study.outfitoftheday.global.util.UriPrefix.*;
 
 import java.util.HashMap;
 
@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import study.outfitoftheday.domain.member.service.MemberService;
 import study.outfitoftheday.global.response.ErrorCode;
+import study.outfitoftheday.global.util.UriPrefix;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -55,7 +56,7 @@ class MemberControllerTest {
 		input.put("passwordConfirm", PASSWORD);
 		input.put("nickname", NICKNAME);
 
-		mockMvc.perform(MockMvcRequestBuilders.post(MEMBER_URI_PREFIX.getPrefix())
+		mockMvc.perform(MockMvcRequestBuilders.post(UriPrefix.MEMBER_URI_PREFIX)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(input))
 			)
@@ -74,7 +75,7 @@ class MemberControllerTest {
 		doLogin();
 
 		// when & then
-		mockMvc.perform(MockMvcRequestBuilders.get(MEMBER_URI_PREFIX.getPrefix() + "/" + LOGIN_ID)
+		mockMvc.perform(MockMvcRequestBuilders.get(MEMBER_URI_PREFIX + "/" + LOGIN_ID)
 				.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andDo(MockMvcRestDocumentation.document("api/members/loginId",
@@ -100,7 +101,7 @@ class MemberControllerTest {
 		output.put("status", 400);
 		output.put("message", ErrorCode.MISMATCH_PASSWORD_IN_SIGN_UP.getMessage());
 
-		mockMvc.perform(MockMvcRequestBuilders.post(MEMBER_URI_PREFIX.getPrefix())
+		mockMvc.perform(MockMvcRequestBuilders.post(MEMBER_URI_PREFIX)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(input))
 			)
@@ -117,7 +118,7 @@ class MemberControllerTest {
 		doLogin();
 
 		// when & then
-		mockMvc.perform(MockMvcRequestBuilders.delete(MEMBER_URI_PREFIX.getPrefix())
+		mockMvc.perform(MockMvcRequestBuilders.delete(MEMBER_URI_PREFIX)
 				.contentType(MediaType.APPLICATION_JSON)
 				.session(httpSession)
 			)
@@ -139,7 +140,7 @@ class MemberControllerTest {
 		input.put("loginId", LOGIN_ID);
 		input.put("password", PASSWORD);
 
-		mockMvc.perform(MockMvcRequestBuilders.post(AUTH_URI_PREFIX.getPrefix() + "/login")
+		mockMvc.perform(MockMvcRequestBuilders.post(AUTH_URI_PREFIX + "/login")
 				.contentType(MediaType.APPLICATION_JSON)
 				.session(httpSession)
 				.content(objectMapper.writeValueAsString(input))
