@@ -65,10 +65,11 @@ class AuthControllerTest {
 				.session(new MockHttpSession())
 			)
 			.andDo(print())
+			.andExpect(status().isNoContent())
 			.andDo(MockMvcRestDocumentation.document("api/auth/logout",
 				preprocessRequest(prettyPrint()),
-				preprocessResponse(prettyPrint())))
-			.andExpect(status().isNoContent());
+				preprocessResponse(prettyPrint())));
+
 	}
 
 	@DisplayName("로그인에 성공하여 HTTP 상태 코드 204를 반환한다.")
@@ -91,10 +92,10 @@ class AuthControllerTest {
 				.content(objectMapper.writeValueAsString(input))
 			)
 			.andDo(print())
+			.andExpect(status().isNoContent())
 			.andDo(MockMvcRestDocumentation.document("api/auth/login",
 				preprocessRequest(prettyPrint()),
-				preprocessResponse(prettyPrint())))
-			.andExpect(status().isNoContent());
+				preprocessResponse(prettyPrint())));
 
 	}
 }

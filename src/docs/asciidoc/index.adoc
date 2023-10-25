@@ -41,15 +41,15 @@ include::{snippets}/api/members/sign-up/http-request.adoc[]
 
 include::{snippets}/api/members/sign-up/http-response.adoc[]
 
-=== 📗 자신 조회
+=== 📗 LoginId로 조회하기
 
 * Request
 
-include::{snippets}/api/members/myself/http-request.adoc[]
+include::{snippets}/api/members/loginId/http-request.adoc[]
 
 * Response
 
-include::{snippets}/api/members/myself/http-response.adoc[]
+include::{snippets}/api/members/loginId/http-response.adoc[]
 
 === 📗 회원 탈퇴
 

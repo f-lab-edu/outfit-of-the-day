@@ -78,11 +78,11 @@ class MemberControllerTest {
 		mockMvc.perform(MockMvcRequestBuilders.get(MEMBER_URI_PREFIX + "/" + LOGIN_ID)
 				.contentType(MediaType.APPLICATION_JSON)
 			)
+			.andDo(print())
+			.andExpect(status().isOk())
 			.andDo(MockMvcRestDocumentation.document("api/members/loginId",
 				preprocessRequest(prettyPrint()),
-				preprocessResponse(prettyPrint())))
-			.andDo(print())
-			.andExpect(status().isOk());
+				preprocessResponse(prettyPrint())));
 	}
 
 	@DisplayName("회원가입 - password가 불일치한 경우")
@@ -123,11 +123,11 @@ class MemberControllerTest {
 				.session(httpSession)
 			)
 			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 			.andDo(MockMvcRestDocumentation.document("api/members/withdraw-member",
 				preprocessRequest(prettyPrint()),
-				preprocessResponse(prettyPrint())))
-			.andExpect(status().isOk())
-			.andExpect(content().contentType(MediaType.APPLICATION_JSON));
+				preprocessResponse(prettyPrint())));
 
 		Assertions.assertThat(memberService.isDeletedMemberByLoginId(LOGIN_ID)).isTrue();
 
