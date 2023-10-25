@@ -1,7 +1,6 @@
 package study.outfitoftheday.core.domain.auth.service;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +23,6 @@ import study.outfitoftheday.core.domain.member.repository.MemberRepository;
  * */
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class AuthService {
 	private static final String SESSION_AUTH_KEY = "MEMBER_ID";
 	private final HttpSession httpSession;
