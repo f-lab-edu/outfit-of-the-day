@@ -24,7 +24,7 @@ import study.outfitoftheday.global.config.PasswordEncoder;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
-	private static final String SESSION_AUTH_KEY = "MEMBER_ID";
+	private static final String SESSION_AUTH_KEY = "MEMBER_NICKNAME";
 	private final HttpSession httpSession;
 	private final PasswordEncoder passwordEncoder;
 	private final MemberRepository memberRepository;
@@ -36,7 +36,7 @@ public class AuthService {
 		if (!passwordEncoder.matches(plainPassword, foundMember.getPassword())) {
 			throw new MismatchPasswordInLoginException();
 		}
-		httpSession.setAttribute(SESSION_AUTH_KEY, foundMember.getId());
+		httpSession.setAttribute(SESSION_AUTH_KEY, foundMember.getNickname());
 
 	}
 
@@ -45,12 +45,13 @@ public class AuthService {
 	}
 
 	public Member findLoginMemberInSession() {
-		Long memberId = (Long)httpSession.getAttribute(SESSION_AUTH_KEY);
-		return memberRepository.findById(memberId).orElseThrow(NotFoundLoginMemberException::new);
+		String memberNickname = (String)httpSession.getAttribute(SESSION_AUTH_KEY);
+		return memberRepository.findByNicknameAndIsDeletedIsFalse(memberNickname)
+			.orElseThrow(NotFoundLoginMemberException::new);
 	}
 
-	public Long findMemberIdInSession() {
-		return (Long)httpSession.getAttribute(SESSION_AUTH_KEY);
+	public String findMemberNicknameInSession() {
+		return (String)httpSession.getAttribute(SESSION_AUTH_KEY);
 	}
 }
 

@@ -70,6 +70,7 @@ public class Member extends BaseEntity {
 		this.password = password;
 		this.nickname = nickname;
 		this.isDeleted = false;
+		this.initializeWhenSignUp(nickname);
 	}
 
 	public void withdrawMember() {

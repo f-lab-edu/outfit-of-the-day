@@ -57,6 +57,7 @@ class AuthControllerTest {
 
 		// given
 		doNothing().when(authService).logout();
+		doReturn("nickname").when(authService).findMemberNicknameInSession();
 
 		// when & then
 		mockMvc.perform(MockMvcRequestBuilders.post(AUTH_URI_PREFIX + "/logout")

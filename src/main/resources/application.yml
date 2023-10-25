@@ -21,6 +21,10 @@ spring:
       mode: always
       schema-locations: classpath:data/schema-local.sql
       platform: local
+  h2:
+    console:
+      path: /h2-console
+      enabled: true
 
 logging.level:
   org.hibernate.sql: debug

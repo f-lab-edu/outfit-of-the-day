@@ -32,7 +32,7 @@ public class RequiredAuthInterceptor implements HandlerInterceptor {
 	}
 
 	private void checkAuthorization() {
-		if (authService.findMemberIdInSession() == null) {
+		if (authService.findMemberNicknameInSession() == null) {
 			throw new NoAccessAuthorizationException();
 		}
 	}

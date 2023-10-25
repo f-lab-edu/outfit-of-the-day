@@ -2,9 +2,9 @@ DROP TABLE if EXISTS follow;
 DROP TABLE if EXISTS post_like;
 DROP TABLE if EXISTS comment_like;
 DROP TABLE if EXISTS comment;
-DROP TABLE if EXISTS member;
 DROP TABLE if EXISTS post;
 DROP TABLE if EXISTS history;
+DROP TABLE if EXISTS member;
 
 CREATE TABLE `member`
 (
@@ -16,24 +16,24 @@ CREATE TABLE `member`
     `profile_image_url` varchar(255),
     `created_at`        timestamp          NOT NULL,
     `updated_at`        timestamp          NOT NULL,
-    `created_by`        bigint             NOT NULL,
-    `updated_by`        bigint             NOT NULL,
+    `created_by`        varchar(64)        NOT NULL,
+    `updated_by`        varchar(64)        NOT NULL,
     `is_deleted`        boolean            NOT NULL DEFAULT false
 );
 
 CREATE TABLE `comment`
 (
     `comment_id`        bigint PRIMARY KEY,
-    `post_id`           bigint    NOT NULL,
-    `parent_comment_id` bigint    NOT NULL COMMENT '첫 번째 댓글인 경우 자기 자신, 대댓글인 경우 comment_id',
-    `writer_comment_id` bigint    NOT NULL,
-    `content`           text      NOT NULL,
-    `depth`             int       NOT NULL,
-    `created_at`        timestamp NOT NULL,
-    `updated_at`        timestamp NOT NULL,
-    `created_by`        bigint    NOT NULL,
-    `updated_by`        bigint    NOT NULL,
-    `is_deleted`        boolean   NOT NULL DEFAULT false
+    `post_id`           bigint      NOT NULL,
+    `parent_comment_id` bigint      NOT NULL COMMENT '첫 번째 댓글인 경우 자기 자신, 대댓글인 경우 comment_id',
+    `writer_comment_id` bigint      NOT NULL,
+    `content`           text        NOT NULL,
+    `depth`             int         NOT NULL,
+    `created_at`        timestamp   NOT NULL,
+    `updated_at`        timestamp   NOT NULL,
+    `created_by`        varchar(64) NOT NULL,
+    `updated_by`        varchar(64) NOT NULL,
+    `is_deleted`        boolean     NOT NULL DEFAULT false
 );
 
 CREATE TABLE `post`
@@ -45,8 +45,8 @@ CREATE TABLE `post`
     `post_status`       varchar(32)  NOT NULL,
     `created_at`        timestamp    NOT NULL,
     `updated_at`        timestamp    NOT NULL,
-    `created_by`        bigint       NOT NULL,
-    `updated_by`        bigint       NOT NULL,
+    `created_by`        varchar(64)  NOT NULL,
+    `updated_by`        varchar(64)  NOT NULL,
     `is_deleted`        boolean      NOT NULL DEFAULT false
 );
 
@@ -54,37 +54,37 @@ CREATE TABLE `post`
 CREATE TABLE `post_like`
 (
     `post_like_id` bigint PRIMARY KEY,
-    `member_id`    bigint    NOT NULL,
-    `post_id`      bigint    NOT NULL,
-    `created_at`   timestamp NOT NULL,
-    `updated_at`   timestamp NOT NULL,
-    `created_by`   bigint    NOT NULL,
-    `updated_by`   bigint    NOT NULL,
-    `is_deleted`   boolean   NOT NULL DEFAULT false
+    `member_id`    bigint      NOT NULL,
+    `post_id`      bigint      NOT NULL,
+    `created_at`   timestamp   NOT NULL,
+    `updated_at`   timestamp   NOT NULL,
+    `created_by`   varchar(64) NOT NULL,
+    `updated_by`   varchar(64) NOT NULL,
+    `is_deleted`   boolean     NOT NULL DEFAULT false
 );
 
 CREATE TABLE `comment_like`
 (
     `comment_like_id` bigint PRIMARY KEY,
-    `member_id`       bigint    NOT NULL,
-    `comment_id`      bigint    NOT NULL,
-    `created_at`      timestamp NOT NULL,
-    `updated_at`      timestamp NOT NULL,
-    `created_by`      bigint    NOT NULL,
-    `updated_by`      bigint    NOT NULL,
-    `is_deleted`      boolean   NOT NULL DEFAULT false
+    `member_id`       bigint      NOT NULL,
+    `comment_id`      bigint      NOT NULL,
+    `created_at`      timestamp   NOT NULL,
+    `updated_at`      timestamp   NOT NULL,
+    `created_by`      varchar(64) NOT NULL,
+    `updated_by`      varchar(64) NOT NULL,
+    `is_deleted`      boolean     NOT NULL DEFAULT false
 );
 
 CREATE TABLE `follow`
 (
     `follow_id`      bigint PRIMARY KEY,
-    `from_member_id` bigint    NOT NULL,
-    `to_member_id`   bigint    NOT NULL,
-    `created_at`     timestamp NOT NULL,
-    `updated_at`     timestamp NOT NULL,
-    `created_by`     bigint    NOT NULL,
-    `updated_by`     bigint    NOT NULL,
-    `is_deleted`     boolean   NOT NULL DEFAULT false
+    `from_member_id` bigint      NOT NULL,
+    `to_member_id`   bigint      NOT NULL,
+    `created_at`     timestamp   NOT NULL,
+    `updated_at`     timestamp   NOT NULL,
+    `created_by`     varchar(64) NOT NULL,
+    `updated_by`     varchar(64) NOT NULL,
+    `is_deleted`     boolean     NOT NULL DEFAULT false
 );
 
 CREATE TABLE `history`
@@ -94,7 +94,7 @@ CREATE TABLE `history`
     `operation_type` varchar(32) NOT NULL,
     `snapshot`       json        NOT NULL,
     `created_at`     timestamp   NOT NULL,
-    `created_by`     bigint      NOT NULL
+    `created_by`     varchar(64) NOT NULL
 );
 
 ALTER TABLE `comment`
