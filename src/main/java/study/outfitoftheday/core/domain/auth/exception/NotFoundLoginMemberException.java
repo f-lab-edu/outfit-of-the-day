@@ -1,7 +1,10 @@
 package study.outfitoftheday.core.domain.auth.exception;
 
-public class NotFoundLoginMemberException extends RuntimeException {
+import study.outfitoftheday.common.exception.ServiceException;
+import study.outfitoftheday.core.web.common.response.ErrorCode;
+
+public class NotFoundLoginMemberException extends ServiceException {
 	public NotFoundLoginMemberException() {
-		super();
+		super(ErrorCode.NOT_FOUND_LOGIN_MEMBER);
 	}
 }

@@ -7,12 +7,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import study.outfitoftheday.common.exception.ServiceException;
 import study.outfitoftheday.common.response.ApiResponse;
-import study.outfitoftheday.core.domain.auth.exception.NoAccessAuthorizationException;
-import study.outfitoftheday.core.domain.member.exception.DuplicatedMemberException;
-import study.outfitoftheday.core.domain.member.exception.MismatchPasswordInSignUpException;
-import study.outfitoftheday.core.domain.member.exception.NotFoundMemberException;
-import study.outfitoftheday.core.web.common.response.ErrorCode;
 
 /*
  * @RestControllerAdvice
@@ -40,28 +36,10 @@ public class GlobalExceptionHandler {
 		return ApiResponse.badRequest(message);
 	}
 
-	@ExceptionHandler({DuplicatedMemberException.class})
+	@ExceptionHandler({ServiceException.class})
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	protected ApiResponse<Object> handleDuplicateMemberException() {
-		return ApiResponse.badRequest(ErrorCode.DUPLICATED_MEMBER);
-	}
-
-	@ExceptionHandler(MismatchPasswordInSignUpException.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	protected ApiResponse<Object> handleMismatchPasswordInSignUpException() {
-		return ApiResponse.badRequest(ErrorCode.MISMATCH_PASSWORD_IN_SIGN_UP);
-	}
-
-	@ExceptionHandler(NoAccessAuthorizationException.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	protected ApiResponse<Object> handleNoAccessAuthorizationException() {
-		return ApiResponse.badRequest(ErrorCode.NO_ACCESS_AUTHORIZATION);
-	}
-
-	@ExceptionHandler(NotFoundMemberException.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	protected ApiResponse<Object> handleNotFoundMemberException() {
-		return ApiResponse.badRequest(ErrorCode.NOT_FOUND_MEMBER_EXCEPTION);
+	protected ApiResponse<Object> handleServiceException(ServiceException e) {
+		return ApiResponse.badRequest(e.getMessage());
 	}
 
 }

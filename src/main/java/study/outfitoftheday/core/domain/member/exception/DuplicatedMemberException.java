@@ -1,11 +1,10 @@
 package study.outfitoftheday.core.domain.member.exception;
 
-public class DuplicatedMemberException extends RuntimeException {
-	public DuplicatedMemberException() {
-		super();
-	}
+import study.outfitoftheday.common.exception.ServiceException;
+import study.outfitoftheday.core.web.common.response.ErrorCode;
 
-	public DuplicatedMemberException(String message) {
-		super(message);
+public class DuplicatedMemberException extends ServiceException {
+	public DuplicatedMemberException() {
+		super(ErrorCode.DUPLICATED_MEMBER);
 	}
 }

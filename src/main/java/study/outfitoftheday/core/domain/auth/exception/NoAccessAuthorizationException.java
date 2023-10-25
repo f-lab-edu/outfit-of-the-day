@@ -1,7 +1,11 @@
 package study.outfitoftheday.core.domain.auth.exception;
 
-public class NoAccessAuthorizationException extends RuntimeException {
+import study.outfitoftheday.common.exception.ServiceException;
+import study.outfitoftheday.core.web.common.response.ErrorCode;
+
+public class NoAccessAuthorizationException extends ServiceException {
 	public NoAccessAuthorizationException() {
-		super();
+		super(ErrorCode.NO_ACCESS_AUTHORIZATION);
 	}
+
 }

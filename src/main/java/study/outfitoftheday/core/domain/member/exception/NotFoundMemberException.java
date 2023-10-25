@@ -1,7 +1,10 @@
 package study.outfitoftheday.core.domain.member.exception;
 
-public class NotFoundMemberException extends RuntimeException {
+import study.outfitoftheday.common.exception.ServiceException;
+import study.outfitoftheday.core.web.common.response.ErrorCode;
+
+public class NotFoundMemberException extends ServiceException {
 	public NotFoundMemberException() {
-		super();
+		super(ErrorCode.NOT_FOUND_MEMBER);
 	}
 }
