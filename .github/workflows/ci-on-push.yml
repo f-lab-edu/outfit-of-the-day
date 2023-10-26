@@ -1,15 +1,8 @@
-name: Java CI with Gradle
+name: CI On Push
 
 on:
   push:
-    branches: [ "develop", "main" ]
-  pull_request:
-    branches: [ "develop", "main" ]
-
-# permissions.contents: read option은 workflow가 repository 혹은 file 내용에 대해서 읽기 권한을 부여하는 옵션입니다.
-# repository 혹은 특정 파일에 접근할 필요가 없기 때문에 주석 처리합니다.
-#permissions:
-#  contents: read
+    branches: [ "develop" ]
 
 jobs:
   build:
@@ -31,7 +24,7 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
         shell: bash
-        
+
 
 
 
