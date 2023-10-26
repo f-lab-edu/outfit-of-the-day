@@ -21,7 +21,7 @@ public class MemberService {
 	public void signUp(MemberSignUpRequest request) {
 		if (memberRepository.findByLoginIdOrNicknameAndIsDeletedIsFalse(request.getLoginId(), request.getNickname())
 			.isPresent()) {
-			throw new DuplicatedMemberException();
+			throw new DuplicatedMemberException("중복 가입된 유저입니다.");
 		}
 
 		String encryptedPassword = passwordEncoder.encode(request.getPassword());
@@ -51,6 +51,7 @@ public class MemberService {
 	}
 
 	public Member findMemberByLoginId(String loginId) {
-		return memberRepository.findByLoginIdAndIsDeletedIsFalse(loginId).orElseThrow(NotFoundMemberException::new);
+		return memberRepository.findByLoginIdAndIsDeletedIsFalse(loginId)
+			.orElseThrow(() -> new NotFoundMemberException("로그인 정보가 일치하지 않습니다."));
 	}
 }

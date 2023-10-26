@@ -6,8 +6,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import study.outfitoftheday.domain.auth.exception.NotFoundLoginMemberException;
 import study.outfitoftheday.domain.member.entity.Member;
-import study.outfitoftheday.domain.member.exception.MismatchPasswordInLoginException;
-import study.outfitoftheday.domain.member.exception.NotFoundMemberException;
+import study.outfitoftheday.domain.member.exception.MismatchPasswordException;
 import study.outfitoftheday.domain.member.repository.MemberRepository;
 import study.outfitoftheday.global.config.PasswordEncoder;
 import study.outfitoftheday.web.auth.controller.request.AuthLoginRequest;
@@ -32,10 +31,10 @@ public class AuthService {
 
 	public void login(AuthLoginRequest request) {
 		Member foundMember = memberRepository.findByLoginIdAndIsDeletedIsFalse(request.getLoginId())
-			.orElseThrow(NotFoundMemberException::new);
+			.orElseThrow(() -> new NotFoundLoginMemberException("찾는 유저의 정보가 존재하지 않습니다."));
 
 		if (!passwordEncoder.matches(request.getPassword(), foundMember.getPassword())) {
-			throw new MismatchPasswordInLoginException();
+			throw new MismatchPasswordException("아이디 혹은 비밀번호가 일치하지 않습니다.");
 		}
 		httpSession.setAttribute(SESSION_AUTH_KEY, foundMember.getNickname());
 
@@ -48,7 +47,7 @@ public class AuthService {
 	public Member findLoginMemberInSession() {
 		String memberNickname = (String)httpSession.getAttribute(SESSION_AUTH_KEY);
 		return memberRepository.findByNicknameAndIsDeletedIsFalse(memberNickname)
-			.orElseThrow(NotFoundLoginMemberException::new);
+			.orElseThrow(() -> new NotFoundLoginMemberException("찾는 유저의 정보가 존재하지 않습니다."));
 	}
 
 	public String findMemberNicknameInSession() {

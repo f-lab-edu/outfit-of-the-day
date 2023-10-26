@@ -33,7 +33,7 @@ public class RequiredAuthInterceptor implements HandlerInterceptor {
 
 	private void checkAuthorization() {
 		if (authService.findMemberNicknameInSession() == null) {
-			throw new NoAccessAuthorizationException();
+			throw new NoAccessAuthorizationException("접근 권한이 없습니다.");
 		}
 	}
 }
