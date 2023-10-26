@@ -10,6 +10,7 @@ import study.outfitoftheday.domain.member.exception.MismatchPasswordInLoginExcep
 import study.outfitoftheday.domain.member.exception.NotFoundMemberException;
 import study.outfitoftheday.domain.member.repository.MemberRepository;
 import study.outfitoftheday.global.config.PasswordEncoder;
+import study.outfitoftheday.web.auth.controller.request.AuthLoginRequest;
 
 /*
  * @Service
@@ -29,11 +30,11 @@ public class AuthService {
 	private final PasswordEncoder passwordEncoder;
 	private final MemberRepository memberRepository;
 
-	public void login(String loginId, String plainPassword) {
-		Member foundMember = memberRepository.findByLoginIdAndIsDeletedIsFalse(loginId)
+	public void login(AuthLoginRequest request) {
+		Member foundMember = memberRepository.findByLoginIdAndIsDeletedIsFalse(request.getLoginId())
 			.orElseThrow(NotFoundMemberException::new);
 
-		if (!passwordEncoder.matches(plainPassword, foundMember.getPassword())) {
+		if (!passwordEncoder.matches(request.getPassword(), foundMember.getPassword())) {
 			throw new MismatchPasswordInLoginException();
 		}
 		httpSession.setAttribute(SESSION_AUTH_KEY, foundMember.getNickname());

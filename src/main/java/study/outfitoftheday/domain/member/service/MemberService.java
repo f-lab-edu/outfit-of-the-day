@@ -10,6 +10,7 @@ import study.outfitoftheday.domain.member.exception.MismatchPasswordInSignUpExce
 import study.outfitoftheday.domain.member.exception.NotFoundMemberException;
 import study.outfitoftheday.domain.member.repository.MemberRepository;
 import study.outfitoftheday.global.config.PasswordEncoder;
+import study.outfitoftheday.web.member.controller.request.MemberSignUpRequest;
 
 @RequiredArgsConstructor
 @Service
@@ -18,19 +19,20 @@ public class MemberService {
 	private final PasswordEncoder passwordEncoder;
 	private final MemberRepository memberRepository;
 
-	public void signUp(String loginId, String nickname, String plainPassword, String passwordConfirm) {
-		if (!plainPassword.equals(passwordConfirm)) {
+	public void signUp(MemberSignUpRequest request) {
+		if (!request.getPassword().equals(request.getPasswordConfirm())) {
 			throw new MismatchPasswordInSignUpException();
 		}
 
-		if (memberRepository.findByLoginIdOrNicknameAndIsDeletedIsFalse(loginId, nickname).isPresent()) {
+		if (memberRepository.findByLoginIdOrNicknameAndIsDeletedIsFalse(request.getLoginId(), request.getNickname())
+			.isPresent()) {
 			throw new DuplicatedMemberException();
 		}
 
-		String encryptedPassword = passwordEncoder.encode(plainPassword);
+		String encryptedPassword = passwordEncoder.encode(request.getPassword());
 		Member createdMember = Member.builder()
-			.loginId(loginId)
-			.nickname(nickname)
+			.loginId(request.getLoginId())
+			.nickname(request.getNickname())
 			.password(encryptedPassword)
 			.build();
 

@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -44,4 +45,12 @@ public class MemberSignUpRequest {
 	@NotBlank(message = "비밀번호 확인은 필수 입력값입니다.")
 	@Size(min = 8, max = 16, message = "비밀번호 확인은 8자리 이상 16자리 이하로 작성해주세요.")
 	private String passwordConfirm;
+
+	@Builder
+	private MemberSignUpRequest(String loginId, String nickname, String password, String passwordConfirm) {
+		this.loginId = loginId;
+		this.nickname = nickname;
+		this.password = password;
+		this.passwordConfirm = passwordConfirm;
+	}
 }

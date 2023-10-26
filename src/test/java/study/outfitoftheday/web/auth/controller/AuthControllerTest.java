@@ -24,6 +24,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import study.outfitoftheday.domain.auth.service.AuthService;
+import study.outfitoftheday.web.auth.controller.request.AuthLoginRequest;
 
 /*
  * @AutoConfigureMockMvc
@@ -83,7 +84,7 @@ class AuthControllerTest {
 
 		doNothing()
 			.when(authService)
-			.login(anyString(), anyString());
+			.login(any(AuthLoginRequest.class));
 
 		// when & then
 		mockMvc.perform(MockMvcRequestBuilders.post(AUTH_URI_PREFIX + "/login")

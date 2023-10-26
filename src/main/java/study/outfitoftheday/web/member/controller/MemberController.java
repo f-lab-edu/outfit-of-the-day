@@ -47,9 +47,7 @@ public class MemberController {
 	public ApiResponse<Object> memberSignUp(
 		@RequestBody @Valid MemberSignUpRequest request) {
 
-		memberService.signUp(request.getLoginId(), request.getNickname(), request.getPassword(),
-			request.getPasswordConfirm());
-
+		memberService.signUp(request);
 		return ApiResponse.created();
 	}
 

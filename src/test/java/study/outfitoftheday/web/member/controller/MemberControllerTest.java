@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import study.outfitoftheday.domain.member.service.MemberService;
 import study.outfitoftheday.global.response.ErrorCode;
 import study.outfitoftheday.global.util.UriPrefix;
+import study.outfitoftheday.web.member.controller.request.MemberSignUpRequest;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -71,7 +72,16 @@ class MemberControllerTest {
 	@Test
 	void memberGetByLoginIdTest() throws Exception {
 		// given
-		memberService.signUp(LOGIN_ID, NICKNAME, PASSWORD, PASSWORD);
+
+		MemberSignUpRequest request = MemberSignUpRequest
+			.builder()
+			.loginId(LOGIN_ID)
+			.nickname(NICKNAME)
+			.password(PASSWORD)
+			.passwordConfirm(PASSWORD)
+			.build();
+
+		memberService.signUp(request);
 		doLogin();
 
 		// when & then
@@ -114,7 +124,15 @@ class MemberControllerTest {
 	@Test
 	void withdrawMemberTest() throws Exception {
 		// given
-		memberService.signUp(LOGIN_ID, NICKNAME, PASSWORD, PASSWORD);
+
+		MemberSignUpRequest request = MemberSignUpRequest
+			.builder()
+			.loginId(LOGIN_ID)
+			.nickname(NICKNAME)
+			.password(PASSWORD)
+			.passwordConfirm(PASSWORD)
+			.build();
+		memberService.signUp(request);
 		doLogin();
 
 		// when & then

@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import study.outfitoftheday.domain.member.entity.Member;
 import study.outfitoftheday.domain.member.repository.MemberRepository;
+import study.outfitoftheday.web.member.controller.request.MemberSignUpRequest;
 
 /*
  * @SpringBootTest
@@ -50,7 +51,7 @@ class MemberServiceTest {
 	void signUpTest() {
 
 		// when
-		memberService.signUp(LOGIN_ID, NICKNAME, PASSWORD, PASSWORD);
+		memberService.signUp(createMemberSignUpRequest());
 		Member foundMember = memberRepository.findByLoginIdAndIsDeletedIsFalse(LOGIN_ID).orElseThrow();
 
 		// then
@@ -67,7 +68,7 @@ class MemberServiceTest {
 	@DisplayName("로그인 아이디로 중복된 회원인지 체크 테스트 - 중복된 loginId인 경우")
 	void isDuplicatedMemberByLoginIdTest1() {
 		// given
-		memberService.signUp(LOGIN_ID, NICKNAME, PASSWORD, PASSWORD);
+		memberService.signUp(createMemberSignUpRequest());
 
 		// when
 		boolean isDuplicated = memberService.isDuplicatedMemberByLoginId(LOGIN_ID);
@@ -80,7 +81,7 @@ class MemberServiceTest {
 	@DisplayName("로그인 아이디로 중복된 회원인지 체크 테스트 - 중복된 loginId가 아닌 경우")
 	void isDuplicatedMemberByLoginIdTest2() {
 		// given
-		memberService.signUp(LOGIN_ID, NICKNAME, PASSWORD, PASSWORD);
+		memberService.signUp(createMemberSignUpRequest());
 
 		// when
 		boolean isDuplicated = memberService.isDuplicatedMemberByLoginId("test12345");
@@ -94,7 +95,7 @@ class MemberServiceTest {
 	@DisplayName("닉네임 중복 체크 테스트 - 중복된 nickname인 경우")
 	void isDuplicatedMemberByNicknameTest1() {
 		// given
-		memberService.signUp(LOGIN_ID, NICKNAME, PASSWORD, PASSWORD);
+		memberService.signUp(createMemberSignUpRequest());
 
 		// when
 		boolean isDuplicated = memberService.isDuplicatedMemberByNickname(NICKNAME);
@@ -107,7 +108,7 @@ class MemberServiceTest {
 	@DisplayName("닉네임 중복 체크 테스트 - 중복된 nickname이 아닌 경우")
 	void isDuplicatedMemberByNicknameTest2() {
 		// given
-		memberService.signUp(LOGIN_ID, NICKNAME, PASSWORD, PASSWORD);
+		memberService.signUp(createMemberSignUpRequest());
 
 		// when
 		boolean isDuplicated = memberService.isDuplicatedMemberByNickname("hello");
@@ -115,5 +116,15 @@ class MemberServiceTest {
 
 		assertThat(isDuplicated).isFalse();
 
+	}
+
+	private MemberSignUpRequest createMemberSignUpRequest() {
+		return MemberSignUpRequest
+			.builder()
+			.loginId(LOGIN_ID)
+			.nickname(NICKNAME)
+			.password(PASSWORD)
+			.passwordConfirm(PASSWORD)
+			.build();
 	}
 }

@@ -42,7 +42,7 @@ public class AuthController {
 	public void memberLogin(
 		@RequestBody @Valid AuthLoginRequest request
 	) {
-		authService.login(request.getLoginId(), request.getPassword());
+		authService.login(request);
 	}
 
 	/*
