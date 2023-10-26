@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import study.outfitoftheday.domain.member.entity.Member;
 import study.outfitoftheday.domain.member.exception.DuplicatedMemberException;
-import study.outfitoftheday.domain.member.exception.MismatchPasswordInSignUpException;
 import study.outfitoftheday.domain.member.exception.NotFoundMemberException;
 import study.outfitoftheday.domain.member.repository.MemberRepository;
 import study.outfitoftheday.global.config.PasswordEncoder;
@@ -20,10 +19,6 @@ public class MemberService {
 	private final MemberRepository memberRepository;
 
 	public void signUp(MemberSignUpRequest request) {
-		if (!request.getPassword().equals(request.getPasswordConfirm())) {
-			throw new MismatchPasswordInSignUpException();
-		}
-
 		if (memberRepository.findByLoginIdOrNicknameAndIsDeletedIsFalse(request.getLoginId(), request.getNickname())
 			.isPresent()) {
 			throw new DuplicatedMemberException();

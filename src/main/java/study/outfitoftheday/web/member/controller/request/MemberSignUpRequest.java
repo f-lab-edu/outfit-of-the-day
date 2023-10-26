@@ -4,10 +4,13 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberSignUpRequest {
 
 	@NotBlank
@@ -42,15 +45,10 @@ public class MemberSignUpRequest {
 	// @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{8,16}$", message = "비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.")
 	private String password;
 
-	@NotBlank(message = "비밀번호 확인은 필수 입력값입니다.")
-	@Size(min = 8, max = 16, message = "비밀번호 확인은 8자리 이상 16자리 이하로 작성해주세요.")
-	private String passwordConfirm;
-
 	@Builder
-	private MemberSignUpRequest(String loginId, String nickname, String password, String passwordConfirm) {
+	private MemberSignUpRequest(String loginId, String nickname, String password) {
 		this.loginId = loginId;
 		this.nickname = nickname;
 		this.password = password;
-		this.passwordConfirm = passwordConfirm;
 	}
 }

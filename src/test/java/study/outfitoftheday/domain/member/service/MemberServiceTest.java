@@ -124,7 +124,6 @@ class MemberServiceTest {
 			.loginId(LOGIN_ID)
 			.nickname(NICKNAME)
 			.password(PASSWORD)
-			.passwordConfirm(PASSWORD)
 			.build();
 	}
 }

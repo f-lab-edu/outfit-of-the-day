@@ -24,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import study.outfitoftheday.domain.member.service.MemberService;
-import study.outfitoftheday.global.response.ErrorCode;
 import study.outfitoftheday.global.util.UriPrefix;
 import study.outfitoftheday.web.member.controller.request.MemberSignUpRequest;
 
@@ -54,7 +53,6 @@ class MemberControllerTest {
 		HashMap<String, String> input = new HashMap<>();
 		input.put("loginId", LOGIN_ID);
 		input.put("password", PASSWORD);
-		input.put("passwordConfirm", PASSWORD);
 		input.put("nickname", NICKNAME);
 
 		mockMvc.perform(MockMvcRequestBuilders.post(UriPrefix.MEMBER_URI_PREFIX)
@@ -78,7 +76,6 @@ class MemberControllerTest {
 			.loginId(LOGIN_ID)
 			.nickname(NICKNAME)
 			.password(PASSWORD)
-			.passwordConfirm(PASSWORD)
 			.build();
 
 		memberService.signUp(request);
@@ -94,32 +91,7 @@ class MemberControllerTest {
 				preprocessRequest(prettyPrint()),
 				preprocessResponse(prettyPrint())));
 	}
-
-	@DisplayName("회원가입 - password가 불일치한 경우")
-	@Test
-	void signupTest2() throws Exception {
-		// given
-
-		HashMap<String, String> input = new HashMap<>();
-		input.put("loginId", LOGIN_ID);
-		input.put("password", PASSWORD);
-		input.put("passwordConfirm", "test1234");
-		input.put("nickname", NICKNAME);
-
-		HashMap<String, Object> output = new HashMap<>();
-		output.put("success", false);
-		output.put("status", 400);
-		output.put("message", ErrorCode.MISMATCH_PASSWORD_IN_SIGN_UP.getMessage());
-
-		mockMvc.perform(MockMvcRequestBuilders.post(MEMBER_URI_PREFIX)
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(input))
-			)
-			.andDo(print())
-			.andExpect(status().isBadRequest())
-			.andExpect(content().contentType(MediaType.APPLICATION_JSON));
-	}
-
+	
 	@DisplayName("멤버가 회원을 탈퇴할 경우")
 	@Test
 	void withdrawMemberTest() throws Exception {
@@ -130,7 +102,6 @@ class MemberControllerTest {
 			.loginId(LOGIN_ID)
 			.nickname(NICKNAME)
 			.password(PASSWORD)
-			.passwordConfirm(PASSWORD)
 			.build();
 		memberService.signUp(request);
 		doLogin();
