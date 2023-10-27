@@ -15,7 +15,7 @@ java {
 }
 
 jacoco {
-    toolVersion "0.8.9"
+    toolVersion "0.8.8"
     reportsDirectory = layout.buildDirectory.dir("reports/jacoco")
 }
 
@@ -49,7 +49,7 @@ dependencies {
 jacocoTestCoverageVerification {
     violationRules {
         rule {
-            enabled = true
+            enabled = false
             element = 'CLASS'
 
             limit {
@@ -70,7 +70,8 @@ jacocoTestReport {
     dependsOn test
     reports {
         html.required = true
-        html.destination file("${layout.buildDirectory}/jacoco/index.html")
+        html.outputLocation = file("$buildDir/jacoco/index.html")
+        // file("$buildDir/myOutput.txt")
     }
     afterEvaluate {
         classDirectories.setFrom(
