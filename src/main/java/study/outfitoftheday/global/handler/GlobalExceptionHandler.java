@@ -53,8 +53,6 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler({NoAccessAuthenticationException.class})
 	@ResponseStatus(HttpStatus.UNAUTHORIZED)
 	protected ApiResponse<Object> handleNoAccessAuthenticationException(NoAccessAuthenticationException e) {
-
-		System.out.println("e = " + e.toString() + " / " + e.getMessage());
 		return ApiResponse.unauthorized(e.getMessage());
 	}
 
