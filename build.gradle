@@ -49,7 +49,7 @@ dependencies {
 jacocoTestCoverageVerification {
     violationRules {
         rule {
-            enabled = false
+            enabled = true
             element = 'CLASS'
 
             limit {

@@ -1,8 +1,8 @@
 package study.outfitoftheday.domain.member.exception;
 
-import study.outfitoftheday.global.exception.ServiceException;
+import study.outfitoftheday.domain.auth.exception.NoAccessAuthenticationException;
 
-public class MismatchPasswordException extends ServiceException {
+public class MismatchPasswordException extends NoAccessAuthenticationException {
 
 	public MismatchPasswordException(String message) {
 		super(message);

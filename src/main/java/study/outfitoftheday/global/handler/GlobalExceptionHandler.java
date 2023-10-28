@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import study.outfitoftheday.domain.auth.exception.NoAccessAuthenticationException;
+import study.outfitoftheday.domain.auth.exception.NoAccessAuthorizationException;
 import study.outfitoftheday.global.exception.ServiceException;
 import study.outfitoftheday.global.response.ApiResponse;
 
@@ -40,6 +42,20 @@ public class GlobalExceptionHandler {
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	protected ApiResponse<Object> handleServiceException(ServiceException e) {
 		return ApiResponse.badRequest(e.getMessage());
+	}
+
+	@ExceptionHandler({NoAccessAuthorizationException.class})
+	@ResponseStatus(HttpStatus.FORBIDDEN)
+	protected ApiResponse<Object> handleNoAccessAuthorizationException(NoAccessAuthorizationException e) {
+		return ApiResponse.forbidden(e.getMessage());
+	}
+
+	@ExceptionHandler({NoAccessAuthenticationException.class})
+	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	protected ApiResponse<Object> handleNoAccessAuthenticationException(NoAccessAuthenticationException e) {
+
+		System.out.println("e = " + e.toString() + " / " + e.getMessage());
+		return ApiResponse.unauthorized(e.getMessage());
 	}
 
 }

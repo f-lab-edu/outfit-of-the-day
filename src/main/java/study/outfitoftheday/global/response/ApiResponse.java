@@ -51,8 +51,17 @@ public final class ApiResponse<T> {
 	public static <T> ApiResponse<T> badRequest(String message) {
 		return of(HttpStatus.BAD_REQUEST, message);
 	}
-	
+
+	public static <T> ApiResponse<T> forbidden(String message) {
+		return of(HttpStatus.FORBIDDEN, message);
+	}
+
+	public static <T> ApiResponse<T> unauthorized(String message) {
+		return of(HttpStatus.UNAUTHORIZED, message);
+	}
+
 	private boolean isSuccess(int code) {
 		return code < 400;
 	}
+
 }

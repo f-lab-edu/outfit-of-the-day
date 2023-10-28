@@ -23,6 +23,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import study.outfitoftheday.domain.auth.exception.NoAccessAuthorizationException;
+import study.outfitoftheday.domain.auth.exception.NotFoundLoginMemberException;
 import study.outfitoftheday.domain.auth.service.AuthService;
 import study.outfitoftheday.web.auth.controller.request.AuthLoginRequest;
 
@@ -73,6 +75,26 @@ class AuthControllerTest {
 
 	}
 
+	@DisplayName("로그아웃에 접근권한이 없어서 예외를 발생시킨다.")
+	@Test
+	void logout2() throws Exception {
+
+		// given
+		doThrow(NoAccessAuthorizationException.class).when(authService).logout();
+
+		// when & then
+		mockMvc.perform(MockMvcRequestBuilders.post(AUTH_URI_PREFIX + "/logout")
+				.contentType(MediaType.APPLICATION_JSON)
+				.session(new MockHttpSession())
+			)
+			.andDo(print())
+			.andExpect(status().isForbidden())
+			.andExpect(jsonPath("$.code").value(403))
+			.andExpect(jsonPath("$.status").value("FORBIDDEN"))
+			.andExpect(jsonPath("$.message").value("접근 권한이 없습니다."));
+
+	}
+
 	@DisplayName("로그인에 성공하여 HTTP 상태 코드 204를 반환한다.")
 	@Test
 	void login() throws Exception {
@@ -97,6 +119,33 @@ class AuthControllerTest {
 			.andDo(MockMvcRestDocumentation.document("api/auth/login",
 				preprocessRequest(prettyPrint()),
 				preprocessResponse(prettyPrint())));
+
+	}
+
+	@DisplayName("로그인 시, 해당 유저 정보가 조회가 되지 않아 HTTP 상태코드 401을 반환한다.")
+	@Test
+	void login2() throws Exception {
+
+		// given
+		final String notExistLoginId = "notExist@gmail.com";
+		HashMap<String, String> input = new HashMap<>();
+		input.put("loginId", notExistLoginId);
+		input.put("password", PASSWORD);
+
+		doThrow(NotFoundLoginMemberException.class)
+			.when(authService)
+			.login(any(AuthLoginRequest.class));
+
+		// when & then
+		mockMvc.perform(MockMvcRequestBuilders.post(AUTH_URI_PREFIX + "/login")
+				.contentType(MediaType.APPLICATION_JSON)
+				.session(new MockHttpSession())
+				.content(objectMapper.writeValueAsString(input))
+			)
+			.andDo(print())
+			.andExpect(status().isUnauthorized())
+			.andExpect(jsonPath("$.code").value(401))
+			.andExpect(jsonPath("$.status").value("UNAUTHORIZED"));
 
 	}
 }
