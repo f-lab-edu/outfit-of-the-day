@@ -30,6 +30,7 @@ configurations {
 }
 
 repositories {
+
     mavenCentral()
 }
 
@@ -43,6 +44,58 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     implementation 'mysql:mysql-connector-java:8.0.23'
+}
+
+
+asciidoctor {
+    inputs.dir snippetsDir
+    configurations 'asciidoctorExt'
+
+    dependsOn test // test -> asciidoctor 순으로 테스크가 수행된다.
+
+}
+
+// bootJar: 실행 가능한 *.jar 파일을 만드는 역할을 수행한다.
+bootJar {
+    dependsOn asciidoctor // test -> asciidoctor -> bootJar 순으로 task가 수행된다.
+
+    // asciidoctor.outputDir: '/build/docs/asciidocs'
+    from("${asciidoctor.outputDir}") {
+        into 'static/docs' // asciidoctor.outputDir 폴더에 있는 파일을
+    }
+}
+
+test {
+    useJUnitPlatform()
+    // test가 끝난 결과물을 snippetsDir에 저장한다.
+    outputs.dir snippetsDir
+}
+
+task testWithJacoco {
+    finalizedBy 'jacocoTestReport' // 테스트 종료 이후에 레포트를 생성
+    finalizedBy 'jacocoTestCoverageVerification' // 코드 커버리지가 규칙을 통과하지 않으면 빌드를 실패시킨다.
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        html.required = true
+        html.outputLocation = file("$buildDir/jacoco/index.html")
+        // file("$buildDir/myOutput.txt")
+    }
+    afterEvaluate {
+        classDirectories.setFrom(
+                files(classDirectories.files.collect {
+                    fileTree(dir: it, excludes: [
+                            '**/*Application*',
+                            '**/*Exception*',
+                            '**/request/**',
+                            '**/response/**',
+                            '**/util/**'
+                    ])
+                })
+        )
+    }
 }
 
 
@@ -65,54 +118,6 @@ jacocoTestCoverageVerification {
             ]
         }
     }
-}
-jacocoTestReport {
-    dependsOn test
-    reports {
-        html.required = true
-        html.outputLocation = file("$buildDir/jacoco/index.html")
-        // file("$buildDir/myOutput.txt")
-    }
-    afterEvaluate {
-        classDirectories.setFrom(
-                files(classDirectories.files.collect {
-                    fileTree(dir: it, excludes: [
-                            '**/*Application*',
-                            '**/*Exception*',
-                            '**/request/**',
-                            '**/response/**',
-                            '**/util/**'
-                    ])
-                })
-        )
-    }
-
-}
-
-asciidoctor {
-    dependsOn test
-    inputs.dir snippetsDir
-    configurations 'asciidoctorExt'
-
-    dependsOn test // test -> asciidoctor 순으로 테스크가 수행된다.
-
-}
-
-// bootJar: 실행 가능한 *.jar 파일을 만드는 역할을 수행한다.
-bootJar {
-    dependsOn asciidoctor // test -> asciidoctor -> bootJar 순으로 task가 수행된다.
-
-    // asciidoctor.outputDir: '/build/docs/asciidocs'
-    from("${asciidoctor.outputDir}") {
-        into 'static/docs' // asciidoctor.outputDir 폴더에 있는 파일을
-    }
-}
-
-test {
-    useJUnitPlatform()
-    outputs.dir snippetsDir // test가 끝난 결과물을 snippetsDir에 저장한다.
-    finalizedBy jacocoTestReport // 테스트 종료 이후에 레포트를 생성
-    finalizedBy 'jacocoTestCoverageVerification' // 코드 커버리지가 규칙을 통과하지 않으면 빌드를 실패시킨다.
 }
 
 
