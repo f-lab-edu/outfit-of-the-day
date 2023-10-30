@@ -22,10 +22,6 @@ jobs:
         run: chmod +x ./gradlew
         shell: bash
 
-      - name: Build without test
-        run: ./gradlew build -x test
-        shell: bash
-
       - name: Test with Jacoco
         run: ./gradlew testWithJacoco
         shell: bash
