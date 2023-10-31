@@ -7,7 +7,7 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-    
+
 permissions:
   contents: read
   pages: write
@@ -54,7 +54,7 @@ jobs:
         uses: actions/upload-pages-artifact@v2
         with:
           # Upload entire repository
-          path: './build/docs/asciidoc/index.html'
+          path: './build/docs/asciidoc'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
