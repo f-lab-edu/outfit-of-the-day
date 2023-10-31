@@ -38,6 +38,9 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
         shell: bash
+        with:
+          name: build
+          path: build
   # Single deploy job since we're just deploying
   deploy:
     needs: build
@@ -47,6 +50,11 @@ jobs:
       url: https://f-lab-edu.github.io/outfit-of-the-day
     runs-on: ubuntu-latest
     steps:
+      - name: Download a build file
+        uses: actions/download-artifact@v3
+        with:
+          name: build
+          
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup Pages
