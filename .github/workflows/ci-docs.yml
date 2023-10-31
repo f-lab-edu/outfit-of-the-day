@@ -53,19 +53,19 @@ jobs:
       url: https://f-lab-edu.github.io/outfit-of-the-day
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - name: Download a docs file
         uses: actions/download-artifact@v3
         with:
           name: docs
 
-      - name: Checkout
-        uses: actions/checkout@v3
-
       - name: Setup Pages
         uses: actions/configure-pages@v3
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v2
         with:
           name: docs
           path: '.'
