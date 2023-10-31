@@ -38,6 +38,9 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
         shell: bash
+
+      - name: Upload output file
+        uses: actions/upload-artifact@v3
         with:
           name: build
           path: build
@@ -54,7 +57,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: build
-          
+
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup Pages
