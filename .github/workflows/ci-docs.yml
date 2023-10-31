@@ -75,7 +75,7 @@ jobs:
         uses: actions/deploy-pages@v2
         with:
           name: docs
-          path: '.'
+          path: index.html
 
 
 
