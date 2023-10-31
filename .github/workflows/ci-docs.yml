@@ -73,7 +73,7 @@ jobs:
           path: './index.html'
 
       - name: console2
-        run: ls -al
+        run: cat ./index.html
 
       - name: Deploy to GitHub Pages
         id: deployment
