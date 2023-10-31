@@ -48,7 +48,7 @@ jobs:
   deploy:
     needs: build
     environment:
-      name: docs
+      name: github-pages
       #      url: ${{ steps.deployment.outputs.page_url }}
       url: https://f-lab-edu.github.io/outfit-of-the-day
     runs-on: ubuntu-latest
