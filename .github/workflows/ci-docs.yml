@@ -42,8 +42,8 @@ jobs:
       - name: Upload output file
         uses: actions/upload-artifact@v3
         with:
-          name: build
-          path: build
+          name: docs
+          path: build/docs/asciidoc/index.html
   # Single deploy job since we're just deploying
   deploy:
     needs: build
@@ -53,10 +53,10 @@ jobs:
       url: https://f-lab-edu.github.io/outfit-of-the-day
     runs-on: ubuntu-latest
     steps:
-      - name: Download a build file
+      - name: Download a docs file
         uses: actions/download-artifact@v3
         with:
-          name: build
+          name: docs
 
       - name: Checkout
         uses: actions/checkout@v3
