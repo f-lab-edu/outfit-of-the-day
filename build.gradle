@@ -81,7 +81,8 @@ jacocoTestReport {
     reports {
         html.required = true
         html.outputLocation = file("$buildDir/jacoco/index.html")
-        // file("$buildDir/myOutput.txt")
+        xml.required = true
+        xml.outputLocation = file("$buildDir/jacoco/index.xml")
     }
     afterEvaluate {
         classDirectories.setFrom(
