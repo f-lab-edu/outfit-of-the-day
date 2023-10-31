@@ -69,8 +69,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          #          path: '.'
-          path: index.html
+          path: '.'
 
       - name: console2
         run: cat ./index.html
