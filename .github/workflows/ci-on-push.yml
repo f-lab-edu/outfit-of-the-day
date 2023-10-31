@@ -3,7 +3,8 @@ name: CI on push
 
 on:
   push:
-    branches: [ "develop" ]
+    # develop으로 PR이 merge 되기 전까지, GithubPage를 배포하기 위해서 임시로 feat/jongwan/jacoco branch를 추가해뒀습니다.
+    branches: [ "develop", "feat/jongwan/jacoco" ]
 
   workflow_dispatch:
 
