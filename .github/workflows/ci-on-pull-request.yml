@@ -32,8 +32,7 @@ jobs:
         with:
           paths: ${{ github.workspace }}/build/jacoco/index.xml
           token: ${{ secrets.GITHUB_TOKEN }}
-          min-coverage-overall: 40
-          min-coverage-changed-files: 60
+          min-coverage-overall: 60
 
 
 
