@@ -60,6 +60,9 @@ jobs:
         with:
           name: docs
 
+      - name: console
+        run: ls -al
+
       - name: Setup Pages
         uses: actions/configure-pages@v3
 
