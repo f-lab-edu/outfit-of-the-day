@@ -1,5 +1,7 @@
 package study.outfitoftheday;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
@@ -19,9 +21,21 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
  * */
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 public class OutfitOfTheDayApplication {
+	private static final Logger log = LoggerFactory.getLogger(OutfitOfTheDayApplication.class);
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(OutfitOfTheDayApplication.class, args);
+
+		/*
+		 * Todo
+		 *  Logging 관련 Test진행 이후에 삭제 필요
+		 * */
+		log.info("info level test log");
+		log.warn("warn level test log");
+		log.error("error level test log");
+		log.debug("debug level test log");
+
 	}
 
 }
