@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import io.sentry.Sentry;
 import study.outfitoftheday.domain.auth.exception.NoAccessAuthenticationException;
 import study.outfitoftheday.domain.auth.exception.NoAccessAuthorizationException;
 import study.outfitoftheday.global.exception.ServiceException;
@@ -54,6 +55,13 @@ public class GlobalExceptionHandler {
 	@ResponseStatus(HttpStatus.UNAUTHORIZED)
 	protected ApiResponse<Object> handleNoAccessAuthenticationException(NoAccessAuthenticationException e) {
 		return ApiResponse.unauthorized(e.getMessage());
+	}
+
+	@ExceptionHandler({Exception.class})
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	protected ApiResponse<Void> handleException(Exception e) {
+		Sentry.captureException(e);
+		return ApiResponse.of(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 }
