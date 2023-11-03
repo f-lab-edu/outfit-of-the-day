@@ -16,13 +16,12 @@
 
     <springProfile name="local|test">
         <include resource="appender/console-appender.xml"/>
-
+        <logger name="org.springframework" level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
         </root>
-        <logger name="org.springframework" level="DEBUG">
-            <appender-ref ref="CONSOLE"/>
-        </logger>
     </springProfile>
 
     <springProfile name="dev">
@@ -31,7 +30,7 @@
         <include resource="appender/file-info-appender.xml"/>
         <include resource="appender/file-warn-appender.xml"/>
         <include resource="appender/file-error-appender.xml"/>
-        <logger name="org.springframework" level="DEBUG">
+        <logger name="org.springframework" level="INFO">
             <appender-ref ref="CONSOLE"/>
         </logger>
         <root level="INFO">

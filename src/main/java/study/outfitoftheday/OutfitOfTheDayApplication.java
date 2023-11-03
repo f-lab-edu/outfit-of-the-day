@@ -31,11 +31,12 @@ public class OutfitOfTheDayApplication {
 		 * Todo
 		 *  Logging 관련 Test진행 이후에 삭제 필요
 		 * */
+
+		log.trace("trace level test log");
+		log.debug("debug level test log");
 		log.info("info level test log");
 		log.warn("warn level test log");
 		log.error("error level test log");
-		log.debug("debug level test log");
-
 	}
 
 }
