@@ -7,10 +7,6 @@
               value="%d{yyyy-MM-dd HH:mm:ss}:%-4relative | [%thread] | %-5level | %C.%M:%L | %msg%n"/>
     <property name="LOG_PATH" value="./logs"/>
     <property name="BACKUP_PATH" value="./logs/backup"/>
-    <property name="DEBUG_PATH" value="debug"/>
-    <property name="INFO_PATH" value="info"/>
-    <property name="WARN_PATH" value="warn"/>
-    <property name="ERROR_PATH" value="error"/>
     <property name="MAX_FILE_SIZE" value="100MB"/>
     <property name="MAX_HISTORY" value="30"/>
 
@@ -25,26 +21,21 @@
     </springProfile>
 
     <springProfile name="dev">
-        <include resource="appender/file-info-appender.xml"/>
-        <include resource="appender/file-warn-appender.xml"/>
-        <include resource="appender/file-error-appender.xml"/>
+        <include resource="appender/file-appender.xml"/>
+
         <logger name="org.springframework" level="INFO">
-            <appender-ref ref="FILE-INFO"/>
-            <appender-ref ref="FILE-WARN"/>
-            <appender-ref ref="FILE-ERROR"/>
+            <appender-ref ref="FILE"/>
         </logger>
         <root level="INFO">
-            <appender-ref ref="FILE-INFO"/>
-            <appender-ref ref="FILE-WARN"/>
-            <appender-ref ref="FILE-ERROR"/>
+            <appender-ref ref="FILE"/>
         </root>
     </springProfile>
 
     <springProfile name="prod">
-        <include resource="appender/file-error-appender.xml"/>
-
+        <include resource="appender/file-appender.xml"/>
+        
         <root level="ERROR">
-            <appender-ref ref="FILE-ERROR"/>
+            <appender-ref ref="FILE"/>
         </root>
     </springProfile>
 </configuration>
