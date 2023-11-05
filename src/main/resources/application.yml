@@ -27,10 +27,7 @@ spring:
       enabled: true
 
 logging:
-  config: classpath:logback-spring.xml
-  level:
-    org.hibernate.sql: debug
-    org.apache.coyote.http11: debug
+  config: classpath:logback/logback-local.xml
 
 security:
   encryption:
