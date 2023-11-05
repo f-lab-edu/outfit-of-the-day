@@ -34,17 +34,17 @@ public class MemberController {
 	 * Spring MVC에서 특정 GET 요청 URL을 처리하도록 매핑할 때 사용한다.
 	 * */
 	@GetMapping("/{loginId}")
-	public ApiResponse<MemberGetByLoginIdResponse> memberGetByLoginId(
+	public ApiResponse<MemberGetByLoginIdResponse> findByLoginId(
 		@PathVariable String loginId
 	) {
 
-		Member foundMember = memberService.findMemberByLoginId(loginId);
+		Member foundMember = memberService.findByLoginId(loginId);
 		return ApiResponse.ok(MemberGetByLoginIdResponse.from(foundMember));
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ApiResponse<Object> memberSignUp(
+	public ApiResponse<Object> signUp(
 		@RequestBody @Valid MemberSignUpRequest request) {
 
 		memberService.signUp(request);
@@ -58,7 +58,7 @@ public class MemberController {
 	 * */
 	@DeleteMapping
 	@RequiredAuth
-	public ApiResponse<Object> memberWithdraw(
+	public ApiResponse<Object> withdraw(
 		/*
 		 * @LoginMember
 		 * custom anntation이다.
@@ -66,7 +66,7 @@ public class MemberController {
 		 * */
 		@LoginMember Member member
 	) {
-		memberService.withdrawMember(member);
+		memberService.withdraw(member);
 		return ApiResponse.ok();
 	}
 

@@ -39,7 +39,7 @@ public class AuthController {
 
 	@PostMapping("/login")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void memberLogin(
+	public void login(
 		@RequestBody @Valid AuthLoginRequest request
 	) {
 		authService.login(request);
@@ -54,7 +54,7 @@ public class AuthController {
 	@RequiredAuth
 	@PostMapping("/logout")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void memberLogout() {
+	public void logout() {
 		authService.logout();
 	}
 

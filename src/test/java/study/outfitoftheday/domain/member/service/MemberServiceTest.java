@@ -71,7 +71,7 @@ class MemberServiceTest {
 		memberService.signUp(createMemberSignUpRequest());
 
 		// when
-		boolean isDuplicated = memberService.isDuplicatedMemberByLoginId(LOGIN_ID);
+		boolean isDuplicated = memberService.isDuplicatedByLoginId(LOGIN_ID);
 
 		// then
 		assertThat(isDuplicated).isTrue();
@@ -84,7 +84,7 @@ class MemberServiceTest {
 		memberService.signUp(createMemberSignUpRequest());
 
 		// when
-		boolean isDuplicated = memberService.isDuplicatedMemberByLoginId("test12345");
+		boolean isDuplicated = memberService.isDuplicatedByLoginId("test12345");
 
 		// then
 		assertThat(isDuplicated).isFalse();
@@ -98,7 +98,7 @@ class MemberServiceTest {
 		memberService.signUp(createMemberSignUpRequest());
 
 		// when
-		boolean isDuplicated = memberService.isDuplicatedMemberByNickname(NICKNAME);
+		boolean isDuplicated = memberService.isDuplicatedByNickname(NICKNAME);
 		// then
 
 		assertThat(isDuplicated).isTrue();
@@ -111,7 +111,7 @@ class MemberServiceTest {
 		memberService.signUp(createMemberSignUpRequest());
 
 		// when
-		boolean isDuplicated = memberService.isDuplicatedMemberByNickname("hello");
+		boolean isDuplicated = memberService.isDuplicatedByNickname("hello");
 		// then
 
 		assertThat(isDuplicated).isFalse();

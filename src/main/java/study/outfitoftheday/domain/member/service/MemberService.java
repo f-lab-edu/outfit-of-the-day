@@ -34,23 +34,23 @@ public class MemberService {
 		memberRepository.save(createdMember);
 	}
 
-	public boolean isDuplicatedMemberByLoginId(String loginId) {
+	public boolean isDuplicatedByLoginId(String loginId) {
 		return memberRepository.findByLoginIdAndIsDeletedIsFalse(loginId).isPresent();
 	}
 
-	public boolean isDuplicatedMemberByNickname(String nickname) {
+	public boolean isDuplicatedByNickname(String nickname) {
 		return memberRepository.findByNicknameAndIsDeletedIsFalse(nickname).isPresent();
 	}
 
-	public void withdrawMember(Member member) {
+	public void withdraw(Member member) {
 		member.withdrawMember();
 	}
 
-	public boolean isDeletedMemberByLoginId(String loginId) {
+	public boolean isDeletedByLoginId(String loginId) {
 		return memberRepository.findByLoginIdAndIsDeletedIsTrue(loginId).isPresent();
 	}
 
-	public Member findMemberByLoginId(String loginId) {
+	public Member findByLoginId(String loginId) {
 		return memberRepository.findByLoginIdAndIsDeletedIsFalse(loginId)
 			.orElseThrow(() -> new NotFoundMemberException("로그인 정보가 일치하지 않습니다."));
 	}

@@ -91,7 +91,7 @@ class MemberControllerTest {
 				preprocessRequest(prettyPrint()),
 				preprocessResponse(prettyPrint())));
 	}
-	
+
 	@DisplayName("멤버가 회원을 탈퇴할 경우")
 	@Test
 	void withdrawMemberTest() throws Exception {
@@ -118,7 +118,7 @@ class MemberControllerTest {
 				preprocessRequest(prettyPrint()),
 				preprocessResponse(prettyPrint())));
 
-		Assertions.assertThat(memberService.isDeletedMemberByLoginId(LOGIN_ID)).isTrue();
+		Assertions.assertThat(memberService.isDeletedByLoginId(LOGIN_ID)).isTrue();
 
 	}
 
