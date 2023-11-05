@@ -2,11 +2,11 @@ package study.outfitoftheday.domain.member.service;
 
 import static org.assertj.core.api.Assertions.*;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import study.outfitoftheday.domain.member.entity.Member;
 import study.outfitoftheday.domain.member.exception.DuplicatedMemberException;
@@ -24,7 +24,6 @@ import study.outfitoftheday.web.member.controller.request.MemberSignUpRequest;
  * default: true, method나 class에 지정 가능하다.
  * */
 @SpringBootTest
-@Transactional
 class MemberServiceTest {
 
 	private static final String LOGIN_ID = "test1234";
@@ -43,12 +42,20 @@ class MemberServiceTest {
 	private MemberRepository memberRepository;
 
 	/*
+	 * @BeforeEach
+	 * @BeforeEach annotation을 붙인 메서드는 @Test annotation이 붙은 각 메서드 매번 수행된다.
+	 * */
+	@BeforeEach
+	void tearDown() {
+		memberRepository.deleteAllInBatch();
+	}
+
+	/*
 	 * @Test
 	 * JUnit Framework에서 테스트 메서드를 지정하는데 사용하는 annotation이다.
 	 * 테스트 메서드를 식별하고 실행할 때 사용된다.
 	 *
 	 * */
-
 	@DisplayName("회원가입을 성공적으로 완료하다.")
 	@Test
 	void signUp() {
