@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import study.outfitoftheday.global.exception.ServiceException;
+import study.outfitoftheday.global.exception.BadRequestException;
+import study.outfitoftheday.global.exception.NotFoundException;
 import study.outfitoftheday.global.response.ApiResponse;
 
 /*
@@ -28,7 +29,7 @@ public class GlobalExceptionHandler {
 	 * */
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	protected ApiResponse<Object> handleMethodArgumentNotValidException(
+	protected ApiResponse<Void> handleMethodArgumentNotValidException(
 		MethodArgumentNotValidException e) {
 
 		BindingResult bindingResult = e.getBindingResult();
@@ -36,9 +37,15 @@ public class GlobalExceptionHandler {
 		return ApiResponse.badRequest(message);
 	}
 
-	@ExceptionHandler({ServiceException.class})
+	@ExceptionHandler({BadRequestException.class})
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	protected ApiResponse<Object> handleServiceException(ServiceException e) {
+	protected ApiResponse<Void> handleServiceException(BadRequestException e) {
+		return ApiResponse.badRequest(e.getMessage());
+	}
+
+	@ExceptionHandler({NotFoundException.class})
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	protected ApiResponse<Void> handleNotFoundException(NotFoundException e) {
 		return ApiResponse.badRequest(e.getMessage());
 	}
 

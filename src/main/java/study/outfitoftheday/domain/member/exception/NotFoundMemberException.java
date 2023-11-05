@@ -1,8 +1,8 @@
 package study.outfitoftheday.domain.member.exception;
 
-import study.outfitoftheday.global.exception.ServiceException;
+import study.outfitoftheday.global.exception.NotFoundException;
 
-public class NotFoundMemberException extends ServiceException {
+public class NotFoundMemberException extends NotFoundException {
 	public NotFoundMemberException(String message) {
 		super(message);
 	}
