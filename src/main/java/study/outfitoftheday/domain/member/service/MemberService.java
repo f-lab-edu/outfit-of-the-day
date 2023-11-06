@@ -50,8 +50,8 @@ public class MemberService {
 		return memberRepository.findByLoginIdAndIsDeletedIsTrue(loginId).isPresent();
 	}
 
-	public Member findByLoginId(String loginId) {
-		return memberRepository.findByLoginIdAndIsDeletedIsFalse(loginId)
-			.orElseThrow(() -> new NotFoundMemberException("로그인 정보가 일치하지 않습니다."));
+	public Member findById(Long memberId) {
+		return memberRepository.findByIdAndIsDeletedIsFalse(memberId)
+			.orElseThrow(() -> new NotFoundMemberException("존재하지 않는 회원입니다."));
 	}
 }

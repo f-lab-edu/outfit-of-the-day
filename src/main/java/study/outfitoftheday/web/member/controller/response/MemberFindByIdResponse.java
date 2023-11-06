@@ -5,7 +5,7 @@ import lombok.Getter;
 import study.outfitoftheday.domain.member.entity.Member;
 
 @Getter
-public class MemberGetByLoginIdResponse {
+public class MemberFindByIdResponse {
 
 	private Long id;
 	private String loginId;
@@ -14,7 +14,7 @@ public class MemberGetByLoginIdResponse {
 	private String profileImageUrl;
 
 	@Builder
-	private MemberGetByLoginIdResponse(Long id, String loginId, String nickname, String profileMessage,
+	private MemberFindByIdResponse(Long id, String loginId, String nickname, String profileMessage,
 		String profileImageUrl) {
 		this.id = id;
 		this.loginId = loginId;
@@ -23,8 +23,8 @@ public class MemberGetByLoginIdResponse {
 		this.profileImageUrl = profileImageUrl;
 	}
 
-	public static MemberGetByLoginIdResponse from(Member member) {
-		return MemberGetByLoginIdResponse.builder()
+	public static MemberFindByIdResponse from(Member member) {
+		return MemberFindByIdResponse.builder()
 			.id(member.getId())
 			.loginId(member.getLoginId())
 			.nickname(member.getNickname())

@@ -35,4 +35,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 		@Param("nickname") String nickname);
 
 	Optional<Member> findByLoginIdAndIsDeletedIsTrue(@Param("loginId") String loginId);
+
+	Optional<Member> findByIdAndIsDeletedIsFalse(@Param("memberId") Long memberId);
 }

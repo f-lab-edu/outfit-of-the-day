@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import study.outfitoftheday.domain.member.entity.Member;
+import study.outfitoftheday.domain.member.exception.NotFoundMemberException;
 import study.outfitoftheday.domain.member.repository.MemberRepository;
 import study.outfitoftheday.web.member.controller.request.MemberSignUpRequest;
 
@@ -115,6 +116,39 @@ class MemberServiceTest {
 		// then
 
 		assertThat(isDuplicated).isFalse();
+
+	}
+
+	@Test
+	@DisplayName("memberId로 존재하는 회원을 조회한다.")
+	void findByIdTest() {
+		// given
+		memberService.signUp(createMemberSignUpRequest());
+
+		Long targetMemberId = memberRepository.findByLoginIdAndIsDeletedIsFalse(LOGIN_ID)
+			.orElseThrow()
+			.getId();
+
+		// when
+		Member foundMember = memberService.findById(targetMemberId);
+
+		// then
+		assertThat(foundMember.getId()).isEqualTo(targetMemberId);
+		assertThat(foundMember.getNickname()).isEqualTo(NICKNAME);
+		assertThat(foundMember.getLoginId()).isEqualTo(LOGIN_ID);
+		assertThat(foundMember.getIsDeleted()).isFalse();
+
+	}
+
+	@Test
+	@DisplayName("memberId로 존재하는 않는 회원을 조회한다.")
+	void findByIdTest2() {
+		final Long notExistMemberId = 2L;
+
+		// when & then
+		assertThatThrownBy(() -> memberService.findById(notExistMemberId))
+			.isInstanceOf(NotFoundMemberException.class)
+			.hasMessage("존재하지 않는 회원입니다.");
 
 	}
 
