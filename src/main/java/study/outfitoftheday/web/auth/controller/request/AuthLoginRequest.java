@@ -1,9 +1,13 @@
 package study.outfitoftheday.web.auth.controller.request;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AuthLoginRequest {
 
 	/*
@@ -19,4 +23,9 @@ public class AuthLoginRequest {
 	@NotBlank(message = "비밀번호 입력은 필수값입니다.")
 	private String password;
 
+	@Builder
+	private AuthLoginRequest(String loginId, String password) {
+		this.loginId = loginId;
+		this.password = password;
+	}
 }

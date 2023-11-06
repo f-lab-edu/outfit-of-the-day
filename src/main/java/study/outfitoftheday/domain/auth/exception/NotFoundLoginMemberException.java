@@ -1,8 +1,6 @@
 package study.outfitoftheday.domain.auth.exception;
 
-import study.outfitoftheday.global.exception.BadRequestException;
-
-public class NotFoundLoginMemberException extends BadRequestException {
+public class NotFoundLoginMemberException extends NoAccessAuthenticationException {
 	public NotFoundLoginMemberException(String message) {
 		super(message);
 	}

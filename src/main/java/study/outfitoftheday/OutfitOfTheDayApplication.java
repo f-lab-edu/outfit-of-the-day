@@ -21,6 +21,7 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 public class OutfitOfTheDayApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(OutfitOfTheDayApplication.class, args);
 	}
 

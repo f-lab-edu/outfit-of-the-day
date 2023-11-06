@@ -26,9 +26,8 @@ spring:
       path: /h2-console
       enabled: true
 
-logging.level:
-  org.hibernate.sql: debug
-  org.apache.coyote.http11: debug
+logging:
+  config: classpath:logback/logback-local.xml
 
 security:
   encryption:

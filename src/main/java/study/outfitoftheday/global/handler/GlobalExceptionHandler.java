@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import study.outfitoftheday.domain.auth.exception.NoAccessAuthenticationException;
+import study.outfitoftheday.domain.auth.exception.NoAccessAuthorizationException;
 import study.outfitoftheday.global.exception.BadRequestException;
 import study.outfitoftheday.global.exception.NotFoundException;
 import study.outfitoftheday.global.response.ApiResponse;
@@ -46,7 +48,19 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler({NotFoundException.class})
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	protected ApiResponse<Void> handleNotFoundException(NotFoundException e) {
-		return ApiResponse.badRequest(e.getMessage());
+		return ApiResponse.notFound(e.getMessage());
+	}
+
+	@ExceptionHandler({NoAccessAuthorizationException.class})
+	@ResponseStatus(HttpStatus.FORBIDDEN)
+	protected ApiResponse<Void> handleNoAccessAuthorizationException(NoAccessAuthorizationException e) {
+		return ApiResponse.forbidden(e.getMessage());
+	}
+
+	@ExceptionHandler({NoAccessAuthenticationException.class})
+	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	protected ApiResponse<Void> handleNoAccessAuthenticationException(NoAccessAuthenticationException e) {
+		return ApiResponse.unauthorized(e.getMessage());
 	}
 
 }
