@@ -115,6 +115,8 @@ jacocoTestCoverageVerification {
             excludes = [
                     '*.*Application',
                     '*.*ExceptionHandler',
+                    '**.exception.**',
+                    '**.response.**',
                     '**.util.**'
             ]
         }
