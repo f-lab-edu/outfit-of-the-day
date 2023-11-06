@@ -52,6 +52,10 @@ public final class ApiResponse<T> {
 		return of(HttpStatus.BAD_REQUEST, message);
 	}
 
+	public static <T> ApiResponse<T> notFound(String message) {
+		return of(HttpStatus.NOT_FOUND, message);
+	}
+
 	public static <T> ApiResponse<T> forbidden(String message) {
 		return of(HttpStatus.FORBIDDEN, message);
 	}

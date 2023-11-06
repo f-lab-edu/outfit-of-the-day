@@ -10,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import study.outfitoftheday.domain.member.entity.Member;
 import study.outfitoftheday.domain.member.exception.DuplicatedMemberException;
-import study.outfitoftheday.domain.member.exception.NotFoundMemberException;
 import study.outfitoftheday.domain.member.repository.MemberRepository;
 import study.outfitoftheday.web.member.controller.request.MemberSignUpRequest;
 
@@ -88,38 +87,7 @@ class MemberServiceTest {
 			.hasMessage("중복 가입된 유저입니다.");
 
 	}
-
-	@DisplayName("loginId로 회원 정보를 성공적으로 조회한다.")
-	@Test
-	void findMemberByLoginId() {
-		// given
-		memberService.signUp(createMemberSignUpRequest(LOGIN_ID, NICKNAME, PASSWORD));
-
-		// when
-		Member foundMember = memberService.findMemberByLoginId(LOGIN_ID);
-
-		// then
-		assertThat(foundMember.getLoginId()).isEqualTo(LOGIN_ID);
-		assertThat(foundMember.getPassword()).isNotEqualTo(PASSWORD);
-		assertThat(foundMember.getNickname()).isEqualTo(NICKNAME);
-		assertThat(foundMember.getIsDeleted()).isFalse();
-		assertThat(foundMember.getCreatedBy()).isEqualTo(NICKNAME);
-		assertThat(foundMember.getUpdatedBy()).isEqualTo(NICKNAME);
-	}
-
-	@DisplayName("존재하지 않는 loginId로 회원 정보를 조회 시, 예외를 발생시킨다.")
-	@Test
-	void findMemberByLoginId2() {
-		// given
-		final String notExistLoginId = "not_exist";
-
-		// when & then
-		assertThatThrownBy(() -> memberService.findMemberByLoginId(notExistLoginId))
-			.isInstanceOf(NotFoundMemberException.class)
-			.hasMessage("로그인 정보가 일치하지 않습니다.");
-
-	}
-
+	
 	/*
 	 * @DisplayName
 	 * 테스트 메서드 또는 테스트 클래스에 사용되어서 테스트의 이름을 사용자가 지정한 값으로 표시하는 데 사용된다.
@@ -131,7 +99,7 @@ class MemberServiceTest {
 		memberService.signUp(createMemberSignUpRequest(LOGIN_ID, NICKNAME, PASSWORD));
 
 		// when
-		boolean isDuplicated = memberService.isDuplicatedMemberByLoginId(LOGIN_ID);
+		boolean isDuplicated = memberService.isDuplicatedByLoginId(LOGIN_ID);
 
 		// then
 		assertThat(isDuplicated).isTrue();
@@ -144,7 +112,7 @@ class MemberServiceTest {
 		memberService.signUp(createMemberSignUpRequest(LOGIN_ID, NICKNAME, PASSWORD));
 
 		// when
-		boolean isDuplicated = memberService.isDuplicatedMemberByLoginId("test12345");
+		boolean isDuplicated = memberService.isDuplicatedByLoginId("test12345");
 
 		// then
 		assertThat(isDuplicated).isFalse();
@@ -158,7 +126,7 @@ class MemberServiceTest {
 		memberService.signUp(createMemberSignUpRequest(LOGIN_ID, NICKNAME, PASSWORD));
 
 		// when
-		boolean isDuplicated = memberService.isDuplicatedMemberByNickname(NICKNAME);
+		boolean isDuplicated = memberService.isDuplicatedByNickname(NICKNAME);
 		// then
 
 		assertThat(isDuplicated).isTrue();
@@ -171,7 +139,7 @@ class MemberServiceTest {
 		memberService.signUp(createMemberSignUpRequest(LOGIN_ID, NICKNAME, PASSWORD));
 
 		// when
-		boolean isDuplicated = memberService.isDuplicatedMemberByNickname("hello");
+		boolean isDuplicated = memberService.isDuplicatedByNickname("hello");
 		// then
 
 		assertThat(isDuplicated).isFalse();

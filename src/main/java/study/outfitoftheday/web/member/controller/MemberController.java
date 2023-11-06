@@ -20,7 +20,7 @@ import study.outfitoftheday.global.annotation.LoginMember;
 import study.outfitoftheday.global.annotation.RequiredAuth;
 import study.outfitoftheday.global.response.ApiResponse;
 import study.outfitoftheday.web.member.controller.request.MemberSignUpRequest;
-import study.outfitoftheday.web.member.controller.response.MemberGetByLoginIdResponse;
+import study.outfitoftheday.web.member.controller.response.MemberFindByIdResponse;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,18 +33,18 @@ public class MemberController {
 	 * 해당 annotation 내부에는 @RequestMapping(method = RequestMethod.GET)이 지정되어 있다.
 	 * Spring MVC에서 특정 GET 요청 URL을 처리하도록 매핑할 때 사용한다.
 	 * */
-	@GetMapping("/{loginId}")
-	public ApiResponse<MemberGetByLoginIdResponse> memberGetByLoginId(
-		@PathVariable String loginId
+	@GetMapping("/{memberId}")
+	public ApiResponse<MemberFindByIdResponse> findById(
+		@PathVariable Long memberId
 	) {
 
-		Member foundMember = memberService.findMemberByLoginId(loginId);
-		return ApiResponse.ok(MemberGetByLoginIdResponse.from(foundMember));
+		Member foundMember = memberService.findById(memberId);
+		return ApiResponse.ok(MemberFindByIdResponse.from(foundMember));
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ApiResponse<Object> memberSignUp(
+	public ApiResponse<Object> signUp(
 		@RequestBody @Valid MemberSignUpRequest request) {
 
 		memberService.signUp(request);
@@ -58,7 +58,7 @@ public class MemberController {
 	 * */
 	@DeleteMapping
 	@RequiredAuth
-	public ApiResponse<Object> memberWithdraw(
+	public ApiResponse<Object> withdraw(
 		/*
 		 * @LoginMember
 		 * custom anntation이다.
@@ -66,7 +66,7 @@ public class MemberController {
 		 * */
 		@LoginMember Member member
 	) {
-		memberService.withdrawMember(member);
+		memberService.withdraw(member);
 		return ApiResponse.ok();
 	}
 
