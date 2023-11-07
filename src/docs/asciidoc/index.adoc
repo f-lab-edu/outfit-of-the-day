@@ -41,16 +41,6 @@ include::{snippets}/api/members/sign-up/http-request.adoc[]
 
 include::{snippets}/api/members/sign-up/http-response.adoc[]
 
-=== 📗 LoginId로 조회하기
-
-* Request
-
-include::{snippets}/api/members/loginId/http-request.adoc[]
-
-* Response
-
-include::{snippets}/api/members/loginId/http-response.adoc[]
-
 === 📗 회원 탈퇴
 
 * Request
