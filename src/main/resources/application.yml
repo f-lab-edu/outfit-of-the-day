@@ -1,0 +1,37 @@
+spring:
+  datasource:
+    # 애플리케이션의 데이터를 메모리에 저장한다.
+    url: jdbc:h2:mem:outfit-of-the-day
+    username: sa
+    driver-class-name: org.h2.Driver
+    password:
+
+  jpa:
+    generate-ddl: false
+    hibernate:
+      # hibernate에서 entity기반으로 테이블을 생성하지 않게 하기 위한 옵션
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        show_sql: true
+        format_sql: true
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:data/schema-local.sql
+      platform: local
+  h2:
+    console:
+      path: /h2-console
+      enabled: true
+
+logging:
+  config: classpath:logback/logback-local.xml
+
+security:
+  encryption:
+    salt: 6
+    algorithm: SHA-256
+
+

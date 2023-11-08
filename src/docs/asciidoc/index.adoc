@@ -1,0 +1,53 @@
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:snippets: ./build/generated-snippets
+
+= Outfit Of The Day API Specification
+
+== 🌤️ Auth API
+
+=== 📗 로그인
+
+* Request
+
+include::{snippets}/api/auth/login/http-request.adoc[]
+
+* Response
+
+include::{snippets}/api/auth/login/http-response.adoc[]
+
+=== 📗 로그아웃
+
+* Request
+
+include::{snippets}/api/auth/logout/http-request.adoc[]
+
+* Response
+
+include::{snippets}/api/auth/logout/http-response.adoc[]
+
+== 🌤️ Member API
+
+=== 📗 회원 가입
+
+* Request
+
+include::{snippets}/api/members/sign-up/http-request.adoc[]
+
+* Response
+
+include::{snippets}/api/members/sign-up/http-response.adoc[]
+
+=== 📗 회원 탈퇴
+
+* Request
+
+include::{snippets}/api/members/withdraw-member/http-request.adoc[]
+
+* Response
+
+include::{snippets}/api/members/withdraw-member/http-response.adoc[]
+
