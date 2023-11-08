@@ -34,4 +34,23 @@ security:
     salt: 6
     algorithm: SHA-256
 
+# actuator 관련 속성
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 
+  info:
+    java:
+      enabled: true
+    os:
+      enabled: true
+    env:
+      enabled: true
+
+server:
+  # actuator metrics tomcat 속성 접근 허용
+  tomcat:
+    mbeanregistry:
+      enabled: true
