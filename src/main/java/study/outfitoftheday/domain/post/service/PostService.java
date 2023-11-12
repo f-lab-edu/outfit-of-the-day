@@ -51,9 +51,9 @@ public class PostService {
 	}
 	
 	@Transactional
-	public Long update(Member loginMember, PostUpdateRequest request) {
+	public Long update(Member loginMember, Long postId, PostUpdateRequest request) {
 		
-		Post postToUpdate = postRepository.findByIdAndIsDeletedIsFalse(request.getPostId())
+		Post postToUpdate = postRepository.findByIdAndIsDeletedIsFalse(postId)
 			.orElseThrow(() -> new NotFoundPostException("변경할 게시글이 존재하지 않습니다."));
 		
 		if (!postToUpdate.getMember().equals(loginMember)) {

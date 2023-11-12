@@ -290,7 +290,6 @@ class PostServiceTest {
 		final PostStatus statusToUpdate = PostStatus.PRIVATE;
 		
 		PostUpdateRequest postUpdateRequest = PostUpdateRequest.builder()
-			.postId(postId)
 			.shortDescription(shortDescriptionToUpdate)
 			.postStatus(statusToUpdate)
 			.title(titleToUpdate)
@@ -298,7 +297,7 @@ class PostServiceTest {
 			.build();
 		
 		// when
-		postService.update(loginMember, postUpdateRequest);
+		postService.update(loginMember, postId, postUpdateRequest);
 		Post updatedPost = postService.findById(postId);
 		
 		// then
@@ -349,7 +348,6 @@ class PostServiceTest {
 		final PostStatus statusToUpdate = PostStatus.PRIVATE;
 		
 		PostUpdateRequest postUpdateRequest = PostUpdateRequest.builder()
-			.postId(memberAPostId)
 			.shortDescription(shortDescriptionToUpdate)
 			.postStatus(statusToUpdate)
 			.title(titleToUpdate)
@@ -357,7 +355,7 @@ class PostServiceTest {
 			.build();
 		
 		// when & then
-		assertThatThrownBy(() -> postService.update(memberB, postUpdateRequest))
+		assertThatThrownBy(() -> postService.update(memberB, memberAPostId, postUpdateRequest))
 			.isInstanceOf(NoAuthorizationToAccessPostException.class)
 			.hasMessage("해당 게시글을 변경할 권한이 없습니다.");
 	}
@@ -378,7 +376,6 @@ class PostServiceTest {
 		final PostStatus statusToUpdate = PostStatus.PRIVATE;
 		
 		PostUpdateRequest postUpdateRequest = PostUpdateRequest.builder()
-			.postId(notExistPostId)
 			.shortDescription(shortDescriptionToUpdate)
 			.postStatus(statusToUpdate)
 			.title(titleToUpdate)
@@ -386,7 +383,7 @@ class PostServiceTest {
 			.build();
 		
 		// when & then
-		assertThatThrownBy(() -> postService.update(member, postUpdateRequest))
+		assertThatThrownBy(() -> postService.update(member, notExistPostId, postUpdateRequest))
 			.isInstanceOf(NotFoundPostException.class)
 			.hasMessage("변경할 게시글이 존재하지 않습니다.");
 	}

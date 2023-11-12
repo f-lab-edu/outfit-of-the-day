@@ -13,8 +13,6 @@ import study.outfitoftheday.domain.post.enumurate.PostStatus;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
 public class PostUpdateRequest {
-	@NotBlank(message = "postId는 필수값입니다.")
-	private Long postId;
 	
 	@NotBlank(message = "제목은 필수값입니다.")
 	private String title;
@@ -29,8 +27,7 @@ public class PostUpdateRequest {
 	private PostStatus postStatus;
 	
 	@Builder
-	private PostUpdateRequest(Long postId, String title, String shortDescription, String content, PostStatus postStatus) {
-		this.postId = postId;
+	private PostUpdateRequest(String title, String shortDescription, String content, PostStatus postStatus) {
 		this.title = title;
 		this.shortDescription = shortDescription;
 		this.content = content;

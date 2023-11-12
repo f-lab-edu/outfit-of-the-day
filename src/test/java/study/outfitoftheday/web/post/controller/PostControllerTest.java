@@ -31,6 +31,7 @@ import study.outfitoftheday.domain.post.enumurate.PostStatus;
 import study.outfitoftheday.domain.post.exception.NotFoundPostException;
 import study.outfitoftheday.domain.post.service.PostService;
 import study.outfitoftheday.web.post.controller.request.PostCreateRequest;
+import study.outfitoftheday.web.post.controller.request.PostUpdateRequest;
 
 @WebMvcTest(controllers = PostController.class)
 @AutoConfigureRestDocs
@@ -268,6 +269,99 @@ class PostControllerTest {
 					fieldWithPath("data").type(JsonFieldType.NULL)
 						.description("응답 데이터")
 				)
+			));
+	}
+	
+	@DisplayName("게시글 수정에 성공하여 HTTP 상태 코드 200을 반환한다.")
+	@Test
+	void update() throws Exception {
+		// given
+		doReturn(RandomString.make())
+			.when(authService)
+			.findMemberNicknameInSession();
+		
+		Long postId = 1L;
+		doReturn(postId).when(postService).update(any(Member.class), any(Long.class), any(PostUpdateRequest.class));
+		
+		PostUpdateRequest request = PostUpdateRequest.builder()
+			.title(RandomString.make())
+			.shortDescription(RandomString.make())
+			.postStatus(PostStatus.PUBLIC)
+			.content(RandomString.make())
+			.build();
+		
+		// when & then
+		mockMvc.perform(MockMvcRequestBuilders.put(POST_URI_PREFIX + "/" + postId.toString())
+				.contentType(MediaType.APPLICATION_JSON)
+				.session(new MockHttpSession())
+				.content(objectMapper.writeValueAsString(request))
+			)
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.code").value(200))
+			.andExpect(jsonPath("$.status").value("OK"))
+			.andExpect(jsonPath("$.message").value("OK"))
+			.andDo(MockMvcRestDocumentation.document("api/posts/update",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				requestFields(
+					fieldWithPath("title").type(JsonFieldType.STRING)
+						.description("제목"),
+					fieldWithPath("shortDescription").type(JsonFieldType.STRING)
+						.description("요약글"),
+					fieldWithPath("content").type(JsonFieldType.STRING)
+						.description("본문"),
+					fieldWithPath("postStatus").type(Enum.EnumDesc.class)
+						.description("게시글 상태")
+				),
+				responseFields(
+					fieldWithPath("success").type(JsonFieldType.BOOLEAN)
+						.description("코드"),
+					fieldWithPath("code").type(JsonFieldType.NUMBER)
+						.description("코드"),
+					fieldWithPath("status").type(JsonFieldType.STRING)
+						.description("상태"),
+					fieldWithPath("message").type(JsonFieldType.STRING)
+						.description("메시지"),
+					fieldWithPath("data").type(JsonFieldType.NULL)
+						.description("응답 데이터")
+				)
+			));
+		
+	}
+	
+	@DisplayName("게시글 수정 시, 제목에 널 값을 전달하여 HTTP 상태 코드 400을 반환한다.")
+	@Test
+	void update2() throws Exception {
+		// given
+		doReturn(RandomString.make())
+			.when(authService)
+			.findMemberNicknameInSession();
+		
+		Long postId = 1L;
+		
+		PostUpdateRequest request = PostUpdateRequest.builder()
+			.title(null)
+			.shortDescription(RandomString.make())
+			.postStatus(PostStatus.PUBLIC)
+			.content(RandomString.make())
+			.build();
+		
+		// when & then
+		mockMvc.perform(MockMvcRequestBuilders.put(POST_URI_PREFIX + "/" + postId.toString())
+				.contentType(MediaType.APPLICATION_JSON)
+				.session(new MockHttpSession())
+				.content(objectMapper.writeValueAsString(request))
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andExpect(jsonPath("$.success").value(false))
+			.andExpect(jsonPath("$.code").value(400))
+			.andExpect(jsonPath("$.status").value("BAD_REQUEST"))
+			.andExpect(jsonPath("$.message").value("제목은 필수값입니다."))
+			.andDo(MockMvcRestDocumentation.document("api/posts/update2",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint())
 			));
 	}
 }

@@ -52,8 +52,9 @@ public class PostController {
 	@PutMapping("/{postId}")
 	@ResponseStatus(HttpStatus.OK)
 	@RequiredAuth
-	public ApiResponse<Void> update(@LoginMember Member member, @RequestBody @Valid PostUpdateRequest request) {
-		postService.update(member, request);
+	public ApiResponse<Void> update(@LoginMember Member member, @PathVariable Long postId,
+		@RequestBody @Valid PostUpdateRequest request) {
+		postService.update(member, postId, request);
 		return ApiResponse.ok();
 	}
 	
