@@ -14,6 +14,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import study.outfitoftheday.domain.member.entity.Member;
 import study.outfitoftheday.domain.post.enumurate.PostStatus;
 import study.outfitoftheday.domain.post.exception.InvalidPostException;
@@ -22,6 +23,7 @@ import study.outfitoftheday.global.BaseEntity;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(of = {"id", "title", "shortDescription", "content", "postStatus", "isDeleted"})
 public class Post extends BaseEntity {
 	private final static int MAX_SHORT_DESCRIPTION_LENGTH = 255;
 	private final static int MAX_TITLE_LENGTH = 255;
@@ -29,6 +31,7 @@ public class Post extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "post_id")
+	
 	private Long id;
 	
 	private String title;
@@ -101,17 +104,5 @@ public class Post extends BaseEntity {
 		if (title.length() > MAX_TITLE_LENGTH) {
 			throw new InvalidPostException("최대 길이는 255자 입니다.");
 		}
-		
-	}
-	
-	@Override
-	public String toString() {
-		return "Post{" +
-			"id=" + id +
-			", title=" + title +
-			", shortDescription='" + shortDescription + '\'' +
-			", content='" + content + '\'' +
-			", postStatus=" + postStatus +
-			'}';
 	}
 }
