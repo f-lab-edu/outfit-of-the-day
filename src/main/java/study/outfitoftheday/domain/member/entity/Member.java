@@ -26,8 +26,15 @@ import study.outfitoftheday.global.BaseEntity;
  *
  * @ToString
  * lombok에서 제공하는 annotation
- * complile시 해당 클래스에 toString method를 생성시켜준다.
+ * compile시 해당 클래스에 toString method를 생성시켜준다.
  * of field를 통해서 어떤 속성들을 toString method에 추가할지 지정가능하다.
+ *
+ * @EqualsAndHashCode
+ *
+ * lombok에서 제공하는 annotation
+ * compile시 해당 클래스에 equals method, hashCode method를 재정의해준다.
+ *
+ * callSuper 속성값을 통해 equals method와 hashCode method의 범위를 super class의 속성까지 포함시킬지 여부를 정할 수 있다.
  * */
 @Entity
 @Getter
