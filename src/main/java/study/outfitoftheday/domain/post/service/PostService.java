@@ -15,12 +15,12 @@ import study.outfitoftheday.web.post.controller.request.PostCreateRequest;
 @Transactional(readOnly = true)
 public class PostService {
 	private final PostRepository postRepository;
-
+	
 	public Post findById(Long postId) {
 		return postRepository.findByIdAndIsDeletedIsFalse(postId)
 			.orElseThrow(() -> new NotFoundPostException("게시글이 존재하지 않습니다."));
 	}
-
+	
 	@Transactional
 	public Long create(Member member, PostCreateRequest request) {
 		Post builder = Post
@@ -31,7 +31,16 @@ public class PostService {
 			.postStatus(request.getPostStatus())
 			.member(member)
 			.build();
-
+		
 		return postRepository.save(builder).getId();
+	}
+	
+	@Transactional
+	public Long delete(Member loginMember, Long postId) {
+		Post postToDelete = postRepository.findByIdAndMemberAndIsDeletedIsFalse(postId, loginMember)
+			.orElseThrow(() -> new NotFoundPostException("삭제할 게시글이 존재하지 않거나 권한이 없습니다."));
+		
+		postToDelete.delete();
+		return postId;
 	}
 }
