@@ -9,7 +9,7 @@ public enum PostStatus {
 	DRAFT("게시 전"),
 	PUBLIC("공개 게시"),
 	PRIVATE("비공개 게시");
-
-	private final String text;
+	
+	private final String description;
 	
 }
