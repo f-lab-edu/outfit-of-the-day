@@ -88,18 +88,6 @@ class PostControllerTest {
 						.description("본문"),
 					fieldWithPath("postStatus").type(Enum.EnumDesc.class)
 						.description("게시글 상태")
-				),
-				responseFields(
-					fieldWithPath("success").type(JsonFieldType.BOOLEAN)
-						.description("코드"),
-					fieldWithPath("code").type(JsonFieldType.NUMBER)
-						.description("코드"),
-					fieldWithPath("status").type(JsonFieldType.STRING)
-						.description("상태"),
-					fieldWithPath("message").type(JsonFieldType.STRING)
-						.description("메시지"),
-					fieldWithPath("data").type(JsonFieldType.NULL)
-						.description("응답 데이터")
 				)
 			));
 	}
@@ -131,7 +119,6 @@ class PostControllerTest {
 		Long postId = 1L;
 		// when & then
 		mockMvc.perform(MockMvcRequestBuilders.get(POST_URI_PREFIX + "/" + postId)
-				.param("postId", postId.toString())
 				.contentType(MediaType.APPLICATION_JSON)
 				.session(new MockHttpSession())
 			)
@@ -140,7 +127,7 @@ class PostControllerTest {
 			.andExpect(jsonPath("$.code").value(200))
 			.andExpect(jsonPath("$.status").value("OK"))
 			.andExpect(jsonPath("$.message").value("OK"))
-			.andDo(MockMvcRestDocumentation.document("api/posts/get",
+			.andDo(MockMvcRestDocumentation.document("api/posts/find-by-id",
 				preprocessRequest(prettyPrint()),
 				preprocessResponse(prettyPrint()),
 				responseFields(
@@ -253,23 +240,7 @@ class PostControllerTest {
 			.andExpect(jsonPath("$.success").value(false))
 			.andExpect(jsonPath("$.code").value(404))
 			.andExpect(jsonPath("$.status").value("NOT_FOUND"))
-			.andExpect(jsonPath("$.message").value("삭제할 게시글이 존재하지 않습니다."))
-			.andDo(MockMvcRestDocumentation.document("api/posts/delete2",
-				preprocessRequest(prettyPrint()),
-				preprocessResponse(prettyPrint()),
-				responseFields(
-					fieldWithPath("success").type(JsonFieldType.BOOLEAN)
-						.description("코드"),
-					fieldWithPath("code").type(JsonFieldType.NUMBER)
-						.description("코드"),
-					fieldWithPath("status").type(JsonFieldType.STRING)
-						.description("상태"),
-					fieldWithPath("message").type(JsonFieldType.STRING)
-						.description("메시지"),
-					fieldWithPath("data").type(JsonFieldType.NULL)
-						.description("응답 데이터")
-				)
-			));
+			.andExpect(jsonPath("$.message").value("삭제할 게시글이 존재하지 않습니다."));
 	}
 	
 	@DisplayName("게시글 수정에 성공하여 HTTP 상태 코드 200을 반환한다.")
@@ -313,18 +284,6 @@ class PostControllerTest {
 						.description("본문"),
 					fieldWithPath("postStatus").type(Enum.EnumDesc.class)
 						.description("게시글 상태")
-				),
-				responseFields(
-					fieldWithPath("success").type(JsonFieldType.BOOLEAN)
-						.description("코드"),
-					fieldWithPath("code").type(JsonFieldType.NUMBER)
-						.description("코드"),
-					fieldWithPath("status").type(JsonFieldType.STRING)
-						.description("상태"),
-					fieldWithPath("message").type(JsonFieldType.STRING)
-						.description("메시지"),
-					fieldWithPath("data").type(JsonFieldType.NULL)
-						.description("응답 데이터")
 				)
 			));
 		
@@ -358,10 +317,6 @@ class PostControllerTest {
 			.andExpect(jsonPath("$.success").value(false))
 			.andExpect(jsonPath("$.code").value(400))
 			.andExpect(jsonPath("$.status").value("BAD_REQUEST"))
-			.andExpect(jsonPath("$.message").value("제목은 필수값입니다."))
-			.andDo(MockMvcRestDocumentation.document("api/posts/update2",
-				preprocessRequest(prettyPrint()),
-				preprocessResponse(prettyPrint())
-			));
+			.andExpect(jsonPath("$.message").value("제목은 필수값입니다."));
 	}
 }

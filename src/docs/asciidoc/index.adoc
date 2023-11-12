@@ -51,3 +51,65 @@ include::{snippets}/api/members/withdraw-member/http-request.adoc[]
 
 include::{snippets}/api/members/withdraw-member/http-response.adoc[]
 
+
+== 🌤️ Post API
+
+=== 📗 게시글 등록
+
+* Request
+
+include::{snippets}/api/posts/create/http-request.adoc[]
+
+* Request Fields
+
+include::{snippets}/api/posts/create/request-fields.adoc[]
+
+* Response
+
+include::{snippets}/api/posts/create/http-response.adoc[]
+
+=== 📗 게시글 수정
+
+* Request
+
+include::{snippets}/api/posts/update/http-request.adoc[]
+
+* Request Fields
+
+include::{snippets}/api/posts/update/request-fields.adoc[]
+
+* Response
+
+include::{snippets}/api/posts/update/http-response.adoc[]
+
+
+=== 📗 게시글 삭제
+
+* Request
+
+include::{snippets}/api/posts/delete/http-request.adoc[]
+
+* Response
+
+include::{snippets}/api/posts/delete/http-response.adoc[]
+
+
+
+=== 📗 게시글 조회
+
+* Request
+
+include::{snippets}/api/posts/find-by-id/http-request.adoc[]
+
+* Response
+
+include::{snippets}/api/posts/find-by-id/http-response.adoc[]
+
+* Response Field
+
+include::{snippets}/api/posts/find-by-id/response-fields.adoc[]
+
+
+
+
+
