@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -32,8 +33,9 @@ import study.outfitoftheday.global.BaseEntity;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(of = {"id", "loginId", "nickname", "profileMessage", "profileImageUrl"})
+@EqualsAndHashCode
 public class Member extends BaseEntity {
-
+	
 	/*
 	 * @Id
 	 * JPA에게 해당 column이 Primary Key라는 정보를 전달한다.
@@ -46,19 +48,19 @@ public class Member extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "member_id")
 	private Long id;
-
+	
 	private String loginId;
-
+	
 	private String password;
-
+	
 	private String nickname;
-
+	
 	private String profileMessage;
-
+	
 	private String profileImageUrl;
-
+	
 	private Boolean isDeleted;
-
+	
 	/*
 	 * @Builder
 	 * lombok에서 제공해주는 annotation
@@ -72,7 +74,7 @@ public class Member extends BaseEntity {
 		this.isDeleted = false;
 		this.initializeWhenSignUp(nickname);
 	}
-
+	
 	public void withdrawMember() {
 		this.isDeleted = true;
 	}

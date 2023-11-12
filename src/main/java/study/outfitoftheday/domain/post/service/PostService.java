@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import study.outfitoftheday.domain.member.entity.Member;
 import study.outfitoftheday.domain.post.entity.Post;
+import study.outfitoftheday.domain.post.exception.NoAuthorizationToDeletePostException;
 import study.outfitoftheday.domain.post.exception.NotFoundPostException;
 import study.outfitoftheday.domain.post.repository.PostRepository;
 import study.outfitoftheday.web.post.controller.request.PostCreateRequest;
@@ -37,10 +38,15 @@ public class PostService {
 	
 	@Transactional
 	public Long delete(Member loginMember, Long postId) {
-		Post postToDelete = postRepository.findByIdAndMemberAndIsDeletedIsFalse(postId, loginMember)
-			.orElseThrow(() -> new NotFoundPostException("삭제할 게시글이 존재하지 않거나 권한이 없습니다."));
+		Post postToDelete = postRepository.findByIdAndIsDeletedIsFalse(postId)
+			.orElseThrow(() -> new NotFoundPostException("삭제할 게시글이 존재하지 않습니다."));
+		
+		if (!postToDelete.getMember().equals(loginMember)) {
+			throw new NoAuthorizationToDeletePostException("해당 게시글을 삭제할 권한이 없습니다.");
+		}
 		
 		postToDelete.delete();
 		return postId;
 	}
 }
+

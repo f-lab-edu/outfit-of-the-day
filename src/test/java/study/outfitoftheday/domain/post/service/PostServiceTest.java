@@ -17,6 +17,7 @@ import study.outfitoftheday.domain.member.service.MemberService;
 import study.outfitoftheday.domain.post.entity.Post;
 import study.outfitoftheday.domain.post.enumurate.PostStatus;
 import study.outfitoftheday.domain.post.exception.InvalidPostException;
+import study.outfitoftheday.domain.post.exception.NoAuthorizationToDeletePostException;
 import study.outfitoftheday.domain.post.exception.NotFoundPostException;
 import study.outfitoftheday.domain.post.repository.PostRepository;
 import study.outfitoftheday.web.auth.controller.request.AuthLoginRequest;
@@ -245,7 +246,7 @@ class PostServiceTest {
 		final Long notExistPostId = 2323L;
 		assertThatThrownBy(() -> postService.delete(foundMember, notExistPostId))
 			.isInstanceOf(NotFoundPostException.class)
-			.hasMessage("삭제할 게시글이 존재하지 않거나 권한이 없습니다.");
+			.hasMessage("삭제할 게시글이 존재하지 않습니다.");
 	}
 	
 	@DisplayName("memberA가 작성한 게시글을 memberB가 삭제하려고 할 경우 예외를 발생시킨다.")
@@ -283,8 +284,8 @@ class PostServiceTest {
 		
 		// when & then
 		assertThatThrownBy(() -> postService.delete(memberB, memberAPostId))
-			.isInstanceOf(NotFoundPostException.class)
-			.hasMessage("삭제할 게시글이 존재하지 않거나 권한이 없습니다.");
+			.isInstanceOf(NoAuthorizationToDeletePostException.class)
+			.hasMessage("해당 게시글을 삭제할 권한이 없습니다.");
 	}
 	
 	private MemberSignUpRequest createMemberSignUpRequest() {

@@ -225,7 +225,7 @@ class PostControllerTest {
 	void delete2() throws Exception {
 		// given
 		
-		doThrow(new NotFoundPostException("삭제할 게시글이 존재하지 않거나 권한이 없습니다."))
+		doThrow(new NotFoundPostException("삭제할 게시글이 존재하지 않습니다."))
 			.when(postService)
 			.delete(any(Member.class), any(Long.class));
 		
@@ -252,7 +252,7 @@ class PostControllerTest {
 			.andExpect(jsonPath("$.success").value(false))
 			.andExpect(jsonPath("$.code").value(404))
 			.andExpect(jsonPath("$.status").value("NOT_FOUND"))
-			.andExpect(jsonPath("$.message").value("삭제할 게시글이 존재하지 않거나 권한이 없습니다."))
+			.andExpect(jsonPath("$.message").value("삭제할 게시글이 존재하지 않습니다."))
 			.andDo(MockMvcRestDocumentation.document("api/posts/delete2",
 				preprocessRequest(prettyPrint()),
 				preprocessResponse(prettyPrint()),
