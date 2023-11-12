@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -21,6 +22,7 @@ import study.outfitoftheday.global.annotation.LoginMember;
 import study.outfitoftheday.global.annotation.RequiredAuth;
 import study.outfitoftheday.global.response.ApiResponse;
 import study.outfitoftheday.web.post.controller.request.PostCreateRequest;
+import study.outfitoftheday.web.post.controller.request.PostUpdateRequest;
 import study.outfitoftheday.web.post.controller.response.PostFindByIdResponse;
 
 @RestController
@@ -45,6 +47,14 @@ public class PostController {
 	public ApiResponse<Void> create(@LoginMember Member member, @RequestBody @Valid PostCreateRequest request) {
 		postService.create(member, request);
 		return ApiResponse.created();
+	}
+	
+	@PutMapping("/{postId}")
+	@ResponseStatus(HttpStatus.OK)
+	@RequiredAuth
+	public ApiResponse<Void> update(@LoginMember Member member, @RequestBody @Valid PostUpdateRequest request) {
+		postService.update(member, request);
+		return ApiResponse.ok();
 	}
 	
 	@DeleteMapping("/{postId}")

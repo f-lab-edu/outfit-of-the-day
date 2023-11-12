@@ -61,7 +61,21 @@ public class Post extends BaseEntity {
 	}
 	
 	public void delete() {
+		if (isDeleted) {
+			throw new InvalidPostException("이미 삭제된 게시글입니다.");
+		}
 		this.isDeleted = true;
+	}
+	
+	public void update(String title, String shortDescription, String content, PostStatus postStatus) {
+		validateTitle(title);
+		validateShortDescription(shortDescription);
+		validateContent(content);
+		
+		this.title = title;
+		this.shortDescription = shortDescription;
+		this.content = content;
+		this.postStatus = postStatus;
 	}
 	
 	private void validateContent(String content) {
