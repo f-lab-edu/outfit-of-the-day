@@ -144,7 +144,7 @@ class PostControllerTest {
 				preprocessResponse(prettyPrint()),
 				responseFields(
 					fieldWithPath("success").type(JsonFieldType.BOOLEAN)
-						.description("코드"),
+						.description("성공 여부"),
 					fieldWithPath("code").type(JsonFieldType.NUMBER)
 						.description("코드"),
 					fieldWithPath("status").type(JsonFieldType.STRING)
@@ -207,7 +207,7 @@ class PostControllerTest {
 				preprocessResponse(prettyPrint()),
 				responseFields(
 					fieldWithPath("success").type(JsonFieldType.BOOLEAN)
-						.description("코드"),
+						.description("성공 여부"),
 					fieldWithPath("code").type(JsonFieldType.NUMBER)
 						.description("코드"),
 					fieldWithPath("status").type(JsonFieldType.STRING)
