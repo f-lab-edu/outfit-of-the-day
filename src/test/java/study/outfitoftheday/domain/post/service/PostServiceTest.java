@@ -17,6 +17,7 @@ import study.outfitoftheday.domain.member.service.MemberService;
 import study.outfitoftheday.domain.post.entity.Post;
 import study.outfitoftheday.domain.post.enumurate.PostStatus;
 import study.outfitoftheday.domain.post.exception.InvalidPostException;
+import study.outfitoftheday.domain.post.exception.NotFoundPostException;
 import study.outfitoftheday.domain.post.repository.PostRepository;
 import study.outfitoftheday.web.auth.controller.request.AuthLoginRequest;
 import study.outfitoftheday.web.member.controller.request.MemberSignUpRequest;
@@ -200,12 +201,107 @@ class PostServiceTest {
 			.isInstanceOf(InvalidPostException.class);
 	}
 	
+	@DisplayName("등록된 게시글을 성공적으로 삭제한다.")
+	@Test
+	void delete() {
+		// given
+		memberService.signUp(createMemberSignUpRequest());
+		authService.login(AuthLoginRequest.builder().loginId(LOGIN_ID).password(PASSWORD).build());
+		Member foundMember = memberRepository.findByLoginIdAndIsDeletedIsFalse(LOGIN_ID).orElseThrow();
+		
+		PostCreateRequest request = PostCreateRequest
+			.builder()
+			.title(TITLE)
+			.shortDescription(SHORT_DESCRIPTION)
+			.postStatus(PostStatus.PUBLIC)
+			.content(CONTENT)
+			.build();
+		
+		Long createdPostId = postService.create(foundMember, request);
+		
+		// when
+		Long deletedPostId = postService.delete(foundMember, createdPostId);
+		Post deletedPost = postRepository.findById(deletedPostId).orElseThrow();
+		
+		// then
+		assertThat(deletedPost.getId()).isEqualTo(deletedPostId);
+		assertThat(deletedPost.getContent()).isEqualTo(CONTENT);
+		assertThat(deletedPost.getShortDescription()).isEqualTo(SHORT_DESCRIPTION);
+		assertThat(deletedPost.getTitle()).isEqualTo(TITLE);
+		assertThat(deletedPost.getPostStatus()).isEqualTo(PostStatus.PUBLIC);
+		assertThat(deletedPost.getIsDeleted()).isTrue();
+		
+	}
+	
+	@DisplayName("조회되지 않는 게시글을 삭제 시도 시 예외를 발생시킨다.")
+	@Test
+	void delete2() {
+		// given
+		memberService.signUp(createMemberSignUpRequest());
+		authService.login(AuthLoginRequest.builder().loginId(LOGIN_ID).password(PASSWORD).build());
+		Member foundMember = memberRepository.findByLoginIdAndIsDeletedIsFalse(LOGIN_ID).orElseThrow();
+		
+		// when & then
+		final Long notExistPostId = 2323L;
+		assertThatThrownBy(() -> postService.delete(foundMember, notExistPostId))
+			.isInstanceOf(NotFoundPostException.class)
+			.hasMessage("삭제할 게시글이 존재하지 않거나 권한이 없습니다.");
+	}
+	
+	@DisplayName("memberA가 작성한 게시글을 memberB가 삭제하려고 할 경우 예외를 발생시킨다.")
+	@Test
+	void delete3() {
+		// given
+		
+		final String memberALoginId = LOGIN_ID;
+		final String memberAPassword = PASSWORD;
+		final String memberANickname = NICKNAME;
+		
+		memberService.signUp(createMemberSignUpRequest(memberALoginId, memberANickname, memberAPassword));
+		authService.login(AuthLoginRequest.builder().loginId(memberALoginId).password(memberAPassword).build());
+		Member memberA = memberRepository.findByLoginIdAndIsDeletedIsFalse(memberALoginId).orElseThrow();
+		
+		PostCreateRequest request = PostCreateRequest
+			.builder()
+			.title(TITLE)
+			.shortDescription(SHORT_DESCRIPTION)
+			.postStatus(PostStatus.PUBLIC)
+			.content(CONTENT)
+			.build();
+		
+		final Long memberAPostId = postService.create(memberA, request);
+		
+		authService.logout(); // memberA logout
+		
+		final String memberBLoginId = "member_b@naver.com";
+		final String memberBPassword = "mdoiqn123";
+		final String memberBNickname = "memberB";
+		
+		memberService.signUp(createMemberSignUpRequest(memberBLoginId, memberBNickname, memberBPassword));
+		authService.login(AuthLoginRequest.builder().loginId(memberBLoginId).password(memberBPassword).build());
+		Member memberB = memberRepository.findByLoginIdAndIsDeletedIsFalse(memberBLoginId).orElseThrow();
+		
+		// when & then
+		assertThatThrownBy(() -> postService.delete(memberB, memberAPostId))
+			.isInstanceOf(NotFoundPostException.class)
+			.hasMessage("삭제할 게시글이 존재하지 않거나 권한이 없습니다.");
+	}
+	
 	private MemberSignUpRequest createMemberSignUpRequest() {
 		return MemberSignUpRequest
 			.builder()
 			.loginId(LOGIN_ID)
 			.nickname(NICKNAME)
 			.password(PASSWORD)
+			.build();
+	}
+	
+	private MemberSignUpRequest createMemberSignUpRequest(String loginId, String nickname, String password) {
+		return MemberSignUpRequest
+			.builder()
+			.loginId(loginId)
+			.nickname(nickname)
+			.password(password)
 			.build();
 	}
 }
