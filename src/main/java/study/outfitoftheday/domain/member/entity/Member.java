@@ -33,7 +33,7 @@ import study.outfitoftheday.global.BaseEntity;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(of = {"id", "loginId", "nickname", "profileMessage", "profileImageUrl"})
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 public class Member extends BaseEntity {
 	
 	/*
