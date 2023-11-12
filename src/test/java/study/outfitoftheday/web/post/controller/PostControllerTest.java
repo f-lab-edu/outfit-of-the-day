@@ -1,6 +1,6 @@
 package study.outfitoftheday.web.post.controller;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.BDDMockito.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
@@ -28,10 +28,11 @@ import study.outfitoftheday.domain.auth.service.AuthService;
 import study.outfitoftheday.domain.member.entity.Member;
 import study.outfitoftheday.domain.post.entity.Post;
 import study.outfitoftheday.domain.post.enumurate.PostStatus;
+import study.outfitoftheday.domain.post.exception.NotFoundPostException;
 import study.outfitoftheday.domain.post.service.PostService;
 import study.outfitoftheday.web.post.controller.request.PostCreateRequest;
 
-@WebMvcTest(controllers = {PostController.class})
+@WebMvcTest(controllers = PostController.class)
 @AutoConfigureRestDocs
 class PostControllerTest {
 	@Autowired
@@ -202,6 +203,57 @@ class PostControllerTest {
 			.andExpect(jsonPath("$.status").value("OK"))
 			.andExpect(jsonPath("$.message").value("OK"))
 			.andDo(MockMvcRestDocumentation.document("api/posts/delete",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				responseFields(
+					fieldWithPath("success").type(JsonFieldType.BOOLEAN)
+						.description("코드"),
+					fieldWithPath("code").type(JsonFieldType.NUMBER)
+						.description("코드"),
+					fieldWithPath("status").type(JsonFieldType.STRING)
+						.description("상태"),
+					fieldWithPath("message").type(JsonFieldType.STRING)
+						.description("메시지"),
+					fieldWithPath("data").type(JsonFieldType.NULL)
+						.description("응답 데이터")
+				)
+			));
+	}
+	
+	@DisplayName("존재 하지 않는 게시글 삭제에 실패하여 HTTP 상태코드 404 반환 및 예외를 발생시킨다.")
+	@Test
+	void delete2() throws Exception {
+		// given
+		
+		doThrow(new NotFoundPostException("삭제할 게시글이 존재하지 않거나 권한이 없습니다."))
+			.when(postService)
+			.delete(any(Member.class), any(Long.class));
+		
+		doReturn(RandomString.make())
+			.when(authService)
+			.findMemberNicknameInSession();
+		
+		doReturn(Member
+			.builder()
+			.loginId(RandomString.make())
+			.build())
+			.when(authService)
+			.findLoginMemberInSession();
+		
+		final Long notExistPostId = 1L;
+		
+		// when & then
+		mockMvc.perform(MockMvcRequestBuilders.delete(POST_URI_PREFIX + "/" + notExistPostId)
+				.contentType(MediaType.APPLICATION_JSON)
+				.session(new MockHttpSession())
+			)
+			.andDo(print())
+			.andExpect(status().isNotFound())
+			.andExpect(jsonPath("$.success").value(false))
+			.andExpect(jsonPath("$.code").value(404))
+			.andExpect(jsonPath("$.status").value("NOT_FOUND"))
+			.andExpect(jsonPath("$.message").value("삭제할 게시글이 존재하지 않거나 권한이 없습니다."))
+			.andDo(MockMvcRestDocumentation.document("api/posts/delete2",
 				preprocessRequest(prettyPrint()),
 				preprocessResponse(prettyPrint()),
 				responseFields(
