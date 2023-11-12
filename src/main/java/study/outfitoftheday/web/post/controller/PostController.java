@@ -3,6 +3,7 @@ package study.outfitoftheday.web.post.controller;
 import static study.outfitoftheday.global.util.UriPrefix.*;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +28,7 @@ import study.outfitoftheday.web.post.controller.response.PostFindByIdResponse;
 @RequestMapping(POST_URI_PREFIX)
 public class PostController {
 	private final PostService postService;
-
+	
 	@GetMapping("/{postId}")
 	@ResponseStatus(HttpStatus.OK)
 	@RequiredAuth
@@ -37,7 +38,7 @@ public class PostController {
 		Post foundPost = postService.findById(postId);
 		return ApiResponse.ok(PostFindByIdResponse.from(foundPost));
 	}
-
+	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequiredAuth
@@ -45,5 +46,13 @@ public class PostController {
 		postService.create(member, request);
 		return ApiResponse.created();
 	}
-
+	
+	@DeleteMapping("/{postId}")
+	@ResponseStatus(HttpStatus.OK)
+	@RequiredAuth
+	public ApiResponse<Void> delete(@LoginMember Member member, @PathVariable Long postId) {
+		postService.delete(member, postId);
+		return ApiResponse.ok();
+	}
+	
 }
