@@ -178,4 +178,44 @@ class PostControllerTest {
 			));
 	}
 	
+	@DisplayName("게시글 삭제에 성공하여 HTTP 상태코드 200을 반환한다.")
+	@Test
+	void delete() throws Exception {
+		// given
+		doReturn(RandomString.make())
+			.when(authService)
+			.findMemberNicknameInSession();
+		
+		final Long deletedPostId = 1L;
+		doReturn(deletedPostId)
+			.when(postService)
+			.delete(any(Member.class), any(Long.class));
+		
+		// when & then
+		mockMvc.perform(MockMvcRequestBuilders.delete(POST_URI_PREFIX + "/" + deletedPostId)
+				.contentType(MediaType.APPLICATION_JSON)
+				.session(new MockHttpSession())
+			)
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.code").value(200))
+			.andExpect(jsonPath("$.status").value("OK"))
+			.andExpect(jsonPath("$.message").value("OK"))
+			.andDo(MockMvcRestDocumentation.document("api/posts/delete",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				responseFields(
+					fieldWithPath("success").type(JsonFieldType.BOOLEAN)
+						.description("코드"),
+					fieldWithPath("code").type(JsonFieldType.NUMBER)
+						.description("코드"),
+					fieldWithPath("status").type(JsonFieldType.STRING)
+						.description("상태"),
+					fieldWithPath("message").type(JsonFieldType.STRING)
+						.description("메시지"),
+					fieldWithPath("data").type(JsonFieldType.NULL)
+						.description("응답 데이터")
+				)
+			));
+	}
 }
