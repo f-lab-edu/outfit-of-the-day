@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.micrometer.core.annotation.Timed;
+import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import study.outfitoftheday.domain.member.entity.Member;
@@ -25,9 +27,11 @@ import study.outfitoftheday.web.member.controller.response.MemberFindByIdRespons
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(MEMBER_URI_PREFIX)
+@Timed("api.members")
 public class MemberController {
+	private final MeterRegistry registry;
 	private final MemberService memberService;
-
+	
 	/*
 	 * @GetMapping
 	 * 해당 annotation 내부에는 @RequestMapping(method = RequestMethod.GET)이 지정되어 있다.
@@ -37,20 +41,18 @@ public class MemberController {
 	public ApiResponse<MemberFindByIdResponse> findById(
 		@PathVariable Long memberId
 	) {
-
+		
 		Member foundMember = memberService.findById(memberId);
 		return ApiResponse.ok(MemberFindByIdResponse.from(foundMember));
 	}
-
+	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ApiResponse<Object> signUp(
-		@RequestBody @Valid MemberSignUpRequest request) {
-
+	public ApiResponse<Object> signUp(@RequestBody @Valid MemberSignUpRequest request) {
 		memberService.signUp(request);
 		return ApiResponse.created();
 	}
-
+	
 	/*
 	 * @DeleteMapping
 	 * 해당 annotation 내부에는 @RequestMapping(method = RequestMethod.DELETE)이 지정되어 있다.
@@ -69,5 +71,5 @@ public class MemberController {
 		memberService.withdraw(member);
 		return ApiResponse.ok();
 	}
-
+	
 }
