@@ -1,0 +1,6 @@
+logging:
+  config: classpath:logback/logback-prod.xml
+
+sentry:
+  dsn: ${sentry-dsn-key}
+
