@@ -42,6 +42,7 @@ CREATE TABLE `post`
     `writer_member_id`  bigint       NOT NULL,
     `title`             varchar(255) NOT NULL,
     `short_description` varchar(255) NOT NULL,
+    `content`           text         NOT NULL,
     `post_status`       varchar(32)  NOT NULL,
     `created_at`        timestamp    NOT NULL,
     `updated_at`        timestamp    NOT NULL,

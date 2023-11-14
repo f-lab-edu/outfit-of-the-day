@@ -23,7 +23,7 @@ CREATE TABLE `member`
 
 CREATE TABLE `comment`
 (
-    `comment_id`        bigint PRIMARY KEY,
+    `comment_id`        bigint PRIMARY KEY AUTO_INCREMENT,
     `post_id`           bigint      NOT NULL,
     `parent_comment_id` bigint      NOT NULL COMMENT '첫 번째 댓글인 경우 자기 자신, 대댓글인 경우 comment_id',
     `writer_comment_id` bigint      NOT NULL,
@@ -38,10 +38,11 @@ CREATE TABLE `comment`
 
 CREATE TABLE `post`
 (
-    `post_id`           bigint PRIMARY KEY,
+    `post_id`           bigint PRIMARY KEY AUTO_INCREMENT,
     `writer_member_id`  bigint       NOT NULL,
     `title`             varchar(255) NOT NULL,
     `short_description` varchar(255) NOT NULL,
+    `content`           varchar(255) NOT NULL,
     `post_status`       varchar(32)  NOT NULL,
     `created_at`        timestamp    NOT NULL,
     `updated_at`        timestamp    NOT NULL,
@@ -53,7 +54,7 @@ CREATE TABLE `post`
 
 CREATE TABLE `post_like`
 (
-    `post_like_id` bigint PRIMARY KEY,
+    `post_like_id` bigint PRIMARY KEY AUTO_INCREMENT,
     `member_id`    bigint      NOT NULL,
     `post_id`      bigint      NOT NULL,
     `created_at`   timestamp   NOT NULL,
@@ -65,7 +66,7 @@ CREATE TABLE `post_like`
 
 CREATE TABLE `comment_like`
 (
-    `comment_like_id` bigint PRIMARY KEY,
+    `comment_like_id` bigint PRIMARY KEY AUTO_INCREMENT,
     `member_id`       bigint      NOT NULL,
     `comment_id`      bigint      NOT NULL,
     `created_at`      timestamp   NOT NULL,
@@ -77,7 +78,7 @@ CREATE TABLE `comment_like`
 
 CREATE TABLE `follow`
 (
-    `follow_id`      bigint PRIMARY KEY,
+    `follow_id`      bigint PRIMARY KEY AUTO_INCREMENT,
     `from_member_id` bigint      NOT NULL,
     `to_member_id`   bigint      NOT NULL,
     `created_at`     timestamp   NOT NULL,
@@ -89,7 +90,7 @@ CREATE TABLE `follow`
 
 CREATE TABLE `history`
 (
-    `history_id`     bigint PRIMARY KEY,
+    `history_id`     bigint PRIMARY KEY AUTO_INCREMENT,
     `table_name`     varchar(32) NOT NULL,
     `operation_type` varchar(32) NOT NULL,
     `snapshot`       json        NOT NULL,

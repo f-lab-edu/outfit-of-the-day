@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -25,15 +26,23 @@ import study.outfitoftheday.global.BaseEntity;
  *
  * @ToString
  * lombok에서 제공하는 annotation
- * complile시 해당 클래스에 toString method를 생성시켜준다.
+ * compile시 해당 클래스에 toString method를 생성시켜준다.
  * of field를 통해서 어떤 속성들을 toString method에 추가할지 지정가능하다.
+ *
+ * @EqualsAndHashCode
+ *
+ * lombok에서 제공하는 annotation
+ * compile시 해당 클래스에 equals method, hashCode method를 재정의해준다.
+ *
+ * callSuper 속성값을 통해 equals method와 hashCode method의 범위를 super class의 속성까지 포함시킬지 여부를 정할 수 있다.
  * */
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(of = {"id", "loginId", "nickname", "profileMessage", "profileImageUrl"})
+@EqualsAndHashCode(callSuper = false)
 public class Member extends BaseEntity {
-
+	
 	/*
 	 * @Id
 	 * JPA에게 해당 column이 Primary Key라는 정보를 전달한다.
@@ -46,19 +55,19 @@ public class Member extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "member_id")
 	private Long id;
-
+	
 	private String loginId;
-
+	
 	private String password;
-
+	
 	private String nickname;
-
+	
 	private String profileMessage;
-
+	
 	private String profileImageUrl;
-
+	
 	private Boolean isDeleted;
-
+	
 	/*
 	 * @Builder
 	 * lombok에서 제공해주는 annotation
@@ -72,7 +81,7 @@ public class Member extends BaseEntity {
 		this.isDeleted = false;
 		this.initializeWhenSignUp(nickname);
 	}
-
+	
 	public void withdrawMember() {
 		this.isDeleted = true;
 	}
