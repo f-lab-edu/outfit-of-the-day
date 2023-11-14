@@ -66,32 +66,6 @@ class MemberControllerTest {
 			.andExpect(status().isCreated());
 	}
 
-	@DisplayName("로그인 ID로 유저 가져오기")
-	@Test
-	void memberGetByLoginIdTest() throws Exception {
-		// given
-
-		MemberSignUpRequest request = MemberSignUpRequest
-			.builder()
-			.loginId(LOGIN_ID)
-			.nickname(NICKNAME)
-			.password(PASSWORD)
-			.build();
-
-		memberService.signUp(request);
-		doLogin();
-
-		// when & then
-		mockMvc.perform(MockMvcRequestBuilders.get(MEMBER_URI_PREFIX + "/" + LOGIN_ID)
-				.contentType(MediaType.APPLICATION_JSON)
-			)
-			.andDo(print())
-			.andExpect(status().isOk())
-			.andDo(MockMvcRestDocumentation.document("api/members/loginId",
-				preprocessRequest(prettyPrint()),
-				preprocessResponse(prettyPrint())));
-	}
-	
 	@DisplayName("멤버가 회원을 탈퇴할 경우")
 	@Test
 	void withdrawMemberTest() throws Exception {
@@ -118,7 +92,7 @@ class MemberControllerTest {
 				preprocessRequest(prettyPrint()),
 				preprocessResponse(prettyPrint())));
 
-		Assertions.assertThat(memberService.isDeletedMemberByLoginId(LOGIN_ID)).isTrue();
+		Assertions.assertThat(memberService.isDeletedByLoginId(LOGIN_ID)).isTrue();
 
 	}
 

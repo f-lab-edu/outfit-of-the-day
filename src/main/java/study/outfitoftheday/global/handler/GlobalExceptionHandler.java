@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import io.sentry.Sentry;
 import study.outfitoftheday.domain.auth.exception.NoAccessAuthenticationException;
 import study.outfitoftheday.domain.auth.exception.NoAccessAuthorizationException;
-import study.outfitoftheday.global.exception.ServiceException;
+import study.outfitoftheday.global.exception.BadRequestException;
+import study.outfitoftheday.global.exception.NotFoundException;
 import study.outfitoftheday.global.response.ApiResponse;
 
 /*
@@ -31,7 +32,7 @@ public class GlobalExceptionHandler {
 	 * */
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	protected ApiResponse<Object> handleMethodArgumentNotValidException(
+	protected ApiResponse<Void> handleMethodArgumentNotValidException(
 		MethodArgumentNotValidException e) {
 
 		BindingResult bindingResult = e.getBindingResult();
@@ -39,21 +40,27 @@ public class GlobalExceptionHandler {
 		return ApiResponse.badRequest(message);
 	}
 
-	@ExceptionHandler({ServiceException.class})
+	@ExceptionHandler({BadRequestException.class})
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	protected ApiResponse<Object> handleServiceException(ServiceException e) {
+	protected ApiResponse<Void> handleServiceException(BadRequestException e) {
 		return ApiResponse.badRequest(e.getMessage());
+	}
+
+	@ExceptionHandler({NotFoundException.class})
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	protected ApiResponse<Void> handleNotFoundException(NotFoundException e) {
+		return ApiResponse.notFound(e.getMessage());
 	}
 
 	@ExceptionHandler({NoAccessAuthorizationException.class})
 	@ResponseStatus(HttpStatus.FORBIDDEN)
-	protected ApiResponse<Object> handleNoAccessAuthorizationException(NoAccessAuthorizationException e) {
+	protected ApiResponse<Void> handleNoAccessAuthorizationException(NoAccessAuthorizationException e) {
 		return ApiResponse.forbidden(e.getMessage());
 	}
 
 	@ExceptionHandler({NoAccessAuthenticationException.class})
 	@ResponseStatus(HttpStatus.UNAUTHORIZED)
-	protected ApiResponse<Object> handleNoAccessAuthenticationException(NoAccessAuthenticationException e) {
+	protected ApiResponse<Void> handleNoAccessAuthenticationException(NoAccessAuthenticationException e) {
 		return ApiResponse.unauthorized(e.getMessage());
 	}
 

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="logback/logback-global.xml"/>
+
+    <springProfile name="prod">
+        <include resource="logback/appender/file-appender.xml"/>
+
+        <root level="ERROR">
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+</configuration>
