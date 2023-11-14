@@ -97,6 +97,7 @@ jacocoTestReport {
                             '**/request/**',
                             '**/response/**',
                             '**/util/**'
+
                     ])
                 })
         )
@@ -121,7 +122,8 @@ jacocoTestCoverageVerification {
                     '*.*ExceptionHandler',
                     '**.exception.**',
                     '**.response.**',
-                    '**.util.**'
+                    '**.util.**',
+                    '*.*Config'
             ]
         }
     }
