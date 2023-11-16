@@ -2,5 +2,8 @@ logging:
   config: classpath:logback/logback-prod.xml
 
 sentry:
+  enabled: true
   dsn: ${sentry-dsn-key}
+
+
 
