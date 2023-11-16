@@ -46,6 +46,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     implementation 'mysql:mysql-connector-java:8.0.23'
+    implementation 'io.sentry:sentry-logback:1.7.30' // sentry-logback 연동 추가
+
 }
 
 
@@ -91,10 +93,12 @@ jacocoTestReport {
                 files(classDirectories.files.collect {
                     fileTree(dir: it, excludes: [
                             '**/*Application*',
+                            '**/*Config*',
                             '**/*Exception*',
                             '**/request/**',
                             '**/response/**',
-                            '**/util/**'
+                            '**/UriPrefix*'
+
                     ])
                 })
         )
@@ -119,7 +123,8 @@ jacocoTestCoverageVerification {
                     '*.*ExceptionHandler',
                     '**.exception.**',
                     '**.response.**',
-                    '**.util.**'
+                    '*.UriPrefix',
+                    '*.*Config'
             ]
         }
     }
@@ -131,7 +136,4 @@ jacocoTestCoverageVerification {
 springBoot {
     buildInfo()
 }
-
-
-
 

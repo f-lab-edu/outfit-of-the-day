@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import lombok.extern.slf4j.Slf4j;
 import study.outfitoftheday.domain.auth.exception.NoAccessAuthenticationException;
 import study.outfitoftheday.domain.auth.exception.NoAccessAuthorizationException;
 import study.outfitoftheday.global.exception.BadRequestException;
@@ -20,8 +21,9 @@ import study.outfitoftheday.global.response.ApiResponse;
  *
  * */
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
-
+	
 	/*
 	 * @ExceptionHandler
 	 * 해당 annotation에 지정한 xException.class에 예외가 발생했을 경우 특정 예외에 대해 처리를 할 수 있도록 지정하는 annotation.
@@ -33,34 +35,41 @@ public class GlobalExceptionHandler {
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	protected ApiResponse<Void> handleMethodArgumentNotValidException(
 		MethodArgumentNotValidException e) {
-
+		
 		BindingResult bindingResult = e.getBindingResult();
 		String message = bindingResult.getFieldErrors().get(0).getDefaultMessage();
 		return ApiResponse.badRequest(message);
 	}
-
+	
 	@ExceptionHandler({BadRequestException.class})
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	protected ApiResponse<Void> handleServiceException(BadRequestException e) {
 		return ApiResponse.badRequest(e.getMessage());
 	}
-
+	
 	@ExceptionHandler({NotFoundException.class})
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	protected ApiResponse<Void> handleNotFoundException(NotFoundException e) {
 		return ApiResponse.notFound(e.getMessage());
 	}
-
+	
 	@ExceptionHandler({NoAccessAuthorizationException.class})
 	@ResponseStatus(HttpStatus.FORBIDDEN)
 	protected ApiResponse<Void> handleNoAccessAuthorizationException(NoAccessAuthorizationException e) {
 		return ApiResponse.forbidden(e.getMessage());
 	}
-
+	
 	@ExceptionHandler({NoAccessAuthenticationException.class})
 	@ResponseStatus(HttpStatus.UNAUTHORIZED)
 	protected ApiResponse<Void> handleNoAccessAuthenticationException(NoAccessAuthenticationException e) {
 		return ApiResponse.unauthorized(e.getMessage());
 	}
-
+	
+	@ExceptionHandler({Exception.class})
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	protected ApiResponse<Void> handleException(Exception e) {
+		log.error(e.getMessage());
+		return ApiResponse.of(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
 }
