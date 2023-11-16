@@ -6,7 +6,8 @@ import lombok.Getter;
 
 @Getter
 public final class ApiResponse<T> {
-	private boolean success;
+
+	private Boolean success;
 	private int code;
 	private HttpStatus status;
 	private String message;
@@ -64,8 +65,14 @@ public final class ApiResponse<T> {
 		return of(HttpStatus.UNAUTHORIZED, message);
 	}
 
-	private boolean isSuccess(int code) {
-		return code < 400;
+	private Boolean isSuccess(int code) {
+		if (code >= 200 && code < 300) {
+			return true;
+		}
+		if (code >= 400) {
+			return false;
+		}
+		return null;
 	}
 
 }

@@ -1,0 +1,3 @@
+<included>
+    <appender name="SENTRY" class="io.sentry.logback.SentryAppender"/>
+</included>
