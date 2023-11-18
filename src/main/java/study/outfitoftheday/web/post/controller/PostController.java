@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.micrometer.core.annotation.Timed;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import study.outfitoftheday.domain.member.entity.Member;
@@ -28,6 +29,7 @@ import study.outfitoftheday.web.post.controller.response.PostFindByIdResponse;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(POST_URI_PREFIX)
+@Timed("api.posts")
 public class PostController {
 	private final PostService postService;
 	
