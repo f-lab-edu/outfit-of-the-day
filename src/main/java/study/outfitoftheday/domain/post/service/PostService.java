@@ -21,8 +21,7 @@ public class PostService {
 	private final PostQueryRepository postQueryRepository;
 
 	public Post findById(Long postId) {
-		return postQueryRepository.findById(postId)
-			.orElseThrow(() -> new NotFoundPostException("게시글이 존재하지 않습니다."));
+		return findById(postId, "게시글이 존재하지 않습니다.");
 	}
 
 	@Transactional
@@ -41,8 +40,7 @@ public class PostService {
 
 	@Transactional
 	public Long delete(Member loginMember, Long postId) {
-		Post postToDelete = postQueryRepository.findById(postId)
-			.orElseThrow(() -> new NotFoundPostException("삭제할 게시글이 존재하지 않습니다."));
+		Post postToDelete = findById(postId, "삭제할 게시글이 존재하지 않습니다.");
 
 		if (!postToDelete.getMember().equals(loginMember)) {
 			throw new NoAuthorizationToAccessPostException("해당 게시글을 삭제할 권한이 없습니다.");
@@ -55,8 +53,7 @@ public class PostService {
 	@Transactional
 	public Long update(Member loginMember, Long postId, PostUpdateRequest request) {
 
-		Post postToUpdate = postQueryRepository.findById(postId)
-			.orElseThrow(() -> new NotFoundPostException("변경할 게시글이 존재하지 않습니다."));
+		Post postToUpdate = findById(postId, "변경할 게시글이 존재하지 않습니다.");
 
 		if (!postToUpdate.getMember().equals(loginMember)) {
 			throw new NoAuthorizationToAccessPostException("해당 게시글을 변경할 권한이 없습니다.");
@@ -66,6 +63,11 @@ public class PostService {
 			request.getPostStatus());
 
 		return postToUpdate.getId();
+	}
+
+	private Post findById(Long postId, String exceptionMessage) {
+		return postQueryRepository.findById(postId)
+			.orElseThrow(() -> new NotFoundPostException(exceptionMessage));
 	}
 }
 
