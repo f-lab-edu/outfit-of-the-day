@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import study.outfitoftheday.domain.member.entity.Member;
 import study.outfitoftheday.domain.member.exception.DuplicatedMemberException;
+import study.outfitoftheday.domain.member.repository.MemberQueryRepository;
 import study.outfitoftheday.domain.member.repository.MemberRepository;
 import study.outfitoftheday.web.member.controller.request.MemberSignUpRequest;
 
@@ -40,6 +41,9 @@ class MemberServiceTest {
 	@Autowired
 	private MemberRepository memberRepository;
 
+	@Autowired
+	private MemberQueryRepository memberQueryRepository;
+
 	/*
 	 * @BeforeEach
 	 * @BeforeEach annotation을 붙인 메서드는 @Test annotation이 붙은 각 메서드 매번 수행된다.
@@ -61,7 +65,7 @@ class MemberServiceTest {
 
 		// given & when
 		memberService.signUp(createMemberSignUpRequest(LOGIN_ID, NICKNAME, PASSWORD));
-		Member foundMember = memberRepository.findByLoginIdAndIsDeletedIsFalse(LOGIN_ID).orElseThrow();
+		Member foundMember = memberQueryRepository.findByLoginId(LOGIN_ID).orElseThrow();
 
 		// then
 		assertThat(foundMember.getLoginId()).isEqualTo(LOGIN_ID);
@@ -87,7 +91,7 @@ class MemberServiceTest {
 			.hasMessage("중복 가입된 유저입니다.");
 
 	}
-	
+
 	/*
 	 * @DisplayName
 	 * 테스트 메서드 또는 테스트 클래스에 사용되어서 테스트의 이름을 사용자가 지정한 값으로 표시하는 데 사용된다.

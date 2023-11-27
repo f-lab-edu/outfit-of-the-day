@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import study.outfitoftheday.domain.member.entity.Member;
 import study.outfitoftheday.domain.member.exception.DuplicatedMemberException;
 import study.outfitoftheday.domain.member.exception.NotFoundMemberException;
+import study.outfitoftheday.domain.member.repository.MemberQueryRepository;
 import study.outfitoftheday.domain.member.repository.MemberRepository;
 import study.outfitoftheday.global.config.PasswordEncoder;
 import study.outfitoftheday.web.member.controller.request.MemberSignUpRequest;
@@ -17,10 +18,10 @@ import study.outfitoftheday.web.member.controller.request.MemberSignUpRequest;
 public class MemberService {
 	private final PasswordEncoder passwordEncoder;
 	private final MemberRepository memberRepository;
+	private final MemberQueryRepository memberQueryRepository;
 
 	public void signUp(MemberSignUpRequest request) {
-		if (memberRepository.findByLoginIdOrNicknameAndIsDeletedIsFalse(request.getLoginId(), request.getNickname())
-			.isPresent()) {
+		if (memberQueryRepository.findByLoginIdOrNickname(request.getLoginId(), request.getNickname()).isPresent()) {
 			throw new DuplicatedMemberException("중복 가입된 유저입니다.");
 		}
 
@@ -35,23 +36,19 @@ public class MemberService {
 	}
 
 	public boolean isDuplicatedByLoginId(String loginId) {
-		return memberRepository.findByLoginIdAndIsDeletedIsFalse(loginId).isPresent();
+		return memberQueryRepository.findByLoginId(loginId).isPresent();
 	}
 
 	public boolean isDuplicatedByNickname(String nickname) {
-		return memberRepository.findByNicknameAndIsDeletedIsFalse(nickname).isPresent();
+		return memberQueryRepository.findByNickname(nickname).isPresent();
 	}
 
 	public void withdraw(Member member) {
 		member.withdrawMember();
 	}
 
-	public boolean isDeletedByLoginId(String loginId) {
-		return memberRepository.findByLoginIdAndIsDeletedIsTrue(loginId).isPresent();
-	}
-
 	public Member findById(Long memberId) {
-		return memberRepository.findByIdAndIsDeletedIsFalse(memberId)
+		return memberQueryRepository.findById(memberId)
 			.orElseThrow(() -> new NotFoundMemberException("존재하지 않는 회원입니다."));
 	}
 }

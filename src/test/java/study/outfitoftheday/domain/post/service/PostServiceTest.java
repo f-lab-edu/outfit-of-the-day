@@ -12,6 +12,7 @@ import net.bytebuddy.utility.RandomString;
 
 import study.outfitoftheday.domain.auth.service.AuthService;
 import study.outfitoftheday.domain.member.entity.Member;
+import study.outfitoftheday.domain.member.repository.MemberQueryRepository;
 import study.outfitoftheday.domain.member.repository.MemberRepository;
 import study.outfitoftheday.domain.member.service.MemberService;
 import study.outfitoftheday.domain.post.entity.Post;
@@ -51,6 +52,9 @@ class PostServiceTest {
 	@Autowired
 	private MemberRepository memberRepository;
 	
+	@Autowired
+	private MemberQueryRepository memberQueryRepository;
+	
 	@BeforeEach
 	void tearDown() {
 		postRepository.deleteAllInBatch();
@@ -63,7 +67,7 @@ class PostServiceTest {
 		// given
 		memberService.signUp(createMemberSignUpRequest());
 		authService.login(AuthLoginRequest.builder().loginId(LOGIN_ID).password(PASSWORD).build());
-		Member foundMember = memberRepository.findByLoginIdAndIsDeletedIsFalse(LOGIN_ID).orElseThrow();
+		Member foundMember = memberQueryRepository.findByLoginId(LOGIN_ID).orElseThrow();
 		final String maxLengthTitle = RandomString.make(TITLE_MAX_LENGTH);
 		final String maxLengthShortDescription = RandomString.make(SHORT_DESCRIPTION_MAX_LENGTH);
 		PostCreateRequest request = PostCreateRequest
@@ -94,7 +98,7 @@ class PostServiceTest {
 		// given
 		memberService.signUp(createMemberSignUpRequest());
 		authService.login(AuthLoginRequest.builder().loginId(LOGIN_ID).password(PASSWORD).build());
-		Member foundMember = memberRepository.findByLoginIdAndIsDeletedIsFalse(LOGIN_ID).orElseThrow();
+		Member foundMember = memberQueryRepository.findByLoginId(LOGIN_ID).orElseThrow();
 		final String titleExceededMaxLength = RandomString.make(TITLE_MAX_LENGTH + 1);
 		
 		PostCreateRequest request = PostCreateRequest
@@ -117,7 +121,7 @@ class PostServiceTest {
 		// given
 		memberService.signUp(createMemberSignUpRequest());
 		authService.login(AuthLoginRequest.builder().loginId(LOGIN_ID).password(PASSWORD).build());
-		Member foundMember = memberRepository.findByLoginIdAndIsDeletedIsFalse(LOGIN_ID).orElseThrow();
+		Member foundMember = memberQueryRepository.findByLoginId(LOGIN_ID).orElseThrow();
 		final String shortDescriptionExceededMaxLength = RandomString.make(SHORT_DESCRIPTION_MAX_LENGTH + 1);
 		
 		PostCreateRequest request = PostCreateRequest
@@ -140,7 +144,7 @@ class PostServiceTest {
 		// given
 		memberService.signUp(createMemberSignUpRequest());
 		authService.login(AuthLoginRequest.builder().loginId(LOGIN_ID).password(PASSWORD).build());
-		Member foundMember = memberRepository.findByLoginIdAndIsDeletedIsFalse(LOGIN_ID).orElseThrow();
+		Member foundMember = memberQueryRepository.findByLoginId(LOGIN_ID).orElseThrow();
 		final String emptyShortDescription = "";
 		
 		PostCreateRequest request = PostCreateRequest
@@ -163,7 +167,7 @@ class PostServiceTest {
 		// given
 		memberService.signUp(createMemberSignUpRequest());
 		authService.login(AuthLoginRequest.builder().loginId(LOGIN_ID).password(PASSWORD).build());
-		Member foundMember = memberRepository.findByLoginIdAndIsDeletedIsFalse(LOGIN_ID).orElseThrow();
+		Member foundMember = memberQueryRepository.findByLoginId(LOGIN_ID).orElseThrow();
 		final String emptyContent = "";
 		
 		PostCreateRequest request = PostCreateRequest
@@ -186,7 +190,7 @@ class PostServiceTest {
 		// given
 		memberService.signUp(createMemberSignUpRequest());
 		authService.login(AuthLoginRequest.builder().loginId(LOGIN_ID).password(PASSWORD).build());
-		Member foundMember = memberRepository.findByLoginIdAndIsDeletedIsFalse(LOGIN_ID).orElseThrow();
+		Member foundMember = memberQueryRepository.findByLoginId(LOGIN_ID).orElseThrow();
 		
 		PostCreateRequest request = PostCreateRequest
 			.builder()
@@ -218,7 +222,7 @@ class PostServiceTest {
 		// given
 		memberService.signUp(createMemberSignUpRequest());
 		authService.login(AuthLoginRequest.builder().loginId(LOGIN_ID).password(PASSWORD).build());
-		Member foundMember = memberRepository.findByLoginIdAndIsDeletedIsFalse(LOGIN_ID).orElseThrow();
+		Member foundMember = memberQueryRepository.findByLoginId(LOGIN_ID).orElseThrow();
 		
 		// when & then
 		final Long notExistPostId = 2323L;
@@ -238,7 +242,7 @@ class PostServiceTest {
 		
 		memberService.signUp(createMemberSignUpRequest(memberALoginId, memberANickname, memberAPassword));
 		authService.login(AuthLoginRequest.builder().loginId(memberALoginId).password(memberAPassword).build());
-		Member memberA = memberRepository.findByLoginIdAndIsDeletedIsFalse(memberALoginId).orElseThrow();
+		Member memberA = memberQueryRepository.findByLoginId(memberALoginId).orElseThrow();
 		
 		PostCreateRequest request = PostCreateRequest
 			.builder()
@@ -258,7 +262,7 @@ class PostServiceTest {
 		
 		memberService.signUp(createMemberSignUpRequest(memberBLoginId, memberBNickname, memberBPassword));
 		authService.login(AuthLoginRequest.builder().loginId(memberBLoginId).password(memberBPassword).build());
-		Member memberB = memberRepository.findByLoginIdAndIsDeletedIsFalse(memberBLoginId).orElseThrow();
+		Member memberB = memberQueryRepository.findByLoginId(memberBLoginId).orElseThrow();
 		
 		// when & then
 		assertThatThrownBy(() -> postService.delete(memberB, memberAPostId))
@@ -272,7 +276,7 @@ class PostServiceTest {
 		// given
 		memberService.signUp(createMemberSignUpRequest(LOGIN_ID, NICKNAME, PASSWORD));
 		authService.login(AuthLoginRequest.builder().loginId(LOGIN_ID).password(PASSWORD).build());
-		Member loginMember = memberRepository.findByLoginIdAndIsDeletedIsFalse(LOGIN_ID).orElseThrow();
+		Member loginMember = memberQueryRepository.findByLoginId(LOGIN_ID).orElseThrow();
 		
 		PostCreateRequest postCreateRequest = PostCreateRequest
 			.builder()
@@ -289,7 +293,8 @@ class PostServiceTest {
 		final String shortDescriptionToUpdate = RandomString.make(SHORT_DESCRIPTION_MAX_LENGTH);
 		final PostStatus statusToUpdate = PostStatus.PRIVATE;
 		
-		PostUpdateRequest postUpdateRequest = PostUpdateRequest.builder()
+		PostUpdateRequest postUpdateRequest = PostUpdateRequest
+			.builder()
 			.shortDescription(shortDescriptionToUpdate)
 			.postStatus(statusToUpdate)
 			.title(titleToUpdate)
@@ -320,7 +325,7 @@ class PostServiceTest {
 		
 		memberService.signUp(createMemberSignUpRequest(memberALoginId, memberANickname, memberAPassword));
 		authService.login(AuthLoginRequest.builder().loginId(memberALoginId).password(memberAPassword).build());
-		Member memberA = memberRepository.findByLoginIdAndIsDeletedIsFalse(memberALoginId).orElseThrow();
+		Member memberA = memberQueryRepository.findByLoginId(memberALoginId).orElseThrow();
 		
 		PostCreateRequest request = PostCreateRequest
 			.builder()
@@ -340,14 +345,15 @@ class PostServiceTest {
 		
 		memberService.signUp(createMemberSignUpRequest(memberBLoginId, memberBNickname, memberBPassword));
 		authService.login(AuthLoginRequest.builder().loginId(memberBLoginId).password(memberBPassword).build());
-		Member memberB = memberRepository.findByLoginIdAndIsDeletedIsFalse(memberBLoginId).orElseThrow();
+		Member memberB = memberQueryRepository.findByLoginId(memberBLoginId).orElseThrow();
 		
 		final String titleToUpdate = RandomString.make(TITLE_MAX_LENGTH);
 		final String contentToUpdate = RandomString.make();
 		final String shortDescriptionToUpdate = RandomString.make(SHORT_DESCRIPTION_MAX_LENGTH);
 		final PostStatus statusToUpdate = PostStatus.PRIVATE;
 		
-		PostUpdateRequest postUpdateRequest = PostUpdateRequest.builder()
+		PostUpdateRequest postUpdateRequest = PostUpdateRequest
+			.builder()
 			.shortDescription(shortDescriptionToUpdate)
 			.postStatus(statusToUpdate)
 			.title(titleToUpdate)
@@ -367,7 +373,7 @@ class PostServiceTest {
 		
 		memberService.signUp(createMemberSignUpRequest(LOGIN_ID, NICKNAME, PASSWORD));
 		authService.login(AuthLoginRequest.builder().loginId(LOGIN_ID).password(PASSWORD).build());
-		Member member = memberRepository.findByLoginIdAndIsDeletedIsFalse(LOGIN_ID).orElseThrow();
+		Member member = memberQueryRepository.findByLoginId(LOGIN_ID).orElseThrow();
 		
 		final Long notExistPostId = 2023L;
 		final String titleToUpdate = RandomString.make(TITLE_MAX_LENGTH);
@@ -375,7 +381,8 @@ class PostServiceTest {
 		final String shortDescriptionToUpdate = RandomString.make(SHORT_DESCRIPTION_MAX_LENGTH);
 		final PostStatus statusToUpdate = PostStatus.PRIVATE;
 		
-		PostUpdateRequest postUpdateRequest = PostUpdateRequest.builder()
+		PostUpdateRequest postUpdateRequest = PostUpdateRequest
+			.builder()
 			.shortDescription(shortDescriptionToUpdate)
 			.postStatus(statusToUpdate)
 			.title(titleToUpdate)
