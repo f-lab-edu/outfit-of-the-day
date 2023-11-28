@@ -38,10 +38,6 @@ public class PostLikeQueryRepository {
 		);
 	}
 
-	private BooleanExpression postIdEq(Long postId) {
-		return postLike.post.id.eq(postId);
-	}
-
 	private BooleanExpression memberEq(Member member) {
 		return postLike.member.eq(member);
 	}
