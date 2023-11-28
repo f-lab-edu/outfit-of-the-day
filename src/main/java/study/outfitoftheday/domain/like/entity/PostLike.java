@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import study.outfitoftheday.domain.member.entity.Member;
@@ -33,4 +34,19 @@ public class PostLike extends BaseEntity {
 	private Post post;
 
 	private Boolean isDeleted;
+
+	@Builder
+	private PostLike(Member member, Post post) {
+		this.member = member;
+		this.post = post;
+		this.isDeleted = false;
+	}
+
+	public void restore() {
+		this.isDeleted = false;
+	}
+
+	public void delete() {
+		this.isDeleted = true;
+	}
 }
